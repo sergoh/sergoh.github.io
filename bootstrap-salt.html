@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="https://sergoh.github.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://sergoh.github.io/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="https://sergoh.github.io/theme/font-awesome/css/font-awesome.min.css">
+
+
+
+
+
+
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Use scripts to automatically register new EC2 minions with Salt-Master" />
+<meta name="keywords" content="saltstack, aws, cloud, EC2, automation">
+
+<meta property="og:site_name" content="DevLo"/>
+<meta property="og:title" content="Automate Salt-Minion Registrations on EC2"/>
+<meta property="og:description" content="Use scripts to automatically register new EC2 minions with Salt-Master"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://sergoh.github.io/bootstrap-salt.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-03-30 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-03-30 00:00:00-07:00"/>
+<meta property="article:author" content="https://sergoh.github.io/author/miguel-lopez.html">
+<meta property="article:section" content="automation"/>
+<meta property="article:tag" content="saltstack"/>
+<meta property="article:tag" content="aws"/>
+<meta property="article:tag" content="cloud"/>
+<meta property="article:tag" content="EC2"/>
+<meta property="article:tag" content="automation"/>
+<meta property="og:image" content="">
+
+  <title>DevLo &ndash; Automate Salt-Minion Registrations on EC2</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://sergoh.github.io">
+        <img src="https://sergoh.github.io/theme/img/profile.png" alt="" title="">
+      </a>
+      <h1><a href="https://sergoh.github.io"></a></h1>
+
+
+      <nav>
+        <ul class="list">
+
+          <li><a href="http://getpelican.com/" target="_blank">About</a></li>
+          <li><a href="http://python.org/" target="_blank">Contact</a></li>
+        </ul>
+      </nav>
+
+      <img src="https://sergoh.github.io/theme/img/miguel.png" alt="" title="">
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/BrogrammerMiggy" target="_blank"><i class="fa fa-twitter"></i></a></li>
+      </ul>
+
+      <img src="https://sergoh.github.io/theme/img/sergio.png" alt="" title="">
+      <ul class="social">
+        <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-twitter" href="https://twitter.com/mrsergoh" target="_blank"><i class="fa fa-twitter"></i></a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="https://sergoh.github.io">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="bootstrap-salt">Automate Salt-Minion Registrations on EC2</h1>
+    <p>
+          Posted on Fri 30 March 2018 in <a href="https://sergoh.github.io/category/automation.html">automation</a>
+
+
+          written by <a href="https://sergoh.github.io/author/miguel-lopez.html">Miguel Lopez</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Automate Salt-Minion Registrations on EC2</p>
+<h6></h6>
+<p>These scripts can be used to register your salt minion to Salt-Master upon successfully launching. </p>
+<p>Whether you're launching single instances or launching instances as a part of an autoscaling group, I'd highly recommend using cloud-init scripts. They're easy to use and help you install all of your packages upon launching. </p>
+<p>My scripts also include CodeDeploy. If you haven't heard of CodeDeploy, I'd take a moment to read up on it here. [AWS CodeDeploy]: https://aws.amazon.com/codedeploy/</p>
+<p>CodeDeploy can help you with:</p>
+<ul>
+<li>repeatable deployments </li>
+<li>automatic code deployments to scaled instances</li>
+<li>stops and rollbacks</li>
+<li>deployment history</li>
+</ul>
+<h2>cloud-init-salt-codedeploy.yml</h2>
+<p>Technical Stack: SaltStack, EC2(CentOS)</p>
+<p>Use this as the cloud-init data for an EC2 instance. Works fanstastically with auto-scaling-groups. Recommend placing this script in a cloudformation or terraform script so that all instances are automatically launched with it. </p>
+<p>Installs codedeploy and automatically registers salt-minion to a salt-master.</p>
+<ul>
+<li>dynamic by region</li>
+<li>installs codedeploy-agent</li>
+<li>registers salt-minion to master</li>
+<li>auto-deploy your latest revision from a CodeDeploy deployment group to this instance </li>
+</ul>
+<div class="highlight"><pre><span></span>#cloud-config
+# Set hostname to match the instance ID, rather than the
+# automatic hostname based on the IP address.
+# In these three commands _GRP_ is a placeholder and
+# should be changed to your Auto Scaling Group name.
+bootcmd:
+  # Dynamically fetch region for EC2 in aws
+  - &quot;region=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone | sed &#39;s/.$//&#39;)&quot;
+  - &quot;sudo yum -y install ruby wget jq&quot;
+  # Install codedeploy https://aws.amazon.com/codedeploy/
+  - &quot;sudo cd /home/ec2-user&quot;
+  - &quot;sudo wget https://aws-codedeploy-<span class="cp">${</span><span class="n">region</span><span class="cp">}</span>.s3.amazonaws.com/latest/install&quot;
+  - &quot;sudo chmod +x ./install&quot;
+  - &quot;sudo ./install auto&quot;
+  - &quot;sudo service codedeploy-agent start&quot;
+  # BOX_NAME fetches the EC2 tag for &quot;Name&quot; - name used to register with salt master
+  - &quot;INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)&quot;
+  - &quot;BOX_NAME=$(aws ec2 describe-tags --region <span class="nv">$region</span> --filters \&quot;Name=resource-id,Values=<span class="nv">$INSTANCE_ID</span>\&quot; | jq &#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39; | sed s/\\\&quot;//g)&quot;
+  # Change hostnames on VM
+  - &quot;cloud-init-per instance my_set_hostname sh -xc \&quot;echo <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/hostname; hostname -F /etc/hostname\&quot;&quot;
+  - &quot;cloud-init-per instance my_etc_hosts sh -xc \&quot;sed -i -e &#39;/^127.0.0.1/d&#39; /etc/hosts; sed -i -e &#39;/^::1/d&#39; /etc/hosts; echo 127.0.0.1 <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt;&gt; /etc/hosts\&quot;&quot;
+  # Install and bootstrap salt-minion to saltmaster
+  - &quot;SALT_MASTER_IP={IP-TO-SALT-MASTER-HERE}&quot;
+  - &quot;mkdir -p /etc/salt/; <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/salt/minion_id&quot;
+  - &quot;sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com&quot;
+  - &quot;sudo sh /tmp/bootstrap-salt.sh -i <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> -A <span class="nv">$SALT_MASTER_IP</span>&quot;
+  - &quot;sudo rm -f /tmp/bootstrap-salt.sh&quot;
+# Preserve the hostname file since we&#39;ve had to manually edit it
+preserve_hostname: true
+# Don&#39;t let cloud-init update the hosts file since we have edited it manually
+manage_etc_hosts: false
+</pre></div>
+
+
+<p><em>Replace $SALT_MASTER_IP with the IP of your salt-master. Don't forget to tag your EC2 instance with a "Name" tag. Naming is important when it comes to defining salt environments.</em></p>
+<p>For example:
+- <em>stage-api</em>
+- <em>stage-www</em>
+- <em>test-api</em>
+- <em>test-www</em></p>
+<p>These are all great examples of "Name" tags for instances because it allows you to apply salt states by '<em>www', '</em>api', 'stage<em>' or 'test</em>' or some other combination. </p>
+<p>This can be extremely useful for defining how you run salt commands. This naming convention would allow you to run salt commands in the following way: </p>
+<div class="highlight"><pre><span></span>salt <span class="s1">&#39;stage*&#39;</span> state.show_top
+</pre></div>
+
+
+<p>This command would only apply salt states to environments tagged with <em>stage</em> in their name. In this example, that would mean the stage-api and stage-www server. </p>
+<h2>bootstrap-salt-codedeploy.sh</h2>
+<p>Technical Stack: SaltStack, EC2(CentOS)</p>
+<p>Installs codedeploy and automatically registers salt-minion to a salt-master. Use this script if only if you'd like your packages to be installed post-creation. </p>
+<ul>
+<li>dynamic by region</li>
+<li>installs codedeploy-agent</li>
+<li>registers salt-minion to master</li>
+</ul>
+<p>Run this as a bootstrapping script on an EC2 instance. </p>
+<div class="highlight"><pre><span></span><span class="c1"># Dynamically fetch region for EC2 in aws</span>
+<span class="nv">region</span><span class="o">=</span><span class="k">$(</span>curl http://169.254.169.254/latest/meta-data/placement/availability-zone <span class="p">|</span> sed ’s/.$//‘<span class="k">)</span><span class="p">;</span>
+
+<span class="c1"># gr8 packages</span>
+sudo yum -y install ruby wget jq<span class="p">;</span>
+
+<span class="c1"># Install codedeploy https://aws.amazon.com/codedeploy/</span>
+sudo <span class="nb">cd</span> /home/ec2-user<span class="p">;</span>
+sudo wget https://aws-codedeploy-<span class="si">${</span><span class="nv">region</span><span class="si">}</span>.s3.amazonaws.com/latest/install<span class="p">;</span>
+sudo chmod +x ./install<span class="p">;</span>
+sudo ./install auto<span class="p">;</span>
+sudo service codedeploy-agent start<span class="p">;</span>
+
+<span class="c1"># Name used to register with salt master</span>
+<span class="nv">BOX_NAME</span><span class="o">=</span><span class="k">$(</span>aws ec2 describe-tags --region <span class="nv">$region</span> --filters <span class="se">\&quot;</span><span class="nv">Name</span><span class="o">=</span>resource-id,Values<span class="o">=</span><span class="nv">$INSTANCE_ID</span><span class="se">\&quot;</span> <span class="p">|</span> jq <span class="s1">&#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39;</span> <span class="p">|</span> sed s/<span class="se">\\\&quot;</span>//g<span class="k">)</span><span class="p">;</span>
+<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="k">$(</span>curl http://169.254.169.254/latest/meta-data/instance-id<span class="k">)</span><span class="p">;</span>
+
+<span class="c1"># Change hostnames on VM</span>
+<span class="nb">echo</span> <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/hostname<span class="p">;</span>
+sed -i -e <span class="s1">&#39;/^127.0.0.1/d&#39;</span> /etc/hosts<span class="p">;</span> 
+sed -i -e <span class="s1">&#39;/^::1/d&#39;</span> /etc/hosts<span class="p">;</span> 
+<span class="nb">echo</span> <span class="m">127</span>.0.0.1 <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt;&gt; /etc/hosts<span class="p">;</span>
+
+<span class="c1"># Install and bootstrap salt-minion to saltmaster</span>
+<span class="nv">SALT_MASTER_IP</span><span class="o">={</span>IP-TO-SALT-MASTER-HERE<span class="o">}</span>
+mkdir -p /etc/salt/<span class="p">;</span> <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/salt/minion_id<span class="p">;</span>
+sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com<span class="p">;</span>
+sudo sh /tmp/bootstrap-salt.sh -i <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> -A <span class="nv">$SALT_MASTER_IP</span><span class="p">;</span>
+sudo rm -f /tmp/bootstrap-salt.sh<span class="p">;</span>
+</pre></div>
+
+
+<p>Replace $SALT_MASTER_IP with your own variables.</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://sergoh.github.io/tag/saltstack.html">saltstack</a>
+      <a href="https://sergoh.github.io/tag/aws.html">aws</a>
+      <a href="https://sergoh.github.io/tag/cloud.html">cloud</a>
+      <a href="https://sergoh.github.io/tag/ec2.html">EC2</a>
+      <a href="https://sergoh.github.io/tag/automation.html">automation</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo ",
+  "url" : "https://sergoh.github.io",
+  "image": "",
+  "description": ""
+}
+</script>
+
+</body>
+</html>
