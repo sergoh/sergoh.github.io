@@ -110,9 +110,10 @@
   <div>
     <p>Automate Salt-Minion Registrations on EC2</p>
 <h6></h6>
+<h2>Intro</h2>
 <p>These scripts can be used to register your salt minion to Salt-Master upon successfully launching. </p>
-<p>Whether you're launching single instances or launching instances as a part of an autoscaling group, I'd highly recommend using cloud-init scripts. They're easy to use and help you install all of your packages upon launching. </p>
-<p>My scripts also include CodeDeploy. If you haven't heard of CodeDeploy, I'd take a moment to read up on it here. [AWS CodeDeploy]: https://aws.amazon.com/codedeploy/</p>
+<p>Whether you're launching single instances or launching instances as a part of an autoscaling group, I'd highly recommend using cloud-init scripts. They're easy to use and help you install all of your packages.</p>
+<p>My scripts also include CodeDeploy. If you haven't heard of CodeDeploy, I'd take a moment to read up on it here. <a href="https://aws.amazon.com/codedeploy/">AWS CodeDeploy</a></p>
 <p>CodeDeploy can help you with:</p>
 <ul>
 <li>repeatable deployments </li>
@@ -120,7 +121,7 @@
 <li>stops and rollbacks</li>
 <li>deployment history</li>
 </ul>
-<h2>cloud-init-salt-codedeploy.yml</h2>
+<h2>Cloud Init Script</h2>
 <p>Technical Stack: SaltStack, EC2(CentOS)</p>
 <p>Use this as the cloud-init data for an EC2 instance. Works fanstastically with auto-scaling-groups. Recommend placing this script in a cloudformation or terraform script so that all instances are automatically launched with it. </p>
 <p>Installs codedeploy and automatically registers salt-minion to a salt-master.</p>
@@ -177,7 +178,7 @@ manage_etc_hosts: false
 
 
 <p>This command would only apply salt states to environments tagged with <em>stage</em> in their name. In this example, that would mean the stage-api and stage-www server. </p>
-<h2>bootstrap-salt-codedeploy.sh</h2>
+<h2>Shell Script Equivalent</h2>
 <p>Technical Stack: SaltStack, EC2(CentOS)</p>
 <p>Installs codedeploy and automatically registers salt-minion to a salt-master. Use this script if only if you'd like your packages to be installed post-creation. </p>
 <ul>
