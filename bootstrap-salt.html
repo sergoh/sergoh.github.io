@@ -165,6 +165,7 @@ manage_etc_hosts: false
 </pre></div>
 
 
+<p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>
 <p><em>Replace $SALT_MASTER_IP with the IP of your salt-master. Don't forget to tag your EC2 instance with a "Name" tag. Naming is important when it comes to defining salt environments.</em></p>
 <p>For example:
 - <em>stage-api</em>
@@ -219,6 +220,7 @@ sudo rm -f /tmp/bootstrap-salt.sh<span class="p">;</span>
 </pre></div>
 
 
+<p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>
 <p>Replace $SALT_MASTER_IP with your own variables.</p>
   </div>
   <div class="tag-cloud">
