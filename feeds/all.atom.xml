@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-03-31T00:00:00-07:00</updated><entry><title>Managing Automation Around Auto Scaling Groups</title><link href="http://www.devlo.io/asg-automation-toolset.html" rel="alternate"></link><published>2018-03-31T00:00:00-07:00</published><updated>2018-03-31T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-31:/asg-automation-toolset.html</id><summary type="html">&lt;p&gt;How to pick an automation toolset that supports auto scaling in the cloud&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS EC2 (AWS AMI CentOS), SaltStack (2018.7.X), CodeDeploy&lt;br&gt;
+Read: 10 minutes &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;There are 4 key components when it comes to creating stateless servers for an autoscaling groups (ASGs). &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Automatic Configuration Management (SaltStack, Chef, Puppet, AWS OpsWorks) &lt;/li&gt;
+&lt;li&gt;Automatic Code Deployment to New VMs that Spawn (CodeDeploy) &lt;/li&gt;
+&lt;li&gt;Bootstrapping Minions as they Spawn&lt;/li&gt;
+&lt;li&gt;CI/CD Pipelines (Jenkins, VSTS, Code Pipelines, etc) &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Having these 4 components will help you achieve an automated and repeatable way of creating VMs from the ground up. This will allow you to create and register new nodes with a load balancer should the demand go up. &lt;/p&gt;
+&lt;p&gt;There’s no perfect formula when it comes to selecting the right set of tools for the job. The main thing that matters is that you select a set of tools that’ll help your organization successfully manage an autoscaling group. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Configuration Management&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;These tools allow you to manage differences across different applications and environments in your infrastructure. You can manage different configuration files, symlinks, create/delete different users, web hosts files, etc. It allows you to remove “hard coding” from VMs so that you can easily produce a “production API server” or a “DEV www server”.&lt;/p&gt;
+&lt;p&gt;Choosing the right configuration management tool typically boils down to choosing a tool that makes sense for your organization. I’ve been a huge fan of SaltStack because it’s declarative, meaning that order in which states are executed doesn't matter. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Automatic Code Deployment&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;This is important because if your ASG group ever needs to scale up another node, you need to find a way to deploy code to it without having to manually trigger a build. &lt;/p&gt;
+&lt;p&gt;I’ve had great success accomplishing this with CodeDeploy. CodeDeploy is an AWS service that uses .yml based instructions in order to install an application on a VM. Here’s an example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.0&lt;/span&gt;
+&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;linux&lt;/span&gt;
+&lt;span class="n"&gt;files&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;source&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;app&lt;/span&gt;
+    &lt;span class="n"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sr"&gt;/var/www/html/&lt;/span&gt;&lt;span class="n"&gt;WordPress&lt;/span&gt;
+ &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;source&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;backend&lt;/span&gt;
+    &lt;span class="n"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="sr"&gt;/var/www/backend/s&lt;/span&gt;&lt;span class="n"&gt;ervice&lt;/span&gt;
+&lt;span class="n"&gt;hooks&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;BeforeInstall&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;install_dependencies&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sh&lt;/span&gt;
+      &lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;
+      &lt;span class="n"&gt;runas&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;
+  &lt;span class="n"&gt;AfterInstall&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;change_permissions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sh&lt;/span&gt;
+      &lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;
+      &lt;span class="n"&gt;runas&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;
+  &lt;span class="n"&gt;ApplicationStart&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;start_server&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sh&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;create_test_db&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sh&lt;/span&gt;
+      &lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;
+      &lt;span class="n"&gt;runas&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;
+  &lt;span class="n"&gt;ApplicationStop&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;scripts&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;stop_server&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sh&lt;/span&gt;
+      &lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;
+      &lt;span class="n"&gt;runas&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It comes complete with life cycle events, the power to run shell scripts and even allows you to install code in multiple locations. &lt;/p&gt;
+&lt;p&gt;It should always be your goal to minimize downtime during deployments (Zero downtime if possible). CodeDeploy supports this with A/B deployments or One-At-A-Time deployments.&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Bootstrapping Minions&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Find a way to hook and tie a VM to the rest of your infrastructure. This is where you typically notify your configuration management tool and code deployment tool that your freshly created VM is alive and well. &lt;/p&gt;
+&lt;p&gt;I've shared how to do this in another post &lt;a href="http://www.devlo.io/bootstrap-salt.html#bootstrap-salt"&gt;Automate Salt-Minion Registrations on EC2&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;CI/CD&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;It’s best to find a tool that’ll push changes to your deployment group (fleet of VMs) while also registering that a new build has been released. It’s important for your automation toolset register that a new build has been released. This will guarantee that your ASG will always install the latest version of your application.\&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Personal Experience&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;I’ve personally had great success with the following tech stack:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AWS EC2&lt;/li&gt;
+&lt;li&gt;Jenkins&lt;/li&gt;
+&lt;li&gt;CodeDeploy&lt;/li&gt;
+&lt;li&gt;SaltStack&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;EC2 instances allow you to define a cloud-init script. Cloud-init scripts are scripts that are automatically ran once when the VM is created. This allows me to register each VM that comes online with SaltStack and CodeDeploy. &lt;/p&gt;
+&lt;p&gt;Jenkins Is a great CI/CD tool to kick off builds from. Its allows me to pull down my code from GitHub, trigger a build process, run automation tests, push to static code analysis and finally deploy the build to a deployment group via CodeDeploy. &lt;/p&gt;
+&lt;p&gt;From this point, CodeDeploy will begin installing the build on the requested deployment group. This can either be a single VM or an ASG. CodeDeploy is such a powerful installation Daemon because automatically registers your latest build pushed to it by a CI/CD tool. This ensures that my ASG will always receive the latest build without me having to worry about it. &lt;/p&gt;
+&lt;p&gt;SaltStack has been crucial when it comes to influencing how my team designs code. We’ve done our best to start removing any/all hard coded values out of our code. Imagine if a customer needed you to change an integration URL for their prod server. With Salt, we are able to just change the config file and push out the newest state. This is so much easier than changing our code base, scheduling a time for a release, and pushing out the new build. Not to mention safer too. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Over the next few weeks I’ll be hoping to add some more posts that dive a little bit deeper into this topic.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.devlo.io/bootstrap-salt.html#bootstrap-salt"&gt;Automate Salt-Minion Registrations on EC2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Introduction to Salt-Master&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Organizing States on Salt-Master&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Introduction to CodeDeploy&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category><category term="codedeploy"></category></entry><entry><title>Automate Salt-Minion Registrations on EC2</title><link href="http://www.devlo.io/bootstrap-salt.html" rel="alternate"></link><published>2018-03-30T00:00:00-07:00</published><updated>2018-03-30T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-30:/bootstrap-salt.html</id><summary type="html">&lt;p&gt;Use scripts to automatically register new EC2 minions with Salt-Master&lt;/p&gt;</summary><content type="html">&lt;p&gt;Automate Salt-Minion Registrations on EC2&lt;/p&gt;
+&lt;h6&gt;&lt;/h6&gt;
+&lt;h2&gt;Intro&lt;/h2&gt;
+&lt;p&gt;These scripts can be used to register your salt minion to Salt-Master upon successfully launching. &lt;/p&gt;
+&lt;p&gt;Whether you're launching single instances or launching instances as a part of an autoscaling group, I'd highly recommend using cloud-init scripts. They're easy to use and help you install all of your packages.&lt;/p&gt;
+&lt;p&gt;My scripts also include CodeDeploy. If you haven't heard of CodeDeploy, I'd take a moment to read up on it here. &lt;a href="https://aws.amazon.com/codedeploy/"&gt;AWS CodeDeploy&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;CodeDeploy can help you with:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;repeatable deployments &lt;/li&gt;
+&lt;li&gt;automatic code deployments to scaled instances&lt;/li&gt;
+&lt;li&gt;stops and rollbacks&lt;/li&gt;
+&lt;li&gt;deployment history&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Cloud Init Script&lt;/h2&gt;
+&lt;p&gt;Technical Stack: SaltStack, EC2(CentOS)&lt;/p&gt;
+&lt;p&gt;Use this as the cloud-init data for an EC2 instance. Works fanstastically with auto-scaling-groups. Recommend placing this script in a cloudformation or terraform script so that all instances are automatically launched with it. &lt;/p&gt;
+&lt;p&gt;Installs codedeploy and automatically registers salt-minion to a salt-master.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dynamic by region&lt;/li&gt;
+&lt;li&gt;installs codedeploy-agent&lt;/li&gt;
+&lt;li&gt;registers salt-minion to master&lt;/li&gt;
+&lt;li&gt;auto-deploy your latest revision from a CodeDeploy deployment group to this instance &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#cloud-config
+# Set hostname to match the instance ID, rather than the
+# automatic hostname based on the IP address.
+# In these three commands _GRP_ is a placeholder and
+# should be changed to your Auto Scaling Group name.
+bootcmd:
+  # Dynamically fetch region for EC2 in aws
+  - &amp;quot;region=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone | sed &amp;#39;s/.$//&amp;#39;)&amp;quot;
+  - &amp;quot;sudo yum -y install ruby wget jq&amp;quot;
+  # Install codedeploy https://aws.amazon.com/codedeploy/
+  - &amp;quot;sudo cd /home/ec2-user&amp;quot;
+  - &amp;quot;sudo wget https://aws-codedeploy-&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;region&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;.s3.amazonaws.com/latest/install&amp;quot;
+  - &amp;quot;sudo chmod +x ./install&amp;quot;
+  - &amp;quot;sudo ./install auto&amp;quot;
+  - &amp;quot;sudo service codedeploy-agent start&amp;quot;
+  # BOX_NAME fetches the EC2 tag for &amp;quot;Name&amp;quot; - name used to register with salt master
+  - &amp;quot;INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)&amp;quot;
+  - &amp;quot;BOX_NAME=$(aws ec2 describe-tags --region &lt;span class="nv"&gt;$region&lt;/span&gt; --filters \&amp;quot;Name=resource-id,Values=&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt;\&amp;quot; | jq &amp;#39;.Tags[] | select(.Key == \&amp;quot;Name\&amp;quot;) | .Value&amp;#39; | sed s/\\\&amp;quot;//g)&amp;quot;
+  # Change hostnames on VM
+  - &amp;quot;cloud-init-per instance my_set_hostname sh -xc \&amp;quot;echo &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; &amp;gt; /etc/hostname; hostname -F /etc/hostname\&amp;quot;&amp;quot;
+  - &amp;quot;cloud-init-per instance my_etc_hosts sh -xc \&amp;quot;sed -i -e &amp;#39;/^127.0.0.1/d&amp;#39; /etc/hosts; sed -i -e &amp;#39;/^::1/d&amp;#39; /etc/hosts; echo 127.0.0.1 &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; &amp;gt;&amp;gt; /etc/hosts\&amp;quot;&amp;quot;
+  # Install and bootstrap salt-minion to saltmaster
+  - &amp;quot;SALT_MASTER_IP={IP-TO-SALT-MASTER-HERE}&amp;quot;
+  - &amp;quot;mkdir -p /etc/salt/; &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; &amp;gt; /etc/salt/minion_id&amp;quot;
+  - &amp;quot;sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com&amp;quot;
+  - &amp;quot;sudo sh /tmp/bootstrap-salt.sh -i &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; -A &lt;span class="nv"&gt;$SALT_MASTER_IP&lt;/span&gt;&amp;quot;
+  - &amp;quot;sudo rm -f /tmp/bootstrap-salt.sh&amp;quot;
+# Preserve the hostname file since we&amp;#39;ve had to manually edit it
+preserve_hostname: true
+# Don&amp;#39;t let cloud-init update the hosts file since we have edited it manually
+manage_etc_hosts: false
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance&lt;/em&gt; &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Replace $SALT_MASTER_IP with the IP of your salt-master. Don't forget to tag your EC2 instance with a "Name" tag. Naming is important when it comes to defining salt environments.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;For example:
+- &lt;em&gt;stage-api&lt;/em&gt;
+- &lt;em&gt;stage-www&lt;/em&gt;
+- &lt;em&gt;test-api&lt;/em&gt;
+- &lt;em&gt;test-www&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;These are all great examples of "Name" tags for instances because it allows you to apply salt states by '&lt;em&gt;www', '&lt;/em&gt;api', 'stage&lt;em&gt;' or 'test&lt;/em&gt;' or some other combination. &lt;/p&gt;
+&lt;p&gt;This can be extremely useful for defining how you run salt commands. This naming convention would allow you to run salt commands in the following way: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;salt &lt;span class="s1"&gt;&amp;#39;stage*&amp;#39;&lt;/span&gt; state.show_top
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This command would only apply salt states to environments tagged with &lt;em&gt;stage&lt;/em&gt; in their name. In this example, that would mean the stage-api and stage-www server. &lt;/p&gt;
+&lt;h2&gt;Shell Script Equivalent&lt;/h2&gt;
+&lt;p&gt;Technical Stack: SaltStack, EC2(CentOS)&lt;/p&gt;
+&lt;p&gt;Installs codedeploy and automatically registers salt-minion to a salt-master. Use this script if only if you'd like your packages to be installed post-creation. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dynamic by region&lt;/li&gt;
+&lt;li&gt;installs codedeploy-agent&lt;/li&gt;
+&lt;li&gt;registers salt-minion to master&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Run this as a bootstrapping script on an EC2 instance. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Dynamically fetch region for EC2 in aws&lt;/span&gt;
+&lt;span class="nv"&gt;region&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;curl http://169.254.169.254/latest/meta-data/placement/availability-zone &lt;span class="p"&gt;|&lt;/span&gt; sed ’s/.$//‘&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# gr8 packages&lt;/span&gt;
+sudo yum -y install ruby wget jq&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Install codedeploy https://aws.amazon.com/codedeploy/&lt;/span&gt;
+sudo &lt;span class="nb"&gt;cd&lt;/span&gt; /home/ec2-user&lt;span class="p"&gt;;&lt;/span&gt;
+sudo wget https://aws-codedeploy-&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;region&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.s3.amazonaws.com/latest/install&lt;span class="p"&gt;;&lt;/span&gt;
+sudo chmod +x ./install&lt;span class="p"&gt;;&lt;/span&gt;
+sudo ./install auto&lt;span class="p"&gt;;&lt;/span&gt;
+sudo service codedeploy-agent start&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Name used to register with salt master&lt;/span&gt;
+&lt;span class="nv"&gt;BOX_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;aws ec2 describe-tags --region &lt;span class="nv"&gt;$region&lt;/span&gt; --filters &lt;span class="se"&gt;\&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;Name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;resource-id,Values&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt;&lt;span class="se"&gt;\&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; jq &lt;span class="s1"&gt;&amp;#39;.Tags[] | select(.Key == \&amp;quot;Name\&amp;quot;) | .Value&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; sed s/&lt;span class="se"&gt;\\\&amp;quot;&lt;/span&gt;//g&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="nv"&gt;INSTANCE_ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;curl http://169.254.169.254/latest/meta-data/instance-id&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Change hostnames on VM&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; &amp;gt; /etc/hostname&lt;span class="p"&gt;;&lt;/span&gt;
+sed -i -e &lt;span class="s1"&gt;&amp;#39;/^127.0.0.1/d&amp;#39;&lt;/span&gt; /etc/hosts&lt;span class="p"&gt;;&lt;/span&gt; 
+sed -i -e &lt;span class="s1"&gt;&amp;#39;/^::1/d&amp;#39;&lt;/span&gt; /etc/hosts&lt;span class="p"&gt;;&lt;/span&gt; 
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="m"&gt;127&lt;/span&gt;.0.0.1 &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; &amp;gt;&amp;gt; /etc/hosts&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Install and bootstrap salt-minion to saltmaster&lt;/span&gt;
+&lt;span class="nv"&gt;SALT_MASTER_IP&lt;/span&gt;&lt;span class="o"&gt;={&lt;/span&gt;IP-TO-SALT-MASTER-HERE&lt;span class="o"&gt;}&lt;/span&gt;
+mkdir -p /etc/salt/&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; &amp;gt; /etc/salt/minion_id&lt;span class="p"&gt;;&lt;/span&gt;
+sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com&lt;span class="p"&gt;;&lt;/span&gt;
+sudo sh /tmp/bootstrap-salt.sh -i &lt;span class="nv"&gt;$BOX_NAME&lt;/span&gt;-&lt;span class="nv"&gt;$INSTANCE_ID&lt;/span&gt; -A &lt;span class="nv"&gt;$SALT_MASTER_IP&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+sudo rm -f /tmp/bootstrap-salt.sh&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance&lt;/em&gt; &lt;/p&gt;
+&lt;p&gt;Replace $SALT_MASTER_IP with your own variables.&lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category></entry><entry><title>Introduction to SaltStack</title><link href="http://www.devlo.io/my-super-post.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-03-22T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/my-super-post.html</id><summary type="html">&lt;p&gt;a story of how Salt Master revolutionized the way my organization manages infrastructure, has identical environments and keeps cloud engineers mentally SANE&lt;/p&gt;</summary><content type="html">&lt;p&gt;Introduction to SaltStack&lt;/p&gt;
+&lt;h6&gt;&lt;/h6&gt;
+&lt;p&gt;~Technical Environment: SaltStack v1.2123, AWS EC2 (CentOS ami)~&lt;/p&gt;
+&lt;p&gt;TLDR; SaltStack rocks. Let Salt manage your infrastructure and you’ll look like a hero.&lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setuping up Pelican Blog</title><link href="http://www.devlo.io/setuping-up-pelican-blog.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-03-22T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setuping-up-pelican-blog.html</id><summary type="html">&lt;p&gt;Summary&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is to test travis CI&lt;/p&gt;</content></entry></feed>
