@@ -84,7 +84,7 @@ Read: 10 minutes &lt;/p&gt;
 | src 
 | - main
 | - - java
-| - - net.app.lambda
+| - - - net.app.lambda
 | - - - - example
 | - - - - - ExampleHandler
 | serverless.yml
