@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
+
+
+    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Atom">
+
+
+    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework" />
+<meta name="keywords" content="serverless, lambda, aws, java, cloud">
+
+<meta property="og:site_name" content="DevLo"/>
+<meta property="og:title" content="Managing Envrionments on Serverless Framework"/>
+<meta property="og:description" content="Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://www.devlo.io/serverless-environments.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-04-02 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-02 00:00:00-07:00"/>
+<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="tutorials"/>
+<meta property="article:tag" content="serverless"/>
+<meta property="article:tag" content="lambda"/>
+<meta property="article:tag" content="aws"/>
+<meta property="article:tag" content="java"/>
+<meta property="article:tag" content="cloud"/>
+<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <title>DevLo &ndash; Managing Envrionments on Serverless Framework</title>
+
+<!-- Google Tag Manager -->
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
+<!-- End Google Tag Manager --></head>
+<body>
+<!-- Google Tag Manager -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager -->  <aside>
+    <div>
+      <a href="http://www.devlo.io">
+        <img src="/images/Devlo-Logo.png" alt="DevLo" title="DevLo">
+      </a>
+      <!--<h1><a href="http://www.devlo.io">DevLo</a></h1>-->
+
+<p>The Lopez brothers' development blog</p>
+      <div class="authors-profiles">
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+            <figcaption>Miguel</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
+            <li><a class="sc-twitter" href="https://twitter.com/BrogrammerMiggy" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          </ul>
+        </div>
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+            <figcaption>Sergio</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
+            <li><a class="sc-twitter" href="https://twitter.com/mrsergoh" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="list">
+          <li><a href="http://www.devlo.io/pages/about.html#about">About</a></li>
+
+          <li><a href="" target="_blank"></a></li>
+          <li><a href="http://python.org/" target="_blank">Contact</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="http://www.devlo.io">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
+</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="serverless-environments">Managing Envrionments on Serverless Framework</h1>
+    <p>
+          Posted on Mon 02 April 2018 in <a href="http://www.devlo.io/category/tutorials.html">tutorials</a>
+
+
+          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Technical Stack: AWS Lambda, Java 8 
+Read: 10 minutes </p>
+<h2><strong>Prerequisites</strong></h2>
+<ul>
+<li>Java 8 Runetime Installed <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Oracle Download</a></li>
+<li>Serverless Framework Installed <a href="https://serverless.com/framework/docs/getting-started/">Serverless Quick Start</a></li>
+<li>AWS Free Tier Account <a href="https://aws.amazon.com/free/">AWS Sign Up</a></li>
+</ul>
+<p>Check out the <a href="https://aws.amazon.com/lambda/">AWS Lambda Documentation</a> if you're new to AWS Lambda and serverless technology.</p>
+<h2><strong>Introduction</strong></h2>
+<p>AWS Lambda is one of the hottest services out on the market right now. First introduced in November 2014, it has completely revolutionized the way developers develop and deploy cloud-first services and applications. Here are some of the immediate functions of Lambda functions:</p>
+<ul>
+<li>Run code without servers</li>
+<li>Automatically scales code without any configuration</li>
+<li>Get charged per 100ms of execution time</li>
+</ul>
+<p>By the end of this post, you will learn to manage and deploy AWS Lambda functions to dev/test/stage/prod environments using the Serverless framework as your deployment tool. </p>
+<h2><strong>Serverless Framework</strong></h2>
+<p>The Serverless Framework should <strong>not</strong> to be confused with <em>Serverless Technology</em>, the name commonly used to describe Function-as-a-Service technology. <strong>The Serverless Framework is a CLI-tool you can install to help you deploy and manage your serverless functions.</strong></p>
+<p>Serverless is my #1 choice for deplying lambda functions because: </p>
+<ul>
+<li>It supports all major cloud providers. Serverless framework deploys to AWS, Azure, Google, etc. (No vendor lock-in)</li>
+<li>YML based instructions that deploy infrastructure-as-code</li>
+<li>Large developer community with dozens of plugins <a href="https://github.com/serverless/plugins">Github Repo Plugins</a></li>
+</ul>
+<p>Serverless Framework uses a serverless.yml file to deploy your functions to a cloud provider. </p>
+<p>Here is a basic example:</p>
+<div class="highlight"><pre><span></span><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span>
+
+<span class="n">frameworkVersion</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
+
+<span class="n">provider</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">aws</span>
+  <span class="n">runtime</span><span class="o">:</span> <span class="n">java8</span>
+
+<span class="kd">package</span><span class="o">:</span>
+  <span class="n">artifact</span><span class="o">:</span> <span class="n">build</span><span class="sr">/distributions/</span><span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span><span class="o">.</span><span class="na">zip</span>
+
+<span class="n">functions</span><span class="o">:</span>
+  <span class="n">currentTime</span><span class="o">:</span>
+    <span class="n">handler</span><span class="o">:</span> <span class="n">com</span><span class="o">.</span><span class="na">serverless</span><span class="o">.</span><span class="na">Handler</span>
+    <span class="n">events</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">http</span><span class="o">:</span>
+          <span class="n">path</span><span class="o">:</span> <span class="n">ping</span>
+          <span class="n">method</span><span class="o">:</span> <span class="kd">get</span>
+</pre></div>
+
+
+<p>If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes and deploying their boilerplate function <a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/">here</a>.</p>
+<h2><strong>Building Environments in Serverless</strong></h2>
+<p>A creative way to build environments on your serverless.yml file is to take advantage of the serverless variable system. The Serverless variable system allows you to reference other yml files by loading them into a variable. This will be the bread and butter of the pattern i'm about to show you.</p>
+<p>For example: </p>
+<div class="highlight"><pre><span></span><span class="n">custom</span><span class="o">:</span>
+  <span class="n">configFile</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">file</span><span class="o">(./</span><span class="n">config</span><span class="o">/</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}.</span><span class="n">yml</span><span class="o">)}</span>
+
+<span class="n">provider</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">aws</span>
+  <span class="n">runtime</span><span class="o">:</span> <span class="n">java8</span>
+  <span class="n">stage</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span> <span class="s1">&#39;dev&#39;</span><span class="o">}</span>
+  <span class="n">region</span><span class="o">:</span> <span class="s1">&#39;us-east-2&#39;</span>
+  <span class="n">profile</span><span class="o">:</span> <span class="n">personal</span>
+
+  <span class="n">vpc</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">vpc</span><span class="o">}</span>
+</pre></div>
+
+
+<ul>
+<li>if <code>sls deploy --stage prod</code> is ran, the <code>provider.stage</code> variable in the yml will be set to <code>prod</code></li>
+<li><code>${self:provider.stage}</code> resolves to <code>prod</code></li>
+<li><code>prod</code> is used in <code>${file(./config/${self:provider.stage}.yml)}</code></li>
+<li><code>${file(./config/prod.yml)}</code> and loaded into the <code>custom.configFile</code> variable</li>
+<li><code>${self:custom.configFile.vpc}</code> will load the <code>vpc</code> variable from the <code>prod.yml</code> file loaded into <code>custom.configFile</code></li>
+</ul>
+<p>Likewise, if you ran <code>sls deploy --stage test</code>, the stage variablle would be set to <code>test</code> and the <code>test.yml</code> would be loaded into <code>custom.configFile</code>. </p>
+<h2><strong>Organizing your environmentfiles</strong></h2>
+<p>I'd recommend laying out your files in the following pattern:</p>
+<p>| configs 
+| - dev.yml
+| - test.yml
+| - stage.yml
+| - prod.yml
+| - dr.yml
+| src 
+| - main
+| - - java
+| - - net.app.lambda
+| - - - - example
+| - - - - - ExampleHandler
+| serverless.yml</p>
+<p>A typical config file will look like this:</p>
+<p><em>dev.yml</em></p>
+<div class="highlight"><pre><span></span>region: &quot;us-east-2&quot;
+
+APNS_BASE_ARN: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">apns</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
+GCM_BASE_ARN: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">gcm</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
+
+KMS_KEY: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">security</span><span class="o">/</span><span class="n">default</span><span class="o">-</span><span class="n">kms</span><span class="o">-</span><span class="n">key</span><span class="cp">}</span>
+ELASTICACHE_CONFIGURATION_ENDPOINT: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">DEV</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">memcached</span><span class="o">/</span><span class="n">connection</span><span class="o">-</span><span class="n">url</span><span class="cp">}</span>
+MEMCACHED_DEFAULT_TTL_VALUE: &quot;604800&quot;
+</pre></div>
+
+
+<p>This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the <code>MEMCACHED_DEFAULT_TTL_VALUE:</code> needs to be <code>172800</code> in PROD as opposed to the <code>604800</code>. You could call different SSM values or even define different VPC Security Groups and Subnets. </p>
+<p>This pattern gives you a clear-readable format for your environment config files that are loaded into the parent <code>serverless.yml</code> file. </p>
+<p>Here is a general <code>serverless.yml</code> that will use the following <code>dev.yml</code> file. </p>
+<div class="highlight"><pre><span></span><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">sample</span>
+
+<span class="n">frameworkVersion</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
+
+<span class="n">custom</span><span class="o">:</span>
+  <span class="n">configFile</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">file</span><span class="o">(./</span><span class="n">config</span><span class="o">/</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}.</span><span class="n">yml</span><span class="o">)}</span>
+
+<span class="n">provider</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">aws</span>
+  <span class="n">runtime</span><span class="o">:</span> <span class="n">java8</span>
+  <span class="n">stage</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span> <span class="s1">&#39;dev&#39;</span><span class="o">}</span>
+  <span class="n">region</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">region</span><span class="o">}</span>
+  <span class="n">profile</span><span class="o">:</span> <span class="n">personal</span>
+
+  <span class="n">versionFunctions</span><span class="o">:</span> <span class="kc">false</span>
+  <span class="n">logRetentionInDays</span><span class="o">:</span> <span class="mi">30</span>
+
+  <span class="n">environment</span><span class="o">:</span>
+        <span class="n">APNS_BASE_ARN</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">APNS_BASE_ARN</span><span class="o">}</span>
+        <span class="n">GCM_BASE_ARN</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">GCM_BASE_ARN</span><span class="o">}</span>
+
+        <span class="n">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">}</span>
+        <span class="n">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">}</span>
+</pre></div>
+
+
+<p>The <code>APNS_BAS_ARN</code>, <code>GCM_BASE_ARN</code>, <code>ELASTICACHE_CONFIGURATION_ENDPOINT</code>, and <code>MEMCACHED_DEFAULT_TTL_VALUE</code> variables are loaded from the <code>custom.configFile</code> file we loaded earlier with <code>sls deploy --stage {env}</code>.</p>
+<p>_Tip: <code>${opt:stage, 'dev'}</code> just means to use the text passed in after the <code>--stage</code> cli argument. If no <code>--stage</code> argument is used then default to <code>dev</code>. </p>
+<h3><strong>Conclusion</strong></h3>
+<p>I've found this file pattern to be extremely useful for defining my AWS resources throughout serverless.yml. It gives me full control over what I'm passing to the serverless.yml file for each of my lambda environments. </p>
+<p>You can find an example of the config pattern i've discussed <a href="https://github.com/lopezm1/java-aws-template/tree/master/app-lambda">here</a>.</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://www.devlo.io/tag/serverless.html">serverless</a>
+      <a href="http://www.devlo.io/tag/lambda.html">lambda</a>
+      <a href="http://www.devlo.io/tag/aws.html">aws</a>
+      <a href="http://www.devlo.io/tag/java.html">java</a>
+      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo ",
+  "url" : "http://www.devlo.io",
+  "image": "/images/Devlo-Logo.png",
+  "description": "DevLo - The Lopez brothers' development blog."
+}
+</script>
+
+</body>
+</html>
