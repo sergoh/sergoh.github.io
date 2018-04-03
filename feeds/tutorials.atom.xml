@@ -47,7 +47,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes and deploying their boilerplate function &lt;a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes to deploy their boilerplate function &lt;a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Building Environments in Serverless&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;A creative way to build environments on your serverless.yml file is to take advantage of the serverless variable system. The Serverless variable system allows you to reference other yml files by loading them into a variable. This will be the bread and butter of the pattern i'm about to show you.&lt;/p&gt;
 &lt;p&gt;For example: &lt;/p&gt;
@@ -68,14 +68,14 @@ Read: 10 minutes &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;if &lt;code&gt;sls deploy --stage prod&lt;/code&gt; is ran, the &lt;code&gt;provider.stage&lt;/code&gt; variable in the yml will be set to &lt;code&gt;prod&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;${self:provider.stage}&lt;/code&gt; resolves to &lt;code&gt;prod&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;prod&lt;/code&gt; is used in &lt;code&gt;${file(./config/${self:provider.stage}.yml)}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;prod&lt;/code&gt; is then used in &lt;code&gt;${file(./config/${self:provider.stage}.yml)}&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;${file(./config/prod.yml)}&lt;/code&gt; and loaded into the &lt;code&gt;custom.configFile&lt;/code&gt; variable&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;${self:custom.configFile.vpc}&lt;/code&gt; will load the &lt;code&gt;vpc&lt;/code&gt; variable from the &lt;code&gt;prod.yml&lt;/code&gt; file loaded into &lt;code&gt;custom.configFile&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Likewise, if you ran &lt;code&gt;sls deploy --stage test&lt;/code&gt;, the stage variablle would be set to &lt;code&gt;test&lt;/code&gt; and the &lt;code&gt;test.yml&lt;/code&gt; would be loaded into &lt;code&gt;custom.configFile&lt;/code&gt;. &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Organizing your environmentfiles&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;I'd recommend laying out your files in the following pattern:&lt;/p&gt;
-&lt;p&gt;| configs 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;| configs 
 | - dev.yml
 | - test.yml
 | - stage.yml
@@ -87,7 +87,10 @@ Read: 10 minutes &lt;/p&gt;
 | - - net.app.lambda
 | - - - - example
 | - - - - - ExampleHandler
-| serverless.yml&lt;/p&gt;
+| serverless.yml
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;A typical config file will look like this:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;dev.yml&lt;/em&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;region: &amp;quot;us-east-2&amp;quot;
@@ -101,7 +104,7 @@ MEMCACHED_DEFAULT_TTL_VALUE: &amp;quot;604800&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the &lt;code&gt;MEMCACHED_DEFAULT_TTL_VALUE:&lt;/code&gt; needs to be &lt;code&gt;172800&lt;/code&gt; in PROD as opposed to the &lt;code&gt;604800&lt;/code&gt;. You could call different SSM values or even define different VPC Security Groups and Subnets. &lt;/p&gt;
+&lt;p&gt;This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the &lt;code&gt;MEMCACHED_DEFAULT_TTL_VALUE:&lt;/code&gt; needs to be &lt;code&gt;172800&lt;/code&gt; in PROD as opposed to the &lt;code&gt;604800&lt;/code&gt; in DEV. You could call different SSM values or even define different VPC Security Groups and Subnets. &lt;/p&gt;
 &lt;p&gt;This pattern gives you a clear-readable format for your environment config files that are loaded into the parent &lt;code&gt;serverless.yml&lt;/code&gt; file. &lt;/p&gt;
 &lt;p&gt;Here is a general &lt;code&gt;serverless.yml&lt;/code&gt; that will use the following &lt;code&gt;dev.yml&lt;/code&gt; file. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;aws&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;
@@ -131,7 +134,7 @@ MEMCACHED_DEFAULT_TTL_VALUE: &amp;quot;604800&amp;quot;
 
 
 &lt;p&gt;The &lt;code&gt;APNS_BAS_ARN&lt;/code&gt;, &lt;code&gt;GCM_BASE_ARN&lt;/code&gt;, &lt;code&gt;ELASTICACHE_CONFIGURATION_ENDPOINT&lt;/code&gt;, and &lt;code&gt;MEMCACHED_DEFAULT_TTL_VALUE&lt;/code&gt; variables are loaded from the &lt;code&gt;custom.configFile&lt;/code&gt; file we loaded earlier with &lt;code&gt;sls deploy --stage {env}&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;_Tip: &lt;code&gt;${opt:stage, 'dev'}&lt;/code&gt; just means to use the text passed in after the &lt;code&gt;--stage&lt;/code&gt; cli argument. If no &lt;code&gt;--stage&lt;/code&gt; argument is used then default to &lt;code&gt;dev&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Tip: &lt;code&gt;${opt:stage, 'dev'}&lt;/code&gt; just means to use the text passed in after the &lt;code&gt;--stage&lt;/code&gt; cli argument. If no &lt;code&gt;--stage&lt;/code&gt; argument is used then default to &lt;code&gt;dev&lt;/code&gt;.&lt;/em&gt; &lt;/p&gt;
 &lt;h3&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;I've found this file pattern to be extremely useful for defining my AWS resources throughout serverless.yml. It gives me full control over what I'm passing to the serverless.yml file for each of my lambda environments. &lt;/p&gt;
 &lt;p&gt;You can find an example of the config pattern i've discussed &lt;a href="https://github.com/lopezm1/java-aws-template/tree/master/app-lambda"&gt;here&lt;/a&gt;.&lt;/p&gt;</content><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="java"></category><category term="cloud"></category></entry><entry><title>Setuping up Pelican Blog</title><link href="http://www.devlo.io/setuping-up-pelican-blog.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-03-22T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setuping-up-pelican-blog.html</id><summary type="html">&lt;p&gt;Summary&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is to test travis CI&lt;/p&gt;</content></entry></feed>

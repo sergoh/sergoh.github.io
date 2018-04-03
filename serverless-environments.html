@@ -199,7 +199,7 @@ Read: 10 minutes </p>
 </pre></div>
 
 
-<p>If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes and deploying their boilerplate function <a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/">here</a>.</p>
+<p>If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes to deploy their boilerplate function <a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/">here</a>.</p>
 <h2><strong>Building Environments in Serverless</strong></h2>
 <p>A creative way to build environments on your serverless.yml file is to take advantage of the serverless variable system. The Serverless variable system allows you to reference other yml files by loading them into a variable. This will be the bread and butter of the pattern i'm about to show you.</p>
 <p>For example: </p>
@@ -220,14 +220,14 @@ Read: 10 minutes </p>
 <ul>
 <li>if <code>sls deploy --stage prod</code> is ran, the <code>provider.stage</code> variable in the yml will be set to <code>prod</code></li>
 <li><code>${self:provider.stage}</code> resolves to <code>prod</code></li>
-<li><code>prod</code> is used in <code>${file(./config/${self:provider.stage}.yml)}</code></li>
+<li><code>prod</code> is then used in <code>${file(./config/${self:provider.stage}.yml)}</code></li>
 <li><code>${file(./config/prod.yml)}</code> and loaded into the <code>custom.configFile</code> variable</li>
 <li><code>${self:custom.configFile.vpc}</code> will load the <code>vpc</code> variable from the <code>prod.yml</code> file loaded into <code>custom.configFile</code></li>
 </ul>
 <p>Likewise, if you ran <code>sls deploy --stage test</code>, the stage variablle would be set to <code>test</code> and the <code>test.yml</code> would be loaded into <code>custom.configFile</code>. </p>
 <h2><strong>Organizing your environmentfiles</strong></h2>
 <p>I'd recommend laying out your files in the following pattern:</p>
-<p>| configs 
+<div class="highlight"><pre><span></span>| configs 
 | - dev.yml
 | - test.yml
 | - stage.yml
@@ -239,7 +239,10 @@ Read: 10 minutes </p>
 | - - net.app.lambda
 | - - - - example
 | - - - - - ExampleHandler
-| serverless.yml</p>
+| serverless.yml
+</pre></div>
+
+
 <p>A typical config file will look like this:</p>
 <p><em>dev.yml</em></p>
 <div class="highlight"><pre><span></span>region: &quot;us-east-2&quot;
@@ -253,7 +256,7 @@ MEMCACHED_DEFAULT_TTL_VALUE: &quot;604800&quot;
 </pre></div>
 
 
-<p>This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the <code>MEMCACHED_DEFAULT_TTL_VALUE:</code> needs to be <code>172800</code> in PROD as opposed to the <code>604800</code>. You could call different SSM values or even define different VPC Security Groups and Subnets. </p>
+<p>This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the <code>MEMCACHED_DEFAULT_TTL_VALUE:</code> needs to be <code>172800</code> in PROD as opposed to the <code>604800</code> in DEV. You could call different SSM values or even define different VPC Security Groups and Subnets. </p>
 <p>This pattern gives you a clear-readable format for your environment config files that are loaded into the parent <code>serverless.yml</code> file. </p>
 <p>Here is a general <code>serverless.yml</code> that will use the following <code>dev.yml</code> file. </p>
 <div class="highlight"><pre><span></span><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">sample</span>
@@ -283,7 +286,7 @@ MEMCACHED_DEFAULT_TTL_VALUE: &quot;604800&quot;
 
 
 <p>The <code>APNS_BAS_ARN</code>, <code>GCM_BASE_ARN</code>, <code>ELASTICACHE_CONFIGURATION_ENDPOINT</code>, and <code>MEMCACHED_DEFAULT_TTL_VALUE</code> variables are loaded from the <code>custom.configFile</code> file we loaded earlier with <code>sls deploy --stage {env}</code>.</p>
-<p>_Tip: <code>${opt:stage, 'dev'}</code> just means to use the text passed in after the <code>--stage</code> cli argument. If no <code>--stage</code> argument is used then default to <code>dev</code>. </p>
+<p><em>Tip: <code>${opt:stage, 'dev'}</code> just means to use the text passed in after the <code>--stage</code> cli argument. If no <code>--stage</code> argument is used then default to <code>dev</code>.</em> </p>
 <h3><strong>Conclusion</strong></h3>
 <p>I've found this file pattern to be extremely useful for defining my AWS resources throughout serverless.yml. It gives me full control over what I'm passing to the serverless.yml file for each of my lambda environments. </p>
 <p>You can find an example of the config pattern i've discussed <a href="https://github.com/lopezm1/java-aws-template/tree/master/app-lambda">here</a>.</p>
