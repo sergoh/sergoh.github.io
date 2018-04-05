@@ -161,7 +161,7 @@ Read: 5 minutes </p>
 <p>Feel free to download the script from my <a href="https://gist.github.com/lopezm1/16e641918277a4888ee7e88722b2d7dd">github gist</a>.</p>
 <p>I've done my best to avoid installing any duplicates by checking if you've already installed the application in the /Applications folder of the Mac. </p>
 <h2><strong>Installation</strong></h2>
-<p>Once you download the script, head to your downloads folder on terminal and run...</p>
+<p>Once you've download the script, head to your downloads folder on terminal and run...</p>
 <div class="highlight"><pre><span></span>bash brew-install-mac-dev-environment.sh
 </pre></div>
 
@@ -211,7 +211,7 @@ brew install &lt;your formula here&gt;
 <p><strong>1) Add to the application name to the application array list. (We'll add Skype as an example)</strong></p>
 <div class="highlight"><pre><span></span>## Applications we will install with `brew cask install`
 ## additional applications can be added here if you wish to install them
-declare -a applications=( Spotify Sourcetree Slack Docker iTerm &quot;IntelliJ Idea&quot; &quot;Google Chrome&quot; **&quot;Skype&quot;** )
+declare -a applications=( &quot;Skype&quot; Spotify Sourcetree Slack Docker iTerm &quot;IntelliJ Idea&quot; &quot;Google Chrome&quot; )
 </pre></div>
 
 
