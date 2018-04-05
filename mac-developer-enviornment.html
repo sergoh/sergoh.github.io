@@ -34,17 +34,26 @@
 </script>
 <!-- End Google Analytics -->
 
-    <meta name="author" content="Lopez Brothers" />
-    <meta name="description" content="DevLo - The Lopez brothers' development blog." />
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Automatically install common developer tools on macOS with this script." />
+<meta name="keywords" content="automation, mac, dev">
+
 <meta property="og:site_name" content="DevLo"/>
-<meta property="og:type" content="blog"/>
-<meta property="og:title" content="DevLo"/>
-<meta property="og:description" content="DevLo - The Lopez brothers' development blog."/>
+<meta property="og:title" content="Install Common Developement Tools on Mac"/>
+<meta property="og:description" content="Automatically install common developer tools on macOS with this script."/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io"/>
+<meta property="og:url" content="http://www.devlo.io/mac-developer-enviornment.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-04-04 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-04 00:00:00-07:00"/>
+<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="automation"/>
+<meta property="article:tag" content="automation"/>
+<meta property="article:tag" content="mac"/>
+<meta property="article:tag" content="dev"/>
 <meta property="og:image" content="/images/Devlo-Logo.png">
 
-  <title>DevLo</title>
+  <title>DevLo &ndash; Install Common Developement Tools on Mac</title>
 
 <!-- Google Tag Manager -->
 <script>
@@ -124,121 +133,115 @@
 
     </nav>
 
-
-
-<article>
+<article class="single">
   <header>
-    <h2><a href="http://www.devlo.io/mac-developer-enviornment.html#mac-developer-enviornment">Install Common Developement Tools on Mac</a></h2>
+      
+    <h1 id="mac-developer-enviornment">Install Common Developement Tools on Mac</h1>
     <p>
-          Posted by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Wed 04 April 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
+          Posted on Wed 04 April 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
 
+
+          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
 
 
     </p>
   </header>
+
+
   <div>
-      <p>Automatically install common developer tools on macOS with this script.</p>
-      <br>
-      <a class="btn" href="http://www.devlo.io/mac-developer-enviornment.html#mac-developer-enviornment">    Continue reading
-</a>
+    <p>Technical Stack: macOS High Sierra 
+Read: 5 minutes </p>
+<h2><strong>Prerequisites</strong></h2>
+<ul>
+<li>Mac Laptop or Desktop (script was build with macOS High Sierra)</li>
+<li>Knowledge of how to run a bash script</li>
+</ul>
+<h2><strong>Introduction</strong></h2>
+<p>I've built a script that uses homebrew to install a common set of development tools on a Mac. Feel free to download the script from my <a href="https://gist.github.com/lopezm1/16e641918277a4888ee7e88722b2d7dd">github gist</a>.</p>
+<p>I've done my best to avoid installing any duplicates by checking if you've already installed the application in the /Applications folder of the Mac. </p>
+<h2><strong>Packages it installs</strong></h2>
+<ul>
+<li>Homebrew</li>
+<li>Slack</li>
+<li>Docker</li>
+<li>iTerm2</li>
+<li>Google Chrome (boooo Safari)</li>
+<li>IntelliJ Idea (Enterprise)</li>
+<li>SourceTree</li>
+<li>Spotify (super important)</li>
+<li>Terraform</li>
+<li>git</li>
+<li>python</li>
+<li>pip3</li>
+<li>node</li>
+<li>coreutils</li>
+</ul>
+<p>Feel free to verify any of these packages after installation by checking your /Applications folder or checking for the instance in terminal. </p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span>git --version
+python --version
+pip3 --version
+node --version
+</pre></div>
+
+
+<p><em>If you don't need to extend the script, stop reading <strong>here</strong></em></p>
+<h2><strong>Packages it installs</strong></h2>
+<p>Extending the script is easy. </p>
+<p>If you wish to add other homebrew formulas, just add them at the end of the script. </p>
+<div class="highlight"><pre><span></span>## Install other miscellaneous tools
+brew install git
+brew install python
+brew install node
+brew install coreutils
+*brew install &lt;your formula here&gt;*
+.
+.
+</pre></div>
+
+
+<p>If you wish to add another application, you'll need to use <code>brew cask install</code> and edit the script in two places.</p>
+<p><strong>1) Add to the application name to the application array list. (We'll add Skype as an example)</strong></p>
+<div class="highlight"><pre><span></span>## Applications we will install with `brew cask install`
+## additional applications can be added here if you wish to install them
+declare -a applications=( Spotify Sourcetree Slack Docker iTerm &quot;IntelliJ Idea&quot; &quot;Google Chrome&quot; **&quot;Skype&quot;** )
+</pre></div>
+
+
+<p>Skype is capitalized because it would be saved to your /Applciations folder as Skype.app (the script will use this to make sure the application isn't already installed).</p>
+<p>Next, search for the application on the <a href="https://caskroom.github.io/search">cask room search</a>.</p>
+<p><strong>2) Add to the switch case statement and call brew_install with the cask-name pulled from the search</strong></p>
+<div class="highlight"><pre><span></span> case $1 in
+      Slack) brew_install slack;;
+      Docker) brew_install docker;;
+      iTerm) brew_install iterm2;;
+      Google\ Chrome) brew_install google-chrome;;
+      IntelliJ\ Idea) brew_install intellij-idea;;
+      Sourcetree) brew_install sourcetree;;
+      Spotify) brew_install spotify;;
+      **Skype) brew_install skype;;**
+      *) echo &quot;Add $1 to check_before_install() to install additional applications.&quot; ;;
+    esac
+</pre></div>
+
+
+<p>Again, keep the switch case key captilaized because it reflects the application name under the /Application folder. Next, we will pass the <em>cask-name</em> to the <code>`brew_install</code> function inside the shell script. </p>
+<h2><strong>Conclusion</strong></h2>
+<p>Hope this helps, happy coding!</p>
   </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://www.devlo.io/serverless-environments.html#serverless-environments">Managing Envrionments on Serverless Framework</a></h2>
+  <div class="tag-cloud">
     <p>
-          Posted by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Mon 02 April 2018 in <a href="http://www.devlo.io/category/tutorials.html">tutorials</a>
-
-
-
+      <a href="http://www.devlo.io/tag/automation.html">automation</a>
+      <a href="http://www.devlo.io/tag/mac.html">mac</a>
+      <a href="http://www.devlo.io/tag/dev.html">dev</a>
     </p>
-  </header>
-  <div>
-      <p>Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework</p>
-      <br>
-      <a class="btn" href="http://www.devlo.io/serverless-environments.html#serverless-environments">    Continue reading
-</a>
   </div>
-  <hr />
+
+
+
+
+
 </article>
-<article>
-  <header>
-    <h2><a href="http://www.devlo.io/asg-automation-toolset.html#asg-automation-toolset">Managing Automation Around Auto Scaling Groups</a></h2>
-    <p>
-          Posted by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Sat 31 March 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>How to pick an automation toolset that supports auto scaling in the cloud</p>
-      <br>
-      <a class="btn" href="http://www.devlo.io/asg-automation-toolset.html#asg-automation-toolset">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://www.devlo.io/bootstrap-salt.html#bootstrap-salt">Automate Salt-Minion Registrations on EC2</a></h2>
-    <p>
-          Posted by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Fri 30 March 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>Use scripts to automatically register new EC2 minions with Salt-Master</p>
-      <br>
-      <a class="btn" href="http://www.devlo.io/bootstrap-salt.html#bootstrap-salt">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://www.devlo.io/my-super-post.html#my-super-post">Introduction to SaltStack</a></h2>
-    <p>
-          Posted by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Thu 22 March 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>a story of how Salt Master revolutionized the way my organization manages infrastructure, has identical environments and keeps cloud engineers mentally SANE</p>
-      <br>
-      <a class="btn" href="http://www.devlo.io/my-super-post.html#my-super-post">    Continue reading
-</a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="http://www.devlo.io/setuping-up-pelican-blog.html#setuping-up-pelican-blog">Setuping up Pelican Blog</a></h2>
-    <p>
-          Posted by <a href="http://www.devlo.io/author/sergio-lopez.html">Sergio Lopez</a> on Thu 22 March 2018 in <a href="http://www.devlo.io/category/tutorials.html">tutorials</a>
-
-
-
-    </p>
-  </header>
-  <div>
-      <p>Summary</p>
-      <br>
-      <a class="btn" href="http://www.devlo.io/setuping-up-pelican-blog.html#setuping-up-pelican-blog">    Continue reading
-</a>
-  </div>
-</article>
-
-  <div class="pagination">
-  </div>
-
-
-
 
     <footer>
 <p>&copy;  </p>
