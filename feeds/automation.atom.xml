@@ -11,8 +11,8 @@ Read: 5 minutes &lt;/p&gt;
 &lt;p&gt;Feel free to download the script from my &lt;a href="https://gist.github.com/lopezm1/16e641918277a4888ee7e88722b2d7dd"&gt;github gist&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I've done my best to avoid installing any duplicates by checking if you've already installed the application in the /Applications folder of the Mac. &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Installation&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;Once you download the script, head to your downloads folder on terminal and run...&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sh brew-install-mac-dev-environment.sh
+&lt;p&gt;Once you've download the script, head to your downloads folder on terminal and run...&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash brew-install-mac-dev-environment.sh
 &lt;/pre&gt;&lt;/div&gt;
 
 
