@@ -1,5 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-04T00:00:00-07:00</updated><entry><title>Install Common Developement Tools on Mac</title><link href="http://www.devlo.io/mac-developer-enviornment.html" rel="alternate"></link><published>2018-04-04T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-04:/mac-developer-enviornment.html</id><summary type="html">&lt;p&gt;Automatically install common developer tools on macOS with this script.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: macOS High Sierra 
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-10T00:00:00-07:00</updated><entry><title>If, If-else Statements in Terraform</title><link href="http://www.devlo.io/if-else-terraform.html" rel="alternate"></link><published>2018-04-10T00:00:00-07:00</published><updated>2018-04-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-10:/if-else-terraform.html</id><summary type="html">&lt;p&gt;Using if-else statements in terraforms&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Terraform v0.11.5&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;In HCL, a boolean is one of the many ways you can create an if-statement.&lt;/p&gt;
+&lt;p&gt;Booleans can be used in a Terraform tenerary operation to create an if-else statement. Ternary operations follow the syntax: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;CONDITION ? TRUEVAL : FALSEVAL
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Combine this idea with a boolean conditional and you have an if statement. A boolean ternary function would look like....&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create_eip&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;true&lt;/span&gt; &lt;span class="err"&gt;?&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If the variable &lt;code&gt;create_ip&lt;/code&gt; == &lt;code&gt;true&lt;/code&gt; then return 1, else return 0. We will combine this idea with the &lt;code&gt;count&lt;/code&gt; attribtue of a resource to create an if-else statement. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;If Statement&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Start by looking at the boolean value we are passing to &lt;code&gt;create_eip&lt;/code&gt; in this module. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;frontend&amp;quot;&lt;/span&gt; {
+  &lt;span class="n"&gt;source&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;/modules/frontend-app&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;box_name&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;web-01&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;ami&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;ami-25615740&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;instance_type&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;t2.micro&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;create_eip&lt;/span&gt; = &lt;span class="nb"&gt;true&lt;/span&gt;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Based on HCL semantics, setting the &lt;code&gt;create_eip&lt;/code&gt; to &lt;code&gt;true&lt;/code&gt; would result in the ternary operation &lt;code&gt;${var.create_eip == true ? 1 : 0}&lt;/code&gt; resolving to value of 1.
+This means a value of 1 would be passed on to the &lt;code&gt;count&lt;/code&gt; parameter of the &lt;code&gt;aws_eip&lt;/code&gt; resource. This would create one eip resource.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# frontend-app module
+variable &amp;quot;create_eip&amp;quot; {
+  description = &amp;quot;Create an EIP if set to True&amp;quot;
+}
+
+resource &amp;quot;aws_eip&amp;quot; &amp;quot;web-eip&amp;quot; {
+  count = &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create_eip&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;true&lt;/span&gt; &lt;span class="err"&gt;?&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;&amp;quot;
+  instance = &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;aws_instance&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;&amp;quot;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;strong&gt;If-Else Statement&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Create an if-else statement in a similar manner.&lt;/p&gt;
+&lt;p&gt;Take a careful look at the following &lt;code&gt;if-eip&lt;/code&gt;, &lt;code&gt;else-eip&lt;/code&gt; example. We will use two tenary operations to achieve if-else.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;frontend&amp;quot;&lt;/span&gt; {
+  &lt;span class="n"&gt;source&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;/modules/frontend-app&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;box_name&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;web-01&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;ami&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;ami-25615740&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;instance_type&lt;/span&gt; = &lt;span class="s"&gt;&amp;quot;t2.micro&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;create_first_eip&lt;/span&gt; = &lt;span class="nb"&gt;true&lt;/span&gt;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# frontend-app module
+variable &amp;quot;create_first_eip&amp;quot; {
+  description = &amp;quot;Create the first eip if set to true, otherwise create the second eip if set to false&amp;quot;
+}
+
+resource &amp;quot;aws_eip&amp;quot; &amp;quot;if-eip&amp;quot; {
+  count = &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create_first_eip&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;true&lt;/span&gt; &lt;span class="err"&gt;?&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;&amp;quot;
+  instance = &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;aws_instance&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;&amp;quot;
+}
+
+resource &amp;quot;aws_eip&amp;quot; &amp;quot;else-eip&amp;quot; {
+  count = &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create_first_eip&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;false&lt;/span&gt; &lt;span class="err"&gt;?&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;&amp;quot;
+  instance = &amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;aws_instance&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;example&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;&amp;quot;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If the &lt;code&gt;create_first_eip&lt;/code&gt; variable was set to &lt;code&gt;true&lt;/code&gt; then the first &lt;code&gt;aws_eip&lt;/code&gt; would be created because the &lt;code&gt;create_first_eip == true&lt;/code&gt; would result in a &lt;code&gt;count&lt;/code&gt; of 1.&lt;/p&gt;
+&lt;p&gt;If the &lt;code&gt;create_first_eip&lt;/code&gt; variable was set to &lt;code&gt;false&lt;/code&gt;, then the second &lt;code&gt;aws_eip&lt;/code&gt; would be created because the &lt;code&gt;create_first_eip == false&lt;/code&gt; would result in a &lt;code&gt;count&lt;/code&gt; of 1. The first &lt;code&gt;aws_eip&lt;/code&gt; would not be created because it would fail the conditional statement. &lt;/p&gt;
+&lt;p&gt;This creates an if-else pattern. &lt;/p&gt;</content><category term="aws"></category><category term="cloud"></category><category term="terraform"></category><category term="hcl"></category><category term="hashicorp"></category></entry><entry><title>Install Common Developement Tools on Mac</title><link href="http://www.devlo.io/mac-developer-enviornment.html" rel="alternate"></link><published>2018-04-04T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-04:/mac-developer-enviornment.html</id><summary type="html">&lt;p&gt;Automatically install common developer tools on macOS with this script.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: macOS High Sierra 
 Read: 5 minutes &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h2&gt;
 &lt;ul&gt;

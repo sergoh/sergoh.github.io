@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
+
+
+    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Atom">
+
+
+    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Using if-else statements in terraforms" />
+<meta name="keywords" content="aws, cloud, terraform, hcl, hashicorp">
+
+<meta property="og:site_name" content="DevLo"/>
+<meta property="og:title" content="If, If-else Statements in Terraform"/>
+<meta property="og:description" content="Using if-else statements in terraforms"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://www.devlo.io/if-else-terraform.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-04-10 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-10 00:00:00-07:00"/>
+<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="automation"/>
+<meta property="article:tag" content="aws"/>
+<meta property="article:tag" content="cloud"/>
+<meta property="article:tag" content="terraform"/>
+<meta property="article:tag" content="hcl"/>
+<meta property="article:tag" content="hashicorp"/>
+<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <title>DevLo &ndash; If, If-else Statements in Terraform</title>
+
+<!-- Google Tag Manager -->
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
+<!-- End Google Tag Manager --></head>
+<body>
+<!-- Google Tag Manager -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager -->  <aside>
+    <div>
+      <a href="http://www.devlo.io">
+        <img src="/images/Devlo-Logo.png" alt="DevLo" title="DevLo">
+      </a>
+      <!--<h1><a href="http://www.devlo.io">DevLo</a></h1>-->
+
+<p>The Lopez brothers' development blog</p>
+      <div class="authors-profiles">
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+            <figcaption>Miguel</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
+            <li><a class="sc-twitter" href="https://twitter.com/BrogrammerMiggy" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          </ul>
+        </div>
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+            <figcaption>Sergio</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
+            <li><a class="sc-twitter" href="https://twitter.com/mrsergoh" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="list">
+          <li><a href="http://www.devlo.io/pages/about.html#about">About</a></li>
+
+          <li><a href="" target="_blank"></a></li>
+          <li><a href="http://python.org/" target="_blank">Contact</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="http://www.devlo.io">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
+</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="if-else-terraform">If, If-else Statements in Terraform</h1>
+    <p>
+          Posted on Tue 10 April 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
+
+
+          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p><em>Terraform v0.11.5</em></p>
+<h2><strong>Introduction</strong></h2>
+<p>In HCL, a boolean is one of the many ways you can create an if-statement.</p>
+<p>Booleans can be used in a Terraform tenerary operation to create an if-else statement. Ternary operations follow the syntax: </p>
+<div class="highlight"><pre><span></span>CONDITION ? TRUEVAL : FALSEVAL
+</pre></div>
+
+
+<p>Combine this idea with a boolean conditional and you have an if statement. A boolean ternary function would look like....</p>
+<div class="highlight"><pre><span></span><span class="cp">${</span><span class="n">var</span><span class="o">.</span><span class="n">create_eip</span> <span class="o">==</span> <span class="n">true</span> <span class="err">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span><span class="cp">}</span>
+</pre></div>
+
+
+<p>If the variable <code>create_ip</code> == <code>true</code> then return 1, else return 0. We will combine this idea with the <code>count</code> attribtue of a resource to create an if-else statement. </p>
+<h2><strong>If Statement</strong></h2>
+<p>Start by looking at the boolean value we are passing to <code>create_eip</code> in this module. </p>
+<div class="highlight"><pre><span></span><span class="k">module</span> <span class="s">&quot;frontend&quot;</span> {
+  <span class="n">source</span> = <span class="s">&quot;/modules/frontend-app&quot;</span>
+  <span class="n">box_name</span> = <span class="s">&quot;web-01&quot;</span>
+  <span class="n">ami</span> = <span class="s">&quot;ami-25615740&quot;</span>
+  <span class="n">instance_type</span> = <span class="s">&quot;t2.micro&quot;</span>
+  <span class="n">create_eip</span> = <span class="nb">true</span>
+}
+</pre></div>
+
+
+<p>Based on HCL semantics, setting the <code>create_eip</code> to <code>true</code> would result in the ternary operation <code>${var.create_eip == true ? 1 : 0}</code> resolving to value of 1.
+This means a value of 1 would be passed on to the <code>count</code> parameter of the <code>aws_eip</code> resource. This would create one eip resource.</p>
+<div class="highlight"><pre><span></span># frontend-app module
+variable &quot;create_eip&quot; {
+  description = &quot;Create an EIP if set to True&quot;
+}
+
+resource &quot;aws_eip&quot; &quot;web-eip&quot; {
+  count = &quot;<span class="cp">${</span><span class="n">var</span><span class="o">.</span><span class="n">create_eip</span> <span class="o">==</span> <span class="n">true</span> <span class="err">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span><span class="cp">}</span>&quot;
+  instance = &quot;<span class="cp">${</span><span class="n">aws_instance</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">id</span><span class="cp">}</span>&quot;
+}
+</pre></div>
+
+
+<h2><strong>If-Else Statement</strong></h2>
+<p>Create an if-else statement in a similar manner.</p>
+<p>Take a careful look at the following <code>if-eip</code>, <code>else-eip</code> example. We will use two tenary operations to achieve if-else.</p>
+<div class="highlight"><pre><span></span><span class="k">module</span> <span class="s">&quot;frontend&quot;</span> {
+  <span class="n">source</span> = <span class="s">&quot;/modules/frontend-app&quot;</span>
+  <span class="n">box_name</span> = <span class="s">&quot;web-01&quot;</span>
+  <span class="n">ami</span> = <span class="s">&quot;ami-25615740&quot;</span>
+  <span class="n">instance_type</span> = <span class="s">&quot;t2.micro&quot;</span>
+  <span class="n">create_first_eip</span> = <span class="nb">true</span>
+}
+</pre></div>
+
+
+<div class="highlight"><pre><span></span># frontend-app module
+variable &quot;create_first_eip&quot; {
+  description = &quot;Create the first eip if set to true, otherwise create the second eip if set to false&quot;
+}
+
+resource &quot;aws_eip&quot; &quot;if-eip&quot; {
+  count = &quot;<span class="cp">${</span><span class="n">var</span><span class="o">.</span><span class="n">create_first_eip</span> <span class="o">==</span> <span class="n">true</span> <span class="err">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span><span class="cp">}</span>&quot;
+  instance = &quot;<span class="cp">${</span><span class="n">aws_instance</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">id</span><span class="cp">}</span>&quot;
+}
+
+resource &quot;aws_eip&quot; &quot;else-eip&quot; {
+  count = &quot;<span class="cp">${</span><span class="n">var</span><span class="o">.</span><span class="n">create_first_eip</span> <span class="o">==</span> <span class="n">false</span> <span class="err">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span><span class="cp">}</span>&quot;
+  instance = &quot;<span class="cp">${</span><span class="n">aws_instance</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">id</span><span class="cp">}</span>&quot;
+}
+</pre></div>
+
+
+<p>If the <code>create_first_eip</code> variable was set to <code>true</code> then the first <code>aws_eip</code> would be created because the <code>create_first_eip == true</code> would result in a <code>count</code> of 1.</p>
+<p>If the <code>create_first_eip</code> variable was set to <code>false</code>, then the second <code>aws_eip</code> would be created because the <code>create_first_eip == false</code> would result in a <code>count</code> of 1. The first <code>aws_eip</code> would not be created because it would fail the conditional statement. </p>
+<p>This creates an if-else pattern. </p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://www.devlo.io/tag/aws.html">aws</a>
+      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="http://www.devlo.io/tag/terraform.html">terraform</a>
+      <a href="http://www.devlo.io/tag/hcl.html">hcl</a>
+      <a href="http://www.devlo.io/tag/hashicorp.html">hashicorp</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo ",
+  "url" : "http://www.devlo.io",
+  "image": "/images/Devlo-Logo.png",
+  "description": "DevLo - The Lopez brothers' development blog."
+}
+</script>
+
+</body>
+</html>
