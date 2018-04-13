@@ -9,7 +9,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Check out the &lt;a href="https://aws.amazon.com/lambda/"&gt;AWS Lambda Documentation&lt;/a&gt; if you're new to AWS Lambda and serverless technology.&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;AWS Lambda is one of the hottest services out on the market right now. First introduced in November 2014, it has completely revolutionized the way developers develop and deploy cloud-first services and applications. Here are some of the immediate functions of Lambda functions:&lt;/p&gt;
+&lt;p&gt;AWS Lambda is one of the hottest services out on the market right now. First introduced in November 2014, it has completely revolutionized the way developers develop and deploy cloud-first services and applications. Here are some of the immediate benefits of Lambda functions:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Run code without servers&lt;/li&gt;
 &lt;li&gt;Automatically scales code without any configuration&lt;/li&gt;
