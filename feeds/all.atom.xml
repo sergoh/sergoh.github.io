@@ -1,5 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-10T00:00:00-07:00</updated><entry><title>If, If-else Statements in Terraform</title><link href="http://www.devlo.io/if-else-terraform.html" rel="alternate"></link><published>2018-04-10T00:00:00-07:00</published><updated>2018-04-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-10:/if-else-terraform.html</id><summary type="html">&lt;p&gt;Using if-else statements in terraforms&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Terraform v0.11.5&lt;/em&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-12T00:00:00-07:00</updated><entry><title>Jenkins Pipeline Env Variables w/ AWS SSM</title><link href="http://www.devlo.io/ssm-env-jenkins.html" rel="alternate"></link><published>2018-04-12T00:00:00-07:00</published><updated>2018-04-12T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-12:/ssm-env-jenkins.html</id><summary type="html">&lt;p&gt;Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Parameter Store, Jenkins, Jenkinsfile, Shell&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;By the end of this article, you should understand how to use AWS Parameter Store (SSM) to pull down environment variables in your Jenkins Declarative Pipeline.&lt;/p&gt;
+&lt;p&gt;I recommend heading over to the &lt;a href="https://jenkins.io/doc/book/pipeline/syntax/"&gt;Jenkins Pipeline documentation&lt;/a&gt; if you've never heard of a Jenkinsfile. Writing your job as a Jenkinsfile is also known as &lt;em&gt;Jenkins-as-code&lt;/em&gt; because it allows you to check your Jenkins job into source control. It allows you to version your build jobs and port them to other Jenkins boxes.&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Jenkins Credentials Store&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;For the regular Jenkinsfile creators out there, you might be asking me why i'm using AWS Parameter Store to fetch credentials when Jenkins already has a &lt;a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/#handling-credentials"&gt;credentials&lt;/a&gt; store that looks something like this....&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pipeline {
+    agent {
+        // Define agent details here
+    }
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials(&amp;#39;jenkins-aws-secret-key-id&amp;#39;)
+        AWS_SECRET_ACCESS_KEY = credentials(&amp;#39;jenkins-aws-secret-access-key&amp;#39;)
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The answer is simple: portability of Jenkins jobs. I wanted to remove the dependency of my Jenkinsfiles depending on the credentials store on my Jenkins box being loaded up with parameters. &lt;/p&gt;
+&lt;p&gt;I've seen some teams solve this issue by checking the environment variables into source control directly. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pipeline {
+    agent any
+    environment { 
+        env = &amp;#39;stage&amp;#39;
+        secret = &amp;#39;xxxxxxxxxxxxxxxx&amp;#39;
+    }
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;However this isn't any better because it encourages you to possibly explose environment secrets or configurations via source control.&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;AWS SSM&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;About a year ago, my team decided to standardize a majority of our application configurations and secrets on the &lt;a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html"&gt;AWS Parameter Store&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This led me to explore the idea of loading SSM variables into my environment block on the Jenkinsfile. AWS Parameter Store has worked fantastically for us. We use it with Saltstack, in our main applicaton and shell script files throughout the automation toolchain. It only made sense that I would try to extend SSM to our Jenkinsfile. &lt;/p&gt;
+&lt;p&gt;In order for this to work, it's important to note that your Jenkins box will need two things. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;IAM Role attached with permissions to AWS SSM and any KMS decryption keys&lt;/li&gt;
+&lt;li&gt;AWS CLI installed on the box&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here's how SSM looks in enviornment variables: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;environment {
+        SECRET_ACCESS_KEY = &amp;#39;$(aws ssm get-parameters --region $REGION --names /jenkins/nonprod/iam-role-secret --query Parameters[0].Value --with-decryption | sed \&amp;#39;s/&amp;quot;//g\&amp;#39;)&amp;#39;
+        ACCESS_KEY_ID = &amp;#39;$(aws ssm get-parameters --region $REGION --names /jenkins/nonprod/iam-role-key --query Parameters[0].Value --with-decryption | sed \&amp;#39;s/&amp;quot;//g\&amp;#39;)&amp;#39;
+    }
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Pretty simple right? Here you can see that the CLI commands are being loaded into &lt;code&gt;SECRET_ACCESS_KEY&lt;/code&gt; and &lt;code&gt;ACCESS_KEY_ID&lt;/code&gt;. It's important to note that the CLI commands will not be executed until they are run in a &lt;code&gt;sh&lt;/code&gt; command in the &lt;code&gt;stages&lt;/code&gt; section of your pipeline. &lt;/p&gt;
+&lt;p&gt;Including the enviornment variables throughout your pipeline is easy. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;stages {
+        stage (&amp;#39;Initialize VPC&amp;#39;) {
+            steps {
+                dir(&amp;#39;terraform&amp;#39;){
+                    sh &amp;quot;&amp;quot;&amp;quot;
+                    export AWS_SECRET_ACCESS_KEY=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SECRET_ACCESS_KEY&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
+                    export AWS_ACCESS_KEY_ID=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ACCESS_KEY_ID&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
+                    export AWS_DEFAULT_REGION=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;REGION&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
+                    /opt/bin/terraform --version
+                    /opt/bin/terraform init
+                    /opt/bin/terraform plan --out=plan.out
+                    &amp;quot;&amp;quot;&amp;quot;
+                }
+            }
+        }
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are two important things to note here. &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;It's important to use &lt;code&gt;"&lt;/code&gt;. Double quotes is our way of signifying that this is a groovy string.&lt;/li&gt;
+&lt;li&gt;You must use the &lt;code&gt;${env.VARIABLE}&lt;/code&gt; syntax to get variables from the envrionment section.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In the previous example, you can see that we are exporting AWS Secret Keys and AWS Access Keys so that the Terraform CLI can use the credentials. It should be noted that the CLI Commands are being evaluated on the fly. This means that a string containing the AWS SSM CLI Command is loaded from the &lt;code&gt;environment&lt;/code&gt; block, the command is ran, and the result is then loaded into the &lt;code&gt;export AWS_SECRET_ACCESS_KEY&lt;/code&gt; varriable. The CLI command from the &lt;code&gt;enviornment&lt;/code&gt; block is &lt;strong&gt;NOT&lt;/strong&gt; ran until it is called within the &lt;code&gt;sh&lt;/code&gt; command. &lt;/p&gt;
+&lt;p&gt;Using AWS SSM in our Jenkinsfile has been awesome because it allows our pipeline to remain flexibile. My cloud team only has to remember to update ther Jenkins IAM role key and secret in one location should they ever choose to rotate it. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;At the end of the day, using the AWS SSM Store helps my team move towards their goal of having all infrastructure-as-code. It also standarizes our parameters on the AWS Parameter store so that application secrets aren't scattered all over the place. &lt;/p&gt;</content><category term="jenkins"></category><category term="aws"></category><category term="cloud"></category><category term="groovy"></category><category term="automation"></category><category term="ssm"></category></entry><entry><title>If, If-else Statements in Terraform</title><link href="http://www.devlo.io/if-else-terraform.html" rel="alternate"></link><published>2018-04-10T00:00:00-07:00</published><updated>2018-04-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-10:/if-else-terraform.html</id><summary type="html">&lt;p&gt;Using if-else statements in terraforms&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Terraform v0.11.5&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;In HCL, a boolean is one of the many ways you can create an if-statement.&lt;/p&gt;
 &lt;p&gt;Booleans can be used in a Terraform tenerary operation to create an if-else statement. Ternary operations follow the syntax: &lt;/p&gt;

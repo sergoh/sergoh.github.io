@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
+
+
+    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Atom">
+
+
+    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline" />
+<meta name="keywords" content="jenkins, aws, cloud, groovy, automation, ssm">
+
+<meta property="og:site_name" content="DevLo"/>
+<meta property="og:title" content="Jenkins Pipeline Env Variables w/ AWS SSM"/>
+<meta property="og:description" content="Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://www.devlo.io/ssm-env-jenkins.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-04-12 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-12 00:00:00-07:00"/>
+<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="automation"/>
+<meta property="article:tag" content="jenkins"/>
+<meta property="article:tag" content="aws"/>
+<meta property="article:tag" content="cloud"/>
+<meta property="article:tag" content="groovy"/>
+<meta property="article:tag" content="automation"/>
+<meta property="article:tag" content="ssm"/>
+<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <title>DevLo &ndash; Jenkins Pipeline Env Variables w/ AWS SSM</title>
+
+<!-- Google Tag Manager -->
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
+<!-- End Google Tag Manager --></head>
+<body>
+<!-- Google Tag Manager -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager -->  <aside>
+    <div>
+      <a href="http://www.devlo.io">
+        <img src="/images/Devlo-Logo.png" alt="DevLo" title="DevLo">
+      </a>
+      <!--<h1><a href="http://www.devlo.io">DevLo</a></h1>-->
+
+<p>The Lopez brothers' development blog</p>
+      <div class="authors-profiles">
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+            <figcaption>Miguel</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
+            <li><a class="sc-twitter" href="https://twitter.com/BrogrammerMiggy" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          </ul>
+        </div>
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+            <figcaption>Sergio</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
+            <li><a class="sc-twitter" href="https://twitter.com/mrsergoh" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="list">
+          <li><a href="http://www.devlo.io/pages/about.html#about">About</a></li>
+
+          <li><a href="" target="_blank"></a></li>
+          <li><a href="http://python.org/" target="_blank">Contact</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="http://www.devlo.io">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
+</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="ssm-env-jenkins">Jenkins Pipeline Env Variables w/ AWS SSM</h1>
+    <p>
+          Posted on Thu 12 April 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
+
+
+          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Technical Stack: AWS Parameter Store, Jenkins, Jenkinsfile, Shell</p>
+<h2><strong>Introduction</strong></h2>
+<p>By the end of this article, you should understand how to use AWS Parameter Store (SSM) to pull down environment variables in your Jenkins Declarative Pipeline.</p>
+<p>I recommend heading over to the <a href="https://jenkins.io/doc/book/pipeline/syntax/">Jenkins Pipeline documentation</a> if you've never heard of a Jenkinsfile. Writing your job as a Jenkinsfile is also known as <em>Jenkins-as-code</em> because it allows you to check your Jenkins job into source control. It allows you to version your build jobs and port them to other Jenkins boxes.</p>
+<h2><strong>Jenkins Credentials Store</strong></h2>
+<p>For the regular Jenkinsfile creators out there, you might be asking me why i'm using AWS Parameter Store to fetch credentials when Jenkins already has a <a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/#handling-credentials">credentials</a> store that looks something like this....</p>
+<div class="highlight"><pre><span></span>pipeline {
+    agent {
+        // Define agent details here
+    }
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials(&#39;jenkins-aws-secret-key-id&#39;)
+        AWS_SECRET_ACCESS_KEY = credentials(&#39;jenkins-aws-secret-access-key&#39;)
+    }
+}
+</pre></div>
+
+
+<p>The answer is simple: portability of Jenkins jobs. I wanted to remove the dependency of my Jenkinsfiles depending on the credentials store on my Jenkins box being loaded up with parameters. </p>
+<p>I've seen some teams solve this issue by checking the environment variables into source control directly. </p>
+<div class="highlight"><pre><span></span>pipeline {
+    agent any
+    environment { 
+        env = &#39;stage&#39;
+        secret = &#39;xxxxxxxxxxxxxxxx&#39;
+    }
+}
+</pre></div>
+
+
+<p>However this isn't any better because it encourages you to possibly explose environment secrets or configurations via source control.</p>
+<h2><strong>AWS SSM</strong></h2>
+<p>About a year ago, my team decided to standardize a majority of our application configurations and secrets on the <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html">AWS Parameter Store</a></p>
+<p>This led me to explore the idea of loading SSM variables into my environment block on the Jenkinsfile. AWS Parameter Store has worked fantastically for us. We use it with Saltstack, in our main applicaton and shell script files throughout the automation toolchain. It only made sense that I would try to extend SSM to our Jenkinsfile. </p>
+<p>In order for this to work, it's important to note that your Jenkins box will need two things. </p>
+<ul>
+<li>IAM Role attached with permissions to AWS SSM and any KMS decryption keys</li>
+<li>AWS CLI installed on the box</li>
+</ul>
+<p>Here's how SSM looks in enviornment variables: </p>
+<div class="highlight"><pre><span></span>environment {
+        SECRET_ACCESS_KEY = &#39;$(aws ssm get-parameters --region $REGION --names /jenkins/nonprod/iam-role-secret --query Parameters[0].Value --with-decryption | sed \&#39;s/&quot;//g\&#39;)&#39;
+        ACCESS_KEY_ID = &#39;$(aws ssm get-parameters --region $REGION --names /jenkins/nonprod/iam-role-key --query Parameters[0].Value --with-decryption | sed \&#39;s/&quot;//g\&#39;)&#39;
+    }
+</pre></div>
+
+
+<p>Pretty simple right? Here you can see that the CLI commands are being loaded into <code>SECRET_ACCESS_KEY</code> and <code>ACCESS_KEY_ID</code>. It's important to note that the CLI commands will not be executed until they are run in a <code>sh</code> command in the <code>stages</code> section of your pipeline. </p>
+<p>Including the enviornment variables throughout your pipeline is easy. </p>
+<div class="highlight"><pre><span></span>stages {
+        stage (&#39;Initialize VPC&#39;) {
+            steps {
+                dir(&#39;terraform&#39;){
+                    sh &quot;&quot;&quot;
+                    export AWS_SECRET_ACCESS_KEY=<span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">SECRET_ACCESS_KEY</span><span class="cp">}</span>
+                    export AWS_ACCESS_KEY_ID=<span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">ACCESS_KEY_ID</span><span class="cp">}</span>
+                    export AWS_DEFAULT_REGION=<span class="cp">${</span><span class="n">REGION</span><span class="cp">}</span>
+                    /opt/bin/terraform --version
+                    /opt/bin/terraform init
+                    /opt/bin/terraform plan --out=plan.out
+                    &quot;&quot;&quot;
+                }
+            }
+        }
+</pre></div>
+
+
+<p>There are two important things to note here. </p>
+<ol>
+<li>It's important to use <code>"</code>. Double quotes is our way of signifying that this is a groovy string.</li>
+<li>You must use the <code>${env.VARIABLE}</code> syntax to get variables from the envrionment section.</li>
+</ol>
+<p>In the previous example, you can see that we are exporting AWS Secret Keys and AWS Access Keys so that the Terraform CLI can use the credentials. It should be noted that the CLI Commands are being evaluated on the fly. This means that a string containing the AWS SSM CLI Command is loaded from the <code>environment</code> block, the command is ran, and the result is then loaded into the <code>export AWS_SECRET_ACCESS_KEY</code> varriable. The CLI command from the <code>enviornment</code> block is <strong>NOT</strong> ran until it is called within the <code>sh</code> command. </p>
+<p>Using AWS SSM in our Jenkinsfile has been awesome because it allows our pipeline to remain flexibile. My cloud team only has to remember to update ther Jenkins IAM role key and secret in one location should they ever choose to rotate it. </p>
+<h2><strong>Conclusion</strong></h2>
+<p>At the end of the day, using the AWS SSM Store helps my team move towards their goal of having all infrastructure-as-code. It also standarizes our parameters on the AWS Parameter store so that application secrets aren't scattered all over the place. </p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://www.devlo.io/tag/jenkins.html">jenkins</a>
+      <a href="http://www.devlo.io/tag/aws.html">aws</a>
+      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="http://www.devlo.io/tag/groovy.html">groovy</a>
+      <a href="http://www.devlo.io/tag/automation.html">automation</a>
+      <a href="http://www.devlo.io/tag/ssm.html">ssm</a>
+    </p>
+  </div>
+
+
+
+
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo ",
+  "url" : "http://www.devlo.io",
+  "image": "/images/Devlo-Logo.png",
+  "description": "DevLo - The Lopez brothers' development blog."
+}
+</script>
+
+</body>
+</html>
