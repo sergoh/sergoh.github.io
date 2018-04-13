@@ -34,18 +34,25 @@
 </script>
 <!-- End Google Analytics -->
 
-    <meta name="author" content="Lopez Brothers" />
-    <meta name="description" content="DevLo - The Lopez brothers' development blog." />
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Solving Connectivity Issues on Global Protect" />
+<meta name="keywords" content="mac, vpn">
+
 <meta property="og:site_name" content="DevLo"/>
-<meta property="og:type" content="blog"/>
-<meta property="og:title" content="DevLo"/>
-<meta property="og:description" content="DevLo - The Lopez brothers' development blog."/>
+<meta property="og:title" content="Solving Connectivity Issues w/ Global Protect"/>
+<meta property="og:description" content="Solving Connectivity Issues on Global Protect"/>
 <meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io"/>
+<meta property="og:url" content="http://www.devlo.io/global-protect-issues.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-04-13 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-13 00:00:00-07:00"/>
+<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="tutorials"/>
+<meta property="article:tag" content="mac"/>
+<meta property="article:tag" content="vpn"/>
 <meta property="og:image" content="/images/Devlo-Logo.png">
 
-  <title>DevLo &ndash;     Tags
-</title>
+  <title>DevLo &ndash; Solving Connectivity Issues w/ Global Protect</title>
 
 <!-- Google Tag Manager -->
 <script>
@@ -127,30 +134,81 @@
 
 <article class="single">
   <header>
-    <h1>    Tags
-</h1>
+      
+    <h1 id="global-protect-issues">Solving Connectivity Issues w/ Global Protect</h1>
+    <p>
+          Posted on Fri 13 April 2018 in <a href="http://www.devlo.io/category/tutorials.html">tutorials</a>
+
+
+          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
+
+
+    </p>
   </header>
+
+
   <div>
-    <ul class="list">          <li><a href="http://www.devlo.io/tag/automation.html">automation</a> (4)</li>
-          <li><a href="http://www.devlo.io/tag/aws.html">aws</a> (6)</li>
-          <li><a href="http://www.devlo.io/tag/cloud.html">cloud</a> (6)</li>
-          <li><a href="http://www.devlo.io/tag/codedeploy.html">codedeploy</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/dev.html">dev</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/ec2.html">EC2</a> (2)</li>
-          <li><a href="http://www.devlo.io/tag/groovy.html">groovy</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/hashicorp.html">hashicorp</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/hcl.html">hcl</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/java.html">java</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/jenkins.html">jenkins</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/lambda.html">lambda</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/mac.html">mac</a> (2)</li>
-          <li><a href="http://www.devlo.io/tag/saltstack.html">saltstack</a> (3)</li>
-          <li><a href="http://www.devlo.io/tag/serverless.html">serverless</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/ssm.html">ssm</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/terraform.html">terraform</a> (1)</li>
-          <li><a href="http://www.devlo.io/tag/vpn.html">vpn</a> (1)</li>
-    </ul>
+    <h2><strong>Resend Credential Error</strong></h2>
+<p>I recently got a new Mac at work and spent the past 8 hours trying to solve connectivity issues with Global Protect.</p>
+<p>My global protect would throw out this generic error that said:</p>
+<div class="highlight"><pre><span></span>Resend Credential
+
+Cannot connect to service socket
+</pre></div>
+
+
+<p>I was able to poke around and find the logs for this issue at <code>~/Library/Logs/PaloAltoNetworks/GlobalProtect/PanGPA.log</code>.</p>
+<p>I ran a <code>tail -f</code> on that log and found the following trace:</p>
+<div class="highlight"><pre><span></span>P 595-T771   Apr 10 20:40:42:225745 Info ( 291): InitConnection ...
+P 595-T771   Apr 10 20:40:42:225785 Info (  59): fd still open before connect
+P 595-T771   Apr 10 20:40:42:225988 Info (  80): Failed to connect to server at port:4767
+P 595-T771   Apr 10 20:40:42:226004 Info ( 295): Cannot connect to service, error: 61
+P 595-T771   Apr 10 20:40:42:226010 Debug( 474): Unable to connect to Pan Service
+P 595-T771   Apr 10 20:40:47:225540 Info ( 291): InitConnection ...
+P 595-T771   Apr 10 20:40:47:225581 Info (  59): fd still open before connect
+P 595-T771   Apr 10 20:40:47:225782 Info (  80): Failed to connect to server at port:4767
+P 595-T771   Apr 10 20:40:47:225799 Info ( 295): Cannot connect to service, error: 61
+P 595-T771   Apr 10 20:40:47:225805 Debug( 474): Unable to connect to Pan Service
+P 595-T771   Apr 10 20:40:52:226040 Info ( 291): InitConnection ...
+P 595-T771   Apr 10 20:40:52:226069 Info (  59): fd still open before connect
+P 595-T771   Apr 10 20:40:52:226206 Info (  80): Failed to connect to server at port:4767
+P 595-T771   Apr 10 20:40:52:226218 Info ( 295): Cannot connect to service, error: 61
+P 595-T771   Apr 10 20:40:52:226223 Debug( 474): Unable to connect to Pan Service
+</pre></div>
+
+
+<p>Over and over again.</p>
+<p>As it turns out, this was because Global Protect could not connect to an agent called the pangps service. You can check if this service is loaded by running the following command in your terminal.</p>
+<div class="highlight"><pre><span></span>launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangpa.plist
+launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist
+</pre></div>
+
+
+<p>If you're ~lucky~ like me, you'll see that the service is running. So what the hell right? Why isn't Pan Service working???</p>
+<hr>
+<p>As it turns out, I needed to <strong>install Global Protect as the root admin</strong> on my Mac. This is incredibly <strong>frustrating</strong> because my user already had the admin role associated with it. </p>
+<p>Before you reinstall, it's important that you allow your mac to allow 3rd party apps to run. </p>
+<p>You can find this under "Security and Privacy". You'll need to show Advanced settings and click Allow Apps Downloaded from "Anywhere"</p>
+<ol>
+<li>Uninstall Global Protect</li>
+<li>Log in as the admin user</li>
+<li>Reinstall Global Protect</li>
+</ol>
+<p>Once you reinstall, head back over to the "Security and Privacy" settings. You'll see a prompt that asks if Global Protect is allowed to run on this machine. Click yes. </p>
+<p><img alt="Security and Privacy" src="http://cdn.osxdaily.com/wp-content/uploads/2016/09/gatekeeper-allow-apps-anywhere-macos-2.jpg" title="Security and Privacy"></p>
+<p>By this point you should able to connect to Global Protect. If not, i'm sorry. Best of luck :(</p>
   </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="http://www.devlo.io/tag/mac.html">mac</a>
+      <a href="http://www.devlo.io/tag/vpn.html">vpn</a>
+    </p>
+  </div>
+
+
+
+
+
 </article>
 
     <footer>

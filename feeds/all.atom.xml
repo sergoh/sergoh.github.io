@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-12T00:00:00-07:00</updated><entry><title>Jenkins Pipeline Env Variables w/ AWS SSM</title><link href="http://www.devlo.io/ssm-env-jenkins.html" rel="alternate"></link><published>2018-04-12T00:00:00-07:00</published><updated>2018-04-12T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-12:/ssm-env-jenkins.html</id><summary type="html">&lt;p&gt;Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Parameter Store, Jenkins, Jenkinsfile, Shell&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-13T00:00:00-07:00</updated><entry><title>Solving Connectivity Issues w/ Global Protect</title><link href="http://www.devlo.io/global-protect-issues.html" rel="alternate"></link><published>2018-04-13T00:00:00-07:00</published><updated>2018-04-13T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-13:/global-protect-issues.html</id><summary type="html">&lt;p&gt;Solving Connectivity Issues on Global Protect&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Resend Credential Error&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;I recently got a new Mac at work and spent the past 8 hours trying to solve connectivity issues with Global Protect.&lt;/p&gt;
+&lt;p&gt;My global protect would throw out this generic error that said:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Resend Credential
+
+Cannot connect to service socket
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I was able to poke around and find the logs for this issue at &lt;code&gt;~/Library/Logs/PaloAltoNetworks/GlobalProtect/PanGPA.log&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I ran a &lt;code&gt;tail -f&lt;/code&gt; on that log and found the following trace:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;P 595-T771   Apr 10 20:40:42:225745 Info ( 291): InitConnection ...
+P 595-T771   Apr 10 20:40:42:225785 Info (  59): fd still open before connect
+P 595-T771   Apr 10 20:40:42:225988 Info (  80): Failed to connect to server at port:4767
+P 595-T771   Apr 10 20:40:42:226004 Info ( 295): Cannot connect to service, error: 61
+P 595-T771   Apr 10 20:40:42:226010 Debug( 474): Unable to connect to Pan Service
+P 595-T771   Apr 10 20:40:47:225540 Info ( 291): InitConnection ...
+P 595-T771   Apr 10 20:40:47:225581 Info (  59): fd still open before connect
+P 595-T771   Apr 10 20:40:47:225782 Info (  80): Failed to connect to server at port:4767
+P 595-T771   Apr 10 20:40:47:225799 Info ( 295): Cannot connect to service, error: 61
+P 595-T771   Apr 10 20:40:47:225805 Debug( 474): Unable to connect to Pan Service
+P 595-T771   Apr 10 20:40:52:226040 Info ( 291): InitConnection ...
+P 595-T771   Apr 10 20:40:52:226069 Info (  59): fd still open before connect
+P 595-T771   Apr 10 20:40:52:226206 Info (  80): Failed to connect to server at port:4767
+P 595-T771   Apr 10 20:40:52:226218 Info ( 295): Cannot connect to service, error: 61
+P 595-T771   Apr 10 20:40:52:226223 Debug( 474): Unable to connect to Pan Service
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Over and over again.&lt;/p&gt;
+&lt;p&gt;As it turns out, this was because Global Protect could not connect to an agent called the pangps service. You can check if this service is loaded by running the following command in your terminal.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangpa.plist
+launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you're ~lucky~ like me, you'll see that the service is running. So what the hell right? Why isn't Pan Service working???&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;As it turns out, I needed to &lt;strong&gt;install Global Protect as the root admin&lt;/strong&gt; on my Mac. This is incredibly &lt;strong&gt;frustrating&lt;/strong&gt; because my user already had the admin role associated with it. &lt;/p&gt;
+&lt;p&gt;Before you reinstall, it's important that you allow your mac to allow 3rd party apps to run. &lt;/p&gt;
+&lt;p&gt;You can find this under "Security and Privacy". You'll need to show Advanced settings and click Allow Apps Downloaded from "Anywhere"&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Uninstall Global Protect&lt;/li&gt;
+&lt;li&gt;Log in as the admin user&lt;/li&gt;
+&lt;li&gt;Reinstall Global Protect&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Once you reinstall, head back over to the "Security and Privacy" settings. You'll see a prompt that asks if Global Protect is allowed to run on this machine. Click yes. &lt;/p&gt;
+&lt;p&gt;&lt;img alt="Security and Privacy" src="http://cdn.osxdaily.com/wp-content/uploads/2016/09/gatekeeper-allow-apps-anywhere-macos-2.jpg" title="Security and Privacy"&gt;&lt;/p&gt;
+&lt;p&gt;By this point you should able to connect to Global Protect. If not, i'm sorry. Best of luck :(&lt;/p&gt;</content><category term="mac"></category><category term="vpn"></category></entry><entry><title>Jenkins Pipeline Env Variables w/ AWS SSM</title><link href="http://www.devlo.io/ssm-env-jenkins.html" rel="alternate"></link><published>2018-04-12T00:00:00-07:00</published><updated>2018-04-12T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-12:/ssm-env-jenkins.html</id><summary type="html">&lt;p&gt;Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Parameter Store, Jenkins, Jenkinsfile, Shell&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;By the end of this article, you should understand how to use AWS Parameter Store (SSM) to pull down environment variables in your Jenkins Declarative Pipeline.&lt;/p&gt;
 &lt;p&gt;I recommend heading over to the &lt;a href="https://jenkins.io/doc/book/pipeline/syntax/"&gt;Jenkins Pipeline documentation&lt;/a&gt; if you've never heard of a Jenkinsfile. Writing your job as a Jenkinsfile is also known as &lt;em&gt;Jenkins-as-code&lt;/em&gt; because it allows you to check your Jenkins job into source control. It allows you to version your build jobs and port them to other Jenkins boxes.&lt;/p&gt;
