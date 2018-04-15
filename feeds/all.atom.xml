@@ -606,4 +606,292 @@ sudo rm -f /tmp/bootstrap-salt.sh&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;h6&gt;&lt;/h6&gt;
 &lt;p&gt;~Technical Environment: SaltStack v1.2123, AWS EC2 (CentOS ami)~&lt;/p&gt;
 &lt;p&gt;TLDR; SaltStack rocks. Let Salt manage your infrastructure and you’ll look like a hero.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Under construction.....&lt;/em&gt;&lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setuping up Pelican Blog</title><link href="http://www.devlo.io/setuping-up-pelican-blog.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-03-22T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setuping-up-pelican-blog.html</id><summary type="html">&lt;p&gt;Summary&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is to test travis CI&lt;/p&gt;</content></entry></feed>
+&lt;p&gt;&lt;em&gt;Under construction.....&lt;/em&gt;&lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Setting up this blog was not a difficult task, but it did some digging around the internet to get everything up and 
+running the way my brother and I visioned our blog. I'm going to document the steps I followed from start to finish, 
+so that anyone wanting to setup something similar can do so!&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Configure Mac High Sierra 10.13&lt;/strong&gt;&lt;/h2&gt;
+&lt;h4&gt;Bash profile setup&lt;/h4&gt;
+&lt;p&gt;First thing is to make sure that we update the PATH to ensure that any Homebrew installations take precedence over stock macOS binaries.&lt;/p&gt;
+&lt;p&gt;Open your &lt;code&gt;.bash_profile&lt;/code&gt; using:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ vim ~/.bash_profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;then add:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Ensure user-installed binaries take precedence&lt;/span&gt;
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/share/python:&lt;span class="nv"&gt;$PATH&lt;/span&gt;
+&lt;span class="c1"&gt;# Load .bashrc if it exists&lt;/span&gt;
+&lt;span class="nb"&gt;test&lt;/span&gt; -f ~/.bashrc &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;source&lt;/span&gt; ~/.bashrc
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Type &lt;code&gt;:wq&lt;/code&gt; to write and save the &lt;code&gt;.bash_profile&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;To have the directives take effect in the current session, without a restart needed. Type the following&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;source&lt;/span&gt; ~/.bash_profile
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;Homebrew Install&lt;/h4&gt;
+&lt;p&gt;Homebrew allows you to install stuff you need, quick and easy, that Apple didn't.&lt;/p&gt;
+&lt;p&gt;To install paste the following in the terminal: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ /usr/bin/ruby -e &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Run the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ brew doctor
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To ensure that it installed correctly and see if anything needs to be addressed&lt;/p&gt;
+&lt;h4&gt;Python Install&lt;/h4&gt;
+&lt;p&gt;Now that Homebrew is installed, we can use it to install Python 2.7&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ brew install python@2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now, check what pythons are found on your OSX by typing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ which -a python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There should be one python found at &lt;code&gt;/usr/bin/&lt;/code&gt; (the Apple python) and one at &lt;code&gt;/usr/local/bin/&lt;/code&gt; which is the Homebrew python.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ which python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;will show you, which python is found first in your &lt;code&gt;$PATH&lt;/code&gt; and will be executed when you invoke python.&lt;/p&gt;
+&lt;h4&gt;Virtualenv Install&lt;/h4&gt;
+&lt;p&gt;When you're working on python projects, you might run into the scenario where one project requires a specific version of a package
+and another project could require a newer version of that package. Now this could cause an issue if they were all installed 
+globally, in order to get around that I recommend we install Virtualenv&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip2 install virtualenv
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Once that is installed, we should create a directory to store our virtual environments. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p ~/Virtualenvs
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;Restricting Pip to Virtual Environments&lt;/h4&gt;
+&lt;p&gt;To ensure that pip will not install a package in global but only if a virtual environment is active, we need to create/update
+the pip configuration file.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p ~/Library/Application&lt;span class="se"&gt;\ &lt;/span&gt;Support/pip
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We’ll then open Pip’s configuration file &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ vim ~/Library/Application&lt;span class="se"&gt;\ &lt;/span&gt;Support/pip/pip.conf
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;add the following lines: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;install&lt;span class="o"&gt;]&lt;/span&gt;
+require-virtualenv &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+
+&lt;span class="o"&gt;[&lt;/span&gt;uninstall&lt;span class="o"&gt;]&lt;/span&gt;
+require-virtualenv &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;strong&gt;Create Pelican Virtual Environment &lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;With our MacOS configured we can now install pelican. First we create the virtual environment:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Virtualenvs
+$ virtualenv pelican
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and activate it via:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; pelican
+$ &lt;span class="nb"&gt;source&lt;/span&gt; bin/activate
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Install pelican using pip2:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip2 install pelican markdown typogrify
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;strong&gt;Setting up GitHub Pages&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;To create a Github user page, make sure you're logged into github and create and initialize two new repositories:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;yourusername.github.blog&lt;/em&gt; and &lt;em&gt;yourusername.github.io&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;yourusername.github.blog&lt;/em&gt; repository will hold the source code of the blog and the  &lt;em&gt;yourusername.github.io&lt;/em&gt; repository
+will hold the output HTML files that pelican generates.&lt;/p&gt;
+&lt;p&gt;Next, you'll clone your &lt;em&gt;yourusername.github.blog&lt;/em&gt; branch into your projects folder, if you don't have one. Go ahead and create one.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p ~/Projects/
+$ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/
+$ git clone https://github.com/yourusername/yourusername.github.blog.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;strong&gt;Setting up Pelican&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Once Pelican has been installed, and your repositories are set up,  you can create a skeleton project via the pelican-quickstart command. First
+we need to switch to the directory of our project.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/yourusername.github.blog
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;initiate pelican using the command: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pelican-quickstart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It should ask you a series of questions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ Where &lt;span class="k"&gt;do&lt;/span&gt; you want to create your new web site? &lt;span class="o"&gt;[&lt;/span&gt;.&lt;span class="o"&gt;]&lt;/span&gt; ./
+$ What will be the title of this web site? blog
+$ Who will be the author of this web site? Your Name
+$ What will be the default language of this web site? &lt;span class="o"&gt;[&lt;/span&gt;pt&lt;span class="o"&gt;]&lt;/span&gt; en
+$ Do you want to specify a URL prefix? e.g., http://example.com   &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; n
+$ Do you want to &lt;span class="nb"&gt;enable&lt;/span&gt; article pagination? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; y
+$ How many articles per page &lt;span class="k"&gt;do&lt;/span&gt; you want? &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;
+$ What is your &lt;span class="nb"&gt;time&lt;/span&gt; zone? &lt;span class="o"&gt;[&lt;/span&gt;Europe/Paris&lt;span class="o"&gt;]&lt;/span&gt; America/Sao_Paulo
+$ Do you want to generate a Fabfile/Makefile to automate generation and publishing? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; Y 
+$ Do you want an auto-reload &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; simpleHTTP script to assist with theme and site development? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; n
+$ Do you want to upload your website using FTP? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+$ Do you want to upload your website using SSH? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+$ Do you want to upload your website using Dropbox? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+$ Do you want to upload your website using S3? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+$ Do you want to upload your website using Rackspace Cloud Files? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
+$ Do you want to upload your website using GitHub Pages? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; y
+$ Is this your personal page &lt;span class="o"&gt;(&lt;/span&gt;yourusername.github.io&lt;span class="o"&gt;)&lt;/span&gt;? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; y
+Done. Your new project is available at /home/yourusername/yourusername.github.io
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;Picking a theme&lt;/h4&gt;
+&lt;p&gt;The next step is to pick a theme for the blog, we can use this site &lt;a href="http://www.pelicanthemes.com/"&gt;Pelican Themes&lt;/a&gt; to see
+live examples of themes.&lt;/p&gt;
+&lt;p&gt;Once a theme is picked you need create a submodule of the theme you want.
+Clone the pelican-themes repository into a submodule of &lt;em&gt;yourusername.github.blog&lt;/em&gt;. For this example, I'm using the Flexi :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git submodule add git@github.com:alexandrevicenzi/Flex.git Flex
+$ git submodule init
+$ git submodule update
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you should have your pelican-themes repository stored at &lt;em&gt;~/Projects/yourusername.github.blog/Flex&lt;/em&gt;.
+To use one of the themes, edit your Pelican settings file &lt;code&gt;pelicanconf.py&lt;/code&gt; to include this line:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nx"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;./Flex&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Save the changes and regenerate your site by using the make command &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make devserver
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Which will simultaneously run Pelican in regeneration mode as well as serve the output at &lt;code&gt;http://localhost:8000&lt;/code&gt;. 
+Once you are done viewing your changes, you should stop the development server via:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make stopserver
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;Add Custom Domain to Blog&lt;/h4&gt;
+&lt;p&gt;To use a custom domain with GitHub Pages, you need to put the domain of your site (e.g., blog.example.com)
+inside a CNAME file at the root of your site. To do this, create the content/extra/ directory and add a CNAME file to it.
+Then use the STATIC_PATHS setting to tell Pelican to copy this file to your output directory. For example:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;images&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;extra/CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;extra/CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;Setting up Apex domain  DNS&lt;/h4&gt;
+&lt;p&gt;You can set up an apex domain through your DNS provider and GitHub Pages' servers will automatically
+ create redirects between them. For example, your site can be found at &lt;code&gt;www.example.com&lt;/code&gt; or &lt;code&gt;example.com.&lt;/code&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Contact your DNS provider for detailed instructions on how to set up A records.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Follow your DNS provider's instructions to create two A records that point your custom domain to the following IP addresses:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;192.30.252.153&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;192.30.252.154&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;To confirm that your DNS record is set up correctly, use the dig command with your custom domain. Using a custom domain as an example:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ dig +noall +answer example.com
+ example.com.   &lt;span class="m"&gt;73&lt;/span&gt;  IN  A &lt;span class="m"&gt;192&lt;/span&gt;.30.252.153
+ example.com.   &lt;span class="m"&gt;73&lt;/span&gt;  IN  A &lt;span class="m"&gt;192&lt;/span&gt;.30.252.154
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;strong&gt;Setting up Travis CI&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Now we're going to setup Travis CI, which will allow us to deploy a new version of the blog everytime there is a commit to master.&lt;/p&gt;
+&lt;p&gt;First, create a &lt;code&gt;requirements.txt&lt;/code&gt; in the blog project folder:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican
+Markdown
+typogrify
+fabric
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then create a &lt;code&gt;.travis.yml&lt;/code&gt; file in the same folder:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;branches&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;only&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;master&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;language&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;python&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;python&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;2.7&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;install&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;pip install -r requirements.txt&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;script&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;make html&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;notifications&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;email&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;on_success&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
+    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;on_failure&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;env&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;global&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;before_install&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;git submodule update --init --recursive&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;after_success&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bash deploy.sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then add also the &lt;code&gt;deploy.sh&lt;/code&gt; script and update the global variable with yours:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
+&lt;span class="nv"&gt;BRANCH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;master
+&lt;span class="nv"&gt;TARGET_REPO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;yourusername/yourusername.github.io.git
+&lt;span class="nv"&gt;PELICAN_OUTPUT_FOLDER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;output
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;Testing travis-encrypt&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$VARNAME&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$TRAVIS_PULL_REQUEST&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;false&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;Starting to deploy to Github Pages\n&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$TRAVIS&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;true&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        git config --global user.email &lt;span class="s2"&gt;&amp;quot;travis@travis-ci.org&amp;quot;&lt;/span&gt;
+        git config --global user.name &lt;span class="s2"&gt;&amp;quot;Travis&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+    &lt;span class="c1"&gt;#using token clone gh-pages branch&lt;/span&gt;
+    git clone --quiet --branch&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$BRANCH&lt;/span&gt; https://&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GH_TOKEN&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;@github.com/&lt;span class="nv"&gt;$TARGET_REPO&lt;/span&gt; built_website &amp;gt; /dev/null
+    &lt;span class="c1"&gt;#go into directory and copy data we&amp;#39;re interested in to that directory&lt;/span&gt;
+    &lt;span class="nb"&gt;cd&lt;/span&gt; built_website
+    rsync -rv --exclude&lt;span class="o"&gt;=&lt;/span&gt;.git  ../&lt;span class="nv"&gt;$PELICAN_OUTPUT_FOLDER&lt;/span&gt;/* .
+    &lt;span class="c1"&gt;#add, commit and push files&lt;/span&gt;
+    git add -f .
+    git commit -m &lt;span class="s2"&gt;&amp;quot;Travis build &lt;/span&gt;&lt;span class="nv"&gt;$TRAVIS_BUILD_NUMBER&lt;/span&gt;&lt;span class="s2"&gt; pushed to Github Pages&amp;quot;&lt;/span&gt;
+    git push -fq origin &lt;span class="nv"&gt;$BRANCH&lt;/span&gt; &amp;gt; /dev/null
+    &lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;Deploy completed\n&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we need to create the encrypted token under env global in order to let Travis CI intract withtthe repository.
+Login to the Github web interface to get an &lt;a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/"&gt;Authentication Token&lt;/a&gt;, and then install the travis command line tool with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ruby1.9.1-dev
+$ sudo gem install travis
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and run from inside the repository:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ travis encrypt &lt;span class="nv"&gt;GH_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;AUTHENTICATIONTOKENFROMGITHUB --add env.global
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;From now on, every time you commit a change to master, it should kick off a build in travis ci and push the code to your &lt;em&gt;yourusername.github.io&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Now go grab a drink, its well deserved! Cheers!&lt;/p&gt;</content><category term="pelican"></category><category term="mac"></category><category term="python"></category><category term="blog"></category><category term="setup"></category><category term="travis-ci"></category><category term="github pages"></category></entry></feed>
