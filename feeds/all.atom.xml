@@ -608,7 +608,7 @@ sudo rm -f /tmp/bootstrap-salt.sh&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;p&gt;TLDR; SaltStack rocks. Let Salt manage your infrastructure and you’ll look like a hero.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Under construction.....&lt;/em&gt;&lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Setting up this blog was not a difficult task, but it did some digging around the internet to get everything up and 
-running the way my brother and I visioned our blog. I'm going to document the steps I followed from start to finish, 
+running the way my brother and I visioned our blog. I'm going to document the steps I followed from start to finish, combined from all those resources, 
 so that anyone wanting to setup something similar can do so!&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Configure Mac High Sierra 10.13&lt;/strong&gt;&lt;/h2&gt;
 &lt;h4&gt;Bash profile setup&lt;/h4&gt;
@@ -746,7 +746,7 @@ $ What will be the default language of this web site? &lt;span class="o"&gt;[&lt
 $ Do you want to specify a URL prefix? e.g., http://example.com   &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; n
 $ Do you want to &lt;span class="nb"&gt;enable&lt;/span&gt; article pagination? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; y
 $ How many articles per page &lt;span class="k"&gt;do&lt;/span&gt; you want? &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;
-$ What is your &lt;span class="nb"&gt;time&lt;/span&gt; zone? &lt;span class="o"&gt;[&lt;/span&gt;Europe/Paris&lt;span class="o"&gt;]&lt;/span&gt; America/Sao_Paulo
+$ What is your &lt;span class="nb"&gt;time&lt;/span&gt; zone? 
 $ Do you want to generate a Fabfile/Makefile to automate generation and publishing? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; Y 
 $ Do you want an auto-reload &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; simpleHTTP script to assist with theme and site development? &lt;span class="o"&gt;(&lt;/span&gt;Y/n&lt;span class="o"&gt;)&lt;/span&gt; n
 $ Do you want to upload your website using FTP? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; n
@@ -894,4 +894,17 @@ $ sudo gem install travis
 
 
 &lt;p&gt;From now on, every time you commit a change to master, it should kick off a build in travis ci and push the code to your &lt;em&gt;yourusername.github.io&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Now go grab a drink, its well deserved! Cheers!&lt;/p&gt;</content><category term="pelican"></category><category term="mac"></category><category term="python"></category><category term="blog"></category><category term="setup"></category><category term="travis-ci"></category><category term="github pages"></category></entry></feed>
+&lt;p&gt;Now go grab a drink, its well deserved! Cheers!&lt;/p&gt;
+&lt;h5&gt;References&lt;/h5&gt;
+&lt;p&gt;Below are a list of links or other guides that have helped me get to this point.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://hackercodex.com/guide/mac-development-configuration/&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://hackercodex.com/guide/python-development-environment-on-mac-osx/&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://superuser.com/questions/915810/pip-not-working-on-hombrew-python-2-7-install&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;http://docs.getpelican.com/en/3.6.3/install.html&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://github.com/getpelican/pelican-themes&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://git-scm.com/docs/gitmodules&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://github.com/getpelican/pelican/blob/master/docs/tips.rst&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://help.github.com/articles/using-a-custom-domain-with-github-pages/&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://zonca.github.io/2013/09/automatically-build-pelican-and-publish-to-github-pages.html&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;https://docs.travis-ci.com/user/github-oauth-scopes&lt;/em&gt;&lt;/p&gt;</content><category term="pelican"></category><category term="mac"></category><category term="python"></category><category term="blog"></category><category term="setup"></category><category term="travis-ci"></category><category term="github pages"></category></entry></feed>
