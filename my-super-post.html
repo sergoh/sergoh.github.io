@@ -35,17 +35,17 @@
 <!-- End Google Analytics -->
 
 <meta name="author" content="Miguel Lopez" />
-<meta name="description" content="a story of how Salt Master revolutionized the way my organization manages infrastructure, has identical environments and keeps cloud engineers mentally SANE" />
+<meta name="description" content="SaltStack 101, Set up your first Salt-Master and Salt-Minion" />
 <meta name="keywords" content="saltstack, aws, cloud">
 
 <meta property="og:site_name" content="DevLo"/>
 <meta property="og:title" content="Introduction to SaltStack"/>
-<meta property="og:description" content="a story of how Salt Master revolutionized the way my organization manages infrastructure, has identical environments and keeps cloud engineers mentally SANE"/>
+<meta property="og:description" content="SaltStack 101, Set up your first Salt-Master and Salt-Minion"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:url" content="http://www.devlo.io/my-super-post.html"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2018-03-22 00:00:00-07:00"/>
-<meta property="article:modified_time" content="2018-03-22 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-16 00:00:00-07:00"/>
 <meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
 <meta property="article:section" content="automation"/>
 <meta property="article:tag" content="saltstack"/>
@@ -147,15 +147,18 @@
   <div>
     <p><em>Technical Environment: SaltStack v1.2123, AWS EC2 (CentOS ami)</em></p>
 <p><em>Difficulty: Easy</em></p>
+<p><em>Read: 25 minutes</em></p>
 <h2><strong>Introduction to SaltStack</strong></h2>
 <p>TLDR; SaltStack rocks. Let Salt manage your infrastructure and you’ll look like a hero.</p>
 <p>Configuration Management (as it pertains to software infrastructure) is this idea that you have a central node or tool that is responsible for managing the state of each individual node throughout your infrastructure. It makes your life 100% easier by automating startup scripts, ssh-key placement, symlinks, config files and much much more. </p>
 <p>Have you ever found yourself in a situation where you’re constantly having to repeat the same tasks on a single VM or fleet of VMs? If so, then configuration management is probably something you need. </p>
-<p>In this post, I’ll cover a few topics:
-- Introduction to SaltMaster
-- How to create a salt master node
-- How to connect a salt minion to the master node
-- How to push states from the salt master to the minion</p>
+<p>In this post, I’ll cover a few topics:</p>
+<ul>
+<li>Introduction to SaltMaster</li>
+<li>How to create a salt master node</li>
+<li>How to connect a salt minion to the master node</li>
+<li>How to push states from the salt master to the minion</li>
+</ul>
 <p>Fair warning, all of this article covers how to use SaltStack in an AWS EC2 environment. It should be noted that SaltStack would work perfectly well on Azure, GCM, or any other datacenter model. </p>
 <h2><strong>Key Terms</strong></h2>
 <p><strong>Salt-Master:</strong> node used control your salt-minions accross your infrastructure. Salt-masters will push a desired state down.</p>
@@ -323,6 +326,11 @@ Rejected Keys:
 
 
 <p>For the sake of this tutorial, we will only be covering a state that lives in our <code>/srv/salt/base</code> file root. I will not be going <code>modules</code>, <code>pillars</code>, or <code>node_groups</code> just quite yet and will leave those for another post. </p>
+<div class="highlight"><pre><span></span>[root@salt-master salt]# service salt-master restart
+</pre></div>
+
+
+<p>Quickly restart the salt-master to load the new configurations. </p>
 <ol>
 <li>Our first state will live in our <code>base</code> environment. Go ahead and create a folder in the <code>/srv/salt/base</code> location. </li>
 </ol>
@@ -392,11 +400,71 @@ Rejected Keys:
 <p>The <code>top.sls</code> file will apply the <code>touch-file</code> state we just created to all salt-minions under our control. </p>
 <p><code>top.sls</code> files are used to define instructions for all of your environments. It defines which states are applied to a salt-minion. </p>
 <p>It's important to note that it can follow a regex pattern or a node-group. This means that it's extremely important to name your salt-minions accordingly. <code>'*'</code> will apply states to all minions whereas <code>'dev*'</code> would only those states to salt-minions prefixed with a <code>dev</code> name. </p>
-<p>——————</p>
-<p>I hope by this point you’ve also discovered Chef, Ansible, Puppet, and other similar offerings and you’re looking for ways to evaluate what makes the most sense for your company. SaltStack is a great tool but there are plenty of other tools that solve similar problems. Research each tool, find one that makes long-term sense and GO FOR IT!</p>
-<p>SaltStack has done wonders for my organization. Prior to adopting this toolchain, our infrastructure was all over the place. Developers managed their own boxes. No environment shared any similarity. Knowledge of how to setup infrastructure was lost in half-finished documentation or internalized by senior developers. It’s safe to say we were all over the place without it. </p>
-<p>Adopting SaltStack took a lot of maturity and patience. You had to trust that building out the automation scripts will save you lots of time in the end in the long run. In the 1+ years since adopting it, we’ve had great success managing our infrastructure. DEV/TEST/STAGE/PROD are all similar minus environment configurations. VMs are stateless meaning I can tear down any of my AWS environments and have a fresh copy up within minutes. I’ve heard less “It works on my machine” issues.</p>
-<p>Tune in to future posts where I’ll share some SaltStack best practices, automation scripts and creative ways to solve problems with SaltStack. </p>
+<ol>
+<li>We are now ready to run our first state. Run the following <code>state.show_top</code> command to see which states will be applied.</li>
+</ol>
+<div class="highlight"><pre><span></span>[root@salt-master base]# salt &#39;*&#39; state.show_top
+dev-minion-01:
+    ----------
+    base:
+        - touch-file
+</pre></div>
+
+
+<p><em>I always run <code>state.show_top</code> before running a <code>state.apply</code> to double check my salt-master is doing what I want. I can't stress this enough. It has saved me so many times.</em></p>
+<ol>
+<li>If everything looks good, run the <code>state.apply</code> command to push the state down to the salt-minion.</li>
+</ol>
+<div class="highlight"><pre><span></span>[root@salt-master base]# salt &#39;*&#39; state.apply
+dev-minion-01:
+----------
+          ID: /tmp/hello-world.txt
+    Function: file.managed
+      Result: True
+     Comment: File /tmp/hello-world.txt updated
+     Started: 06:17:46.887924
+    Duration: 70.182 ms
+     Changes:
+              ----------
+              diff:
+                  New file
+              mode:
+                  0644
+
+Summary for dev-minion-01
+------------
+Succeeded: 1 (changed=1)
+Failed:    0
+------------
+Total states run:     1
+Total run time:  70.182 ms
+</pre></div>
+
+
+<p>If everything went well, you should see <code>Succeeded: 1 (changed=1)</code>. This means that your state was successfully applied. You should now head back over to your salt-minion and verify that the state was successfully pushed. </p>
+<ol>
+<li>Verify <code>/tmp/hello-world.txt</code> exists on the salt-minion exists. </li>
+</ol>
+<div class="highlight"><pre><span></span>[root@ip-10-0-1-97 ec2-user]# cat /tmp/hello-world.txt
+hello world
+</pre></div>
+
+
+<p>There you have it, your first salt state!</p>
+<h2><strong>Terraform</strong></h2>
+<p>In case you are familiar with Terraform, I've started to make some effort toward terraforming this whole process. Feel free to follow that progress on my <a href="https://github.com/lopezm1/terraform-101/blob/master/mgmt/main.tf">github</a>.</p>
+<p>You can also find some salt-scripts that'll bootstrap autoscaling VMs as salt-minions <a href="https://github.com/lopezm1/salt-scripts">here</a>. </p>
+<h2><strong>Conclusion</strong></h2>
+<p>I've just scraped the surfrace with what you can do with Salt-Master. Over the next few weeks I'll be sure to add some more articles that will describe how to:</p>
+<ul>
+<li>configure different enviroments</li>
+<li>use pillars</li>
+<li>automatically push states to auto-scaling groups</li>
+<li>using salt formulas to create modular states</li>
+</ul>
+<p>By this point, I hope you can understand how awesome Salt really is. SaltStack has been fantastic for our company and I hope it can do the same for you.</p>
+<p>In case you are evaluating other tools, I recommend you check out <a href="https://www.chef.io/chef/">Chef</a>, <a href="https://www.ansible.com/">Ansible</a> and <a href="https://puppet.com/">Puppet</a> as they all have very similar functionality. </p>
+<p>It takes time and patience to fully adopt a configuration manager but the payoff is totally worth it. </p>
   </div>
   <div class="tag-cloud">
     <p>

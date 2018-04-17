@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-13T00:00:00-07:00</updated><entry><title>Solving Connectivity Issues w/ Global Protect</title><link href="http://www.devlo.io/global-protect-issues.html" rel="alternate"></link><published>2018-04-13T00:00:00-07:00</published><updated>2018-04-13T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-13:/global-protect-issues.html</id><summary type="html">&lt;p&gt;Solving Connectivity Issues on Global Protect&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Resend Credential Error&lt;/strong&gt;&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-04-16T00:00:00-07:00</updated><entry><title>Solving Connectivity Issues w/ Global Protect</title><link href="http://www.devlo.io/global-protect-issues.html" rel="alternate"></link><published>2018-04-13T00:00:00-07:00</published><updated>2018-04-13T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-13:/global-protect-issues.html</id><summary type="html">&lt;p&gt;Solving Connectivity Issues on Global Protect&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Resend Credential Error&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;I recently got a new Mac at work and spent the past 8 hours trying to solve connectivity issues with Global Protect.&lt;/p&gt;
 &lt;p&gt;My global protect would throw out this generic error that said:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Resend Credential
@@ -602,17 +602,20 @@ sudo rm -f /tmp/bootstrap-salt.sh&lt;span class="p"&gt;;&lt;/span&gt;
 
 
 &lt;p&gt;&lt;em&gt;You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance&lt;/em&gt; &lt;/p&gt;
-&lt;p&gt;Replace $SALT_MASTER_IP with your own variables.&lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category></entry><entry><title>Introduction to SaltStack</title><link href="http://www.devlo.io/my-super-post.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-03-22T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/my-super-post.html</id><summary type="html">&lt;p&gt;a story of how Salt Master revolutionized the way my organization manages infrastructure, has identical environments and keeps cloud engineers mentally SANE&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Technical Environment: SaltStack v1.2123, AWS EC2 (CentOS ami)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Replace $SALT_MASTER_IP with your own variables.&lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category></entry><entry><title>Introduction to SaltStack</title><link href="http://www.devlo.io/my-super-post.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/my-super-post.html</id><summary type="html">&lt;p&gt;SaltStack 101, Set up your first Salt-Master and Salt-Minion&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Technical Environment: SaltStack v1.2123, AWS EC2 (CentOS ami)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Difficulty: Easy&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Read: 25 minutes&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction to SaltStack&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;TLDR; SaltStack rocks. Let Salt manage your infrastructure and you’ll look like a hero.&lt;/p&gt;
 &lt;p&gt;Configuration Management (as it pertains to software infrastructure) is this idea that you have a central node or tool that is responsible for managing the state of each individual node throughout your infrastructure. It makes your life 100% easier by automating startup scripts, ssh-key placement, symlinks, config files and much much more. &lt;/p&gt;
 &lt;p&gt;Have you ever found yourself in a situation where you’re constantly having to repeat the same tasks on a single VM or fleet of VMs? If so, then configuration management is probably something you need. &lt;/p&gt;
-&lt;p&gt;In this post, I’ll cover a few topics:
-- Introduction to SaltMaster
-- How to create a salt master node
-- How to connect a salt minion to the master node
-- How to push states from the salt master to the minion&lt;/p&gt;
+&lt;p&gt;In this post, I’ll cover a few topics:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Introduction to SaltMaster&lt;/li&gt;
+&lt;li&gt;How to create a salt master node&lt;/li&gt;
+&lt;li&gt;How to connect a salt minion to the master node&lt;/li&gt;
+&lt;li&gt;How to push states from the salt master to the minion&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Fair warning, all of this article covers how to use SaltStack in an AWS EC2 environment. It should be noted that SaltStack would work perfectly well on Azure, GCM, or any other datacenter model. &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Key Terms&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Salt-Master:&lt;/strong&gt; node used control your salt-minions accross your infrastructure. Salt-masters will push a desired state down.&lt;/p&gt;
@@ -780,6 +783,11 @@ Rejected Keys:
 
 
 &lt;p&gt;For the sake of this tutorial, we will only be covering a state that lives in our &lt;code&gt;/srv/salt/base&lt;/code&gt; file root. I will not be going &lt;code&gt;modules&lt;/code&gt;, &lt;code&gt;pillars&lt;/code&gt;, or &lt;code&gt;node_groups&lt;/code&gt; just quite yet and will leave those for another post. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@salt-master salt]# service salt-master restart
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Quickly restart the salt-master to load the new configurations. &lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Our first state will live in our &lt;code&gt;base&lt;/code&gt; environment. Go ahead and create a folder in the &lt;code&gt;/srv/salt/base&lt;/code&gt; location. &lt;/li&gt;
 &lt;/ol&gt;
@@ -849,11 +857,71 @@ Rejected Keys:
 &lt;p&gt;The &lt;code&gt;top.sls&lt;/code&gt; file will apply the &lt;code&gt;touch-file&lt;/code&gt; state we just created to all salt-minions under our control. &lt;/p&gt;
 &lt;p&gt;&lt;code&gt;top.sls&lt;/code&gt; files are used to define instructions for all of your environments. It defines which states are applied to a salt-minion. &lt;/p&gt;
 &lt;p&gt;It's important to note that it can follow a regex pattern or a node-group. This means that it's extremely important to name your salt-minions accordingly. &lt;code&gt;'*'&lt;/code&gt; will apply states to all minions whereas &lt;code&gt;'dev*'&lt;/code&gt; would only those states to salt-minions prefixed with a &lt;code&gt;dev&lt;/code&gt; name. &lt;/p&gt;
-&lt;p&gt;——————&lt;/p&gt;
-&lt;p&gt;I hope by this point you’ve also discovered Chef, Ansible, Puppet, and other similar offerings and you’re looking for ways to evaluate what makes the most sense for your company. SaltStack is a great tool but there are plenty of other tools that solve similar problems. Research each tool, find one that makes long-term sense and GO FOR IT!&lt;/p&gt;
-&lt;p&gt;SaltStack has done wonders for my organization. Prior to adopting this toolchain, our infrastructure was all over the place. Developers managed their own boxes. No environment shared any similarity. Knowledge of how to setup infrastructure was lost in half-finished documentation or internalized by senior developers. It’s safe to say we were all over the place without it. &lt;/p&gt;
-&lt;p&gt;Adopting SaltStack took a lot of maturity and patience. You had to trust that building out the automation scripts will save you lots of time in the end in the long run. In the 1+ years since adopting it, we’ve had great success managing our infrastructure. DEV/TEST/STAGE/PROD are all similar minus environment configurations. VMs are stateless meaning I can tear down any of my AWS environments and have a fresh copy up within minutes. I’ve heard less “It works on my machine” issues.&lt;/p&gt;
-&lt;p&gt;Tune in to future posts where I’ll share some SaltStack best practices, automation scripts and creative ways to solve problems with SaltStack. &lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;We are now ready to run our first state. Run the following &lt;code&gt;state.show_top&lt;/code&gt; command to see which states will be applied.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@salt-master base]# salt &amp;#39;*&amp;#39; state.show_top
+dev-minion-01:
+    ----------
+    base:
+        - touch-file
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;I always run &lt;code&gt;state.show_top&lt;/code&gt; before running a &lt;code&gt;state.apply&lt;/code&gt; to double check my salt-master is doing what I want. I can't stress this enough. It has saved me so many times.&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;If everything looks good, run the &lt;code&gt;state.apply&lt;/code&gt; command to push the state down to the salt-minion.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@salt-master base]# salt &amp;#39;*&amp;#39; state.apply
+dev-minion-01:
+----------
+          ID: /tmp/hello-world.txt
+    Function: file.managed
+      Result: True
+     Comment: File /tmp/hello-world.txt updated
+     Started: 06:17:46.887924
+    Duration: 70.182 ms
+     Changes:
+              ----------
+              diff:
+                  New file
+              mode:
+                  0644
+
+Summary for dev-minion-01
+------------
+Succeeded: 1 (changed=1)
+Failed:    0
+------------
+Total states run:     1
+Total run time:  70.182 ms
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If everything went well, you should see &lt;code&gt;Succeeded: 1 (changed=1)&lt;/code&gt;. This means that your state was successfully applied. You should now head back over to your salt-minion and verify that the state was successfully pushed. &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Verify &lt;code&gt;/tmp/hello-world.txt&lt;/code&gt; exists on the salt-minion exists. &lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@ip-10-0-1-97 ec2-user]# cat /tmp/hello-world.txt
+hello world
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There you have it, your first salt state!&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Terraform&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;In case you are familiar with Terraform, I've started to make some effort toward terraforming this whole process. Feel free to follow that progress on my &lt;a href="https://github.com/lopezm1/terraform-101/blob/master/mgmt/main.tf"&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can also find some salt-scripts that'll bootstrap autoscaling VMs as salt-minions &lt;a href="https://github.com/lopezm1/salt-scripts"&gt;here&lt;/a&gt;. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;I've just scraped the surfrace with what you can do with Salt-Master. Over the next few weeks I'll be sure to add some more articles that will describe how to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;configure different enviroments&lt;/li&gt;
+&lt;li&gt;use pillars&lt;/li&gt;
+&lt;li&gt;automatically push states to auto-scaling groups&lt;/li&gt;
+&lt;li&gt;using salt formulas to create modular states&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;By this point, I hope you can understand how awesome Salt really is. SaltStack has been fantastic for our company and I hope it can do the same for you.&lt;/p&gt;
+&lt;p&gt;In case you are evaluating other tools, I recommend you check out &lt;a href="https://www.chef.io/chef/"&gt;Chef&lt;/a&gt;, &lt;a href="https://www.ansible.com/"&gt;Ansible&lt;/a&gt; and &lt;a href="https://puppet.com/"&gt;Puppet&lt;/a&gt; as they all have very similar functionality. &lt;/p&gt;
+&lt;p&gt;It takes time and patience to fully adopt a configuration manager but the payoff is totally worth it. &lt;/p&gt;</content><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Setting up this blog was not a difficult task, but it did some digging around the internet to get everything up and 
 running the way my brother and I visioned our blog. I'm going to document the steps I followed from start to finish, combined from all those resources, 
 so that anyone wanting to setup something similar can do so!&lt;/p&gt;
