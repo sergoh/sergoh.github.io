@@ -202,12 +202,7 @@
             steps {
                 dir(&#39;terraform&#39;){
                     sh &quot;&quot;&quot;
-                    export AWS_SECRET_ACCESS_KEY=<span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">SECRET_ACCESS_KEY</span><span class="cp">}</span>
-                    export AWS_ACCESS_KEY_ID=<span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">ACCESS_KEY_ID</span><span class="cp">}</span>
-                    export AWS_DEFAULT_REGION=<span class="cp">${</span><span class="n">REGION</span><span class="cp">}</span>
-                    /opt/bin/terraform --version
-                    /opt/bin/terraform init
-                    /opt/bin/terraform plan --out=plan.out
+                    serverless config credentials --provider provider --key <span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">ACCESS_KEY_ID</span><span class="cp">}</span> --secret <span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">SECRET_ACCESS_KEY</span><span class="cp">}</span>
                     &quot;&quot;&quot;
                 }
             }
@@ -220,7 +215,7 @@
 <li>It's important to use <code>"</code>. Double quotes is our way of signifying that this is a groovy string.</li>
 <li>You must use the <code>${env.VARIABLE}</code> syntax to get variables from the envrionment section.</li>
 </ol>
-<p>In the previous example, you can see that we are exporting AWS Secret Keys and AWS Access Keys so that the Terraform CLI can use the credentials. It should be noted that the CLI Commands are being evaluated on the fly. This means that a string containing the AWS SSM CLI Command is loaded from the <code>environment</code> block, the command is ran, and the result is then loaded into the <code>export AWS_SECRET_ACCESS_KEY</code> varriable. The CLI command from the <code>enviornment</code> block is <strong>NOT</strong> ran until it is called within the <code>sh</code> command. </p>
+<p>In the previous example, you can see that we are exporting AWS Secret Keys and AWS Access Keys so that the Serverless CLI can use the credentials. It should be noted that the CLI Commands are being evaluated on the fly. This means that a string containing the AWS SSM CLI Command is loaded from the <code>environment</code> block, the command is ran, and the result is then loaded into the CLI command. The CLI command from the <code>enviornment</code> block is <strong>NOT</strong> ran until it is called within the <code>sh</code> command. </p>
 <p>Using AWS SSM in our Jenkinsfile has been awesome because it allows our pipeline to remain flexibile. My cloud team only has to remember to update ther Jenkins IAM role key and secret in one location should they ever choose to rotate it. </p>
 <h2><strong>Conclusion</strong></h2>
 <p>At the end of the day, using the AWS SSM Store helps my team move towards their goal of having all infrastructure-as-code. It also standarizes our parameters on the AWS Parameter store so that application secrets aren't scattered all over the place. </p>

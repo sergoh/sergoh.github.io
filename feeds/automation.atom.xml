@@ -53,12 +53,7 @@
             steps {
                 dir(&amp;#39;terraform&amp;#39;){
                     sh &amp;quot;&amp;quot;&amp;quot;
-                    export AWS_SECRET_ACCESS_KEY=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SECRET_ACCESS_KEY&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
-                    export AWS_ACCESS_KEY_ID=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ACCESS_KEY_ID&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
-                    export AWS_DEFAULT_REGION=&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;REGION&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
-                    /opt/bin/terraform --version
-                    /opt/bin/terraform init
-                    /opt/bin/terraform plan --out=plan.out
+                    serverless config credentials --provider provider --key &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ACCESS_KEY_ID&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt; --secret &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SECRET_ACCESS_KEY&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
                     &amp;quot;&amp;quot;&amp;quot;
                 }
             }
@@ -71,7 +66,7 @@
 &lt;li&gt;It's important to use &lt;code&gt;"&lt;/code&gt;. Double quotes is our way of signifying that this is a groovy string.&lt;/li&gt;
 &lt;li&gt;You must use the &lt;code&gt;${env.VARIABLE}&lt;/code&gt; syntax to get variables from the envrionment section.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;In the previous example, you can see that we are exporting AWS Secret Keys and AWS Access Keys so that the Terraform CLI can use the credentials. It should be noted that the CLI Commands are being evaluated on the fly. This means that a string containing the AWS SSM CLI Command is loaded from the &lt;code&gt;environment&lt;/code&gt; block, the command is ran, and the result is then loaded into the &lt;code&gt;export AWS_SECRET_ACCESS_KEY&lt;/code&gt; varriable. The CLI command from the &lt;code&gt;enviornment&lt;/code&gt; block is &lt;strong&gt;NOT&lt;/strong&gt; ran until it is called within the &lt;code&gt;sh&lt;/code&gt; command. &lt;/p&gt;
+&lt;p&gt;In the previous example, you can see that we are exporting AWS Secret Keys and AWS Access Keys so that the Serverless CLI can use the credentials. It should be noted that the CLI Commands are being evaluated on the fly. This means that a string containing the AWS SSM CLI Command is loaded from the &lt;code&gt;environment&lt;/code&gt; block, the command is ran, and the result is then loaded into the CLI command. The CLI command from the &lt;code&gt;enviornment&lt;/code&gt; block is &lt;strong&gt;NOT&lt;/strong&gt; ran until it is called within the &lt;code&gt;sh&lt;/code&gt; command. &lt;/p&gt;
 &lt;p&gt;Using AWS SSM in our Jenkinsfile has been awesome because it allows our pipeline to remain flexibile. My cloud team only has to remember to update ther Jenkins IAM role key and secret in one location should they ever choose to rotate it. &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;At the end of the day, using the AWS SSM Store helps my team move towards their goal of having all infrastructure-as-code. It also standarizes our parameters on the AWS Parameter store so that application secrets aren't scattered all over the place. &lt;/p&gt;</content><category term="jenkins"></category><category term="aws"></category><category term="cloud"></category><category term="groovy"></category><category term="automation"></category><category term="ssm"></category></entry><entry><title>If, If-else Statements in Terraform</title><link href="http://www.devlo.io/if-else-terraform.html" rel="alternate"></link><published>2018-04-10T00:00:00-07:00</published><updated>2018-04-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-10:/if-else-terraform.html</id><summary type="html">&lt;p&gt;Using if-else statements in terraforms&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Terraform v0.11.5&lt;/em&gt;&lt;/p&gt;
