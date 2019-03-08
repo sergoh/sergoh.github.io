@@ -1,5 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2018-11-16T00:00:00-07:00</updated><subtitle>The Lopez brothers' development blog</subtitle><entry><title>Building Robust Packer AMIs</title><link href="http://www.devlo.io/packer-ami-apt-get.html" rel="alternate"></link><published>2018-11-16T00:00:00-07:00</published><updated>2018-11-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-11-16:/packer-ami-apt-get.html</id><summary type="html">&lt;p&gt;How to avoid &lt;code&gt;Could not get lock /var/lib/dpkg/lock&lt;/code&gt; while using Packer&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS EC2 (AWS AMI CentOS), Packer, Ubuntu 18.04
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2019-03-07T00:00:00-07:00</updated><subtitle>The Lopez brothers' development blog</subtitle><entry><title>Running Git in AWS Lambda Functions</title><link href="http://www.devlo.io/git-in-aws-lambda.html" rel="alternate"></link><published>2019-03-07T00:00:00-07:00</published><updated>2019-03-07T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2019-03-07:/git-in-aws-lambda.html</id><summary type="html">&lt;p&gt;Use GitPython w/ a Git Executable in AWS Lambda&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Lambda, Python 3.7, Serverless 
+Read: 5 minutes&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Serverless Framework Installed &lt;a href="https://serverless.com/framework/docs/getting-started/"&gt;Serverless Quick Start&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AWS Free Tier Account &lt;a href="https://aws.amazon.com/free/"&gt;AWS Sign Up&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Check out the &lt;a href="https://aws.amazon.com/lambda/"&gt;AWS Lambda Documentation&lt;/a&gt; if you're new to AWS Lambda and serverless technology.&lt;/li&gt;
+&lt;li&gt;Check out &lt;a href="https://github.com/gitpython-developers/GitPython"&gt;GitPython&lt;/a&gt; - a python package used to interact w/ git repositories.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;This post builds on my previous &lt;a href="http://www.devlo.io/serverless-environments.html"&gt;post&lt;/a&gt; on building AWS lambdas with serverless framework.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I've been tinkering around with AWS Lambda Functions a lot at work. My latest project has me exploring the possibility of 
+running &lt;strong&gt;Terraform&lt;/strong&gt;, &lt;strong&gt;Terragrunt&lt;/strong&gt; and &lt;strong&gt;git&lt;/strong&gt; in an AWS Lambda function. &lt;/p&gt;
+&lt;p&gt;My purpose for this project was simple. &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Download github projects from Python&lt;/li&gt;
+&lt;li&gt;Store project code in the &lt;code&gt;/tmp/&lt;/code&gt; folder of Lambda containers&lt;/li&gt;
+&lt;li&gt;Allow me to create PRs, commits, etc from a lambda&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this tutorial, i'm mainly going to focus on the problems I encountered while getting &lt;strong&gt;GitPython&lt;/strong&gt; to work in AWS Lambda w/ Python runtimes. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;GitPython&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;GitPython&lt;/strong&gt; is a library built on git commands, therefore, it requires the git binary to be installed.&lt;/p&gt;
+&lt;p&gt;Install it in your python package by running the following pip command or including it in your requirements file. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install GitPython
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;strong&gt;First Issues&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Here was my initial lambda function as defined in my &lt;code&gt;serverless.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  run-git:
+    handler: src/handler/run_git.lambda_handler
+    name: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-git
+    description: run git commands from lambda
+    memorySize: 256
+    timeout: 30
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The lambda handle at &lt;code&gt;run_git.lambda_handler&lt;/code&gt; ran the following python code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;git&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Repo&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;lambda_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;project_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;github_project&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;org&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;github_org&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;git_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;https://github.com/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;project_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Downloading repo from &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;............&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;git_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;repo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;clone_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;git_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/tmp/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;project_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The code was simple, it would download a github project and store it in the &lt;code&gt;/tmp/&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Should have been easy until I ran into this error:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;module&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;src/handler/run_git&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Failed&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Bad&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt; &lt;span class="n"&gt;must&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;specified&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;one&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="n"&gt;ways&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="n"&gt;via&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;GIT_PYTHON_GIT_EXECUTABLE&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;explicitly&lt;/span&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="n"&gt;via&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;refresh&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;All&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;commands&lt;/span&gt; &lt;span class="n"&gt;will&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt; &lt;span class="n"&gt;until&lt;/span&gt; &lt;span class="n"&gt;this&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;rectified&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+
+&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt; &lt;span class="n"&gt;warning&lt;/span&gt; &lt;span class="n"&gt;can&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;silenced&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="n"&gt;aggravated&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;future&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;setting&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;GIT_PYTHON_REFRESH&lt;/span&gt; &lt;span class="n"&gt;environment&lt;/span&gt; &lt;span class="n"&gt;variable&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Use&lt;/span&gt; &lt;span class="n"&gt;one&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;quiet&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;silence&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;none&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;no&lt;/span&gt; &lt;span class="n"&gt;warning&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="n"&gt;exception&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;w&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;warning&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;printed&lt;/span&gt; &lt;span class="n"&gt;warning&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="k"&gt;raise&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;raised&lt;/span&gt; &lt;span class="n"&gt;exception&lt;/span&gt;
+
+&lt;span class="n"&gt;Example&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;GIT_PYTHON_REFRESH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;quiet&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Looking for a quick solution; I immediately put &lt;code&gt;GIT_PYTHON_REFRESH=quiet&lt;/code&gt; in to the &lt;code&gt;ENVIRONMENT&lt;/code&gt; variables section of my Lambda function. &lt;/p&gt;
+&lt;p&gt;That resulted in:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Cmd(&amp;#39;git&amp;#39;) not found due to: FileNotFoundError(&amp;#39;[Errno 2] No such file or directory: &amp;#39;git&amp;#39;: &amp;#39;git&amp;#39;&amp;#39;)
+  cmdline: git clone -v https://github.com/hearsaycorp/hearsay-messages /tmp/hearsay-messages: GitCommandNotFound
+Traceback (most recent call last):
+  File &amp;quot;/var/task/src/handler/run_terraform.py&amp;quot;, line 13, in lambda_handler
+    download_hearsay_repo(repo_name, git_hash)
+  File &amp;quot;/var/task/src/utils/github_utils.py&amp;quot;, line 16, in download_hearsay_repo
+    repo = Repo.clone_from(git_url, &amp;#39;/tmp/%s&amp;#39; % project_name)
+  File &amp;quot;/var/task/git/repo/base.py&amp;quot;, line 988, in clone_from
+    return cls._clone(git, url, to_path, GitCmdObjectDB, progress, **kwargs)
+  File &amp;quot;/var/task/git/repo/base.py&amp;quot;, line 933, in _clone
+    v=True, universal_newlines=True, **add_progress(kwargs, git, progress))
+  File &amp;quot;/var/task/git/cmd.py&amp;quot;, line 548, in &amp;lt;lambda&amp;gt;
+    return lambda *args, **kwargs: self._call_process(name, *args, **kwargs)
+  File &amp;quot;/var/task/git/cmd.py&amp;quot;, line 1014, in _call_process
+    return self.execute(call, **exec_kwargs)
+  File &amp;quot;/var/task/git/cmd.py&amp;quot;, line 738, in execute
+    raise GitCommandNotFound(command, err)
+git.exc.GitCommandNotFound: Cmd(&amp;#39;git&amp;#39;) not found due to: FileNotFoundError(&amp;#39;[Errno 2] No such file or directory: &amp;#39;git&amp;#39;: &amp;#39;git&amp;#39;&amp;#39;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That error made it clear to me. AWS Lambda functions did not come bundled with &lt;code&gt;git&lt;/code&gt; executables in the runtime container. Therefore, &lt;strong&gt;GitPython&lt;/strong&gt; 
+could not run commands against &lt;code&gt;git&lt;/code&gt; in the container's &lt;code&gt;$PATH&lt;/code&gt;. &lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Next Issues&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;I thought alright, simple, how hard could it be to install &lt;code&gt;git&lt;/code&gt; on the &lt;code&gt;$PATH&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Turned out to be pretty tough. I looked all over the internet and stumbled onto the following article by &lt;a href="https://cloudbriefly.com/post/running-git-in-aws-lambda/#appendix-b-how-to-clone-a-git-repository-in-aws-lambda-python"&gt;cloudbriefly.com&lt;/a&gt;. 
+At first glance, it seemed way too complicated. However, the more I read it, the more it made sense.&lt;/p&gt;
+&lt;p&gt;I figured I'd give it a shot and run their python code before running &lt;code&gt;GitPython&lt;/code&gt; code. &lt;/p&gt;
+&lt;p&gt;I downloaded the &lt;code&gt;git&lt;/code&gt; binary from Amazon Repositories and added the &lt;code&gt;/tmp/&lt;/code&gt; path to my &lt;code&gt;$PATH&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Still this resulted in: &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git.exc.GitCommandNotFound: Cmd(&amp;#39;git&amp;#39;) not found due to: FileNotFoundError(&amp;#39;[Errno 2] No such file or directory: &amp;#39;git&amp;#39;: &amp;#39;git&amp;#39;&amp;#39;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;&lt;strong&gt;Solution&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;I was about to give up when I stumbled upon the following &lt;a href="https://github.com/lambci/git-lambda-layer"&gt;Lambda Layer&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This Lambda Layer promised to include the binaries for &lt;code&gt;ssh&lt;/code&gt; and &lt;code&gt;git&lt;/code&gt; regardless of the lambda runtime. &lt;/p&gt;
+&lt;p&gt;I had never used Lambda Layers before but remember attending a session about them at AWS re:Invent. &lt;/p&gt;
+&lt;p&gt;(Read about Lambda Layers &lt;a href="https://aws.amazon.com/blogs/aws/new-for-aws-lambda-use-any-programming-language-and-share-common-components/"&gt;here&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Seemed too simple. I had searched the internet for hours on a solution for installing git on AWS Lambda Functions. &lt;/p&gt;
+&lt;p&gt;I included the layer in my &lt;code&gt;serverless.yml&lt;/code&gt; file like so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  run-git:
+    handler: src/handler/run_git.lambda_handler
+    name: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-git
+    description: run git commands from lambda
+    memorySize: 256
+    timeout: 30
+    layers:
+      - arn:aws:lambda:us-west-2:553035198032:layer:git:5
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I deployed my function and BOOM! It worked. Just like that. My lambda function now included a ~layer~ that would allow me to use the &lt;code&gt;git&lt;/code&gt; binary. So simple. Now I could play
+around with &lt;code&gt;git&lt;/code&gt; in my lambda functions.&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;This should help you install &lt;code&gt;git&lt;/code&gt; on AWS Lambda functions and use the &lt;strong&gt;GitPython&lt;/strong&gt; python package.&lt;/p&gt;
+&lt;p&gt;PM me on LinkedIn if you have any questions! Info should be located on the left.&lt;/p&gt;
+&lt;p&gt;-- Miguel Lopez&lt;/p&gt;</content><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="python"></category><category term="cloud"></category><category term="layers"></category></entry><entry><title>Building Robust Packer AMIs</title><link href="http://www.devlo.io/packer-ami-apt-get.html" rel="alternate"></link><published>2018-11-16T00:00:00-07:00</published><updated>2018-11-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-11-16:/packer-ami-apt-get.html</id><summary type="html">&lt;p&gt;How to avoid &lt;code&gt;Could not get lock /var/lib/dpkg/lock&lt;/code&gt; while using Packer&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS EC2 (AWS AMI CentOS), Packer, Ubuntu 18.04
 Read: 10 minutes &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Hey everyone! Sorry for the absence. I started a new job in San Francisco that attracted my attetnion the past few months.&lt;/p&gt;
@@ -1216,25 +1347,25 @@ fabric
 
 
 &lt;p&gt;Then create a &lt;code&gt;.travis.yml&lt;/code&gt; file in the same folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;branches&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
-  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;only&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;only&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
   &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;master&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;language&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;python&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;python&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="nt"&gt;language&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;python&lt;/span&gt;
+&lt;span class="nt"&gt;python&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;2.7&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;install&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="nt"&gt;install&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;pip install -r requirements.txt&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;script&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="nt"&gt;script&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;make html&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;notifications&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
-  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;email&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
-    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;on_success&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
-    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;on_failure&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;env&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
-  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;global&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;before_install&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+&lt;span class="nt"&gt;notifications&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;email&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;on_success&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
+    &lt;span class="nt"&gt;on_failure&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;always&lt;/span&gt;
+&lt;span class="nt"&gt;env&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;global&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="nt"&gt;before_install&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
   &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;git submodule update --init --recursive&lt;/span&gt;
-&lt;span class="l l-Scalar l-Scalar-Plain"&gt;after_success&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bash deploy.sh&lt;/span&gt;
+&lt;span class="nt"&gt;after_success&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bash deploy.sh&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

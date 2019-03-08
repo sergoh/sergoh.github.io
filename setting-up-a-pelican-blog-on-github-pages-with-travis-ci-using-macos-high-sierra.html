@@ -373,25 +373,25 @@ fabric
 
 
 <p>Then create a <code>.travis.yml</code> file in the same folder:</p>
-<div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">branches</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">only</span><span class="p p-Indicator">:</span>
+<div class="highlight"><pre><span></span><span class="nt">branches</span><span class="p">:</span>
+  <span class="nt">only</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">master</span>
-<span class="l l-Scalar l-Scalar-Plain">language</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">python</span>
-<span class="l l-Scalar l-Scalar-Plain">python</span><span class="p p-Indicator">:</span>
+<span class="nt">language</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">python</span>
+<span class="nt">python</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">2.7</span>
-<span class="l l-Scalar l-Scalar-Plain">install</span><span class="p p-Indicator">:</span>
+<span class="nt">install</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
-<span class="l l-Scalar l-Scalar-Plain">script</span><span class="p p-Indicator">:</span>
+<span class="nt">script</span><span class="p">:</span>
 <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">make html</span>
-<span class="l l-Scalar l-Scalar-Plain">notifications</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">email</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">on_success</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
-    <span class="l l-Scalar l-Scalar-Plain">on_failure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
-<span class="l l-Scalar l-Scalar-Plain">env</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">global</span><span class="p p-Indicator">:</span>
-<span class="l l-Scalar l-Scalar-Plain">before_install</span><span class="p p-Indicator">:</span>
+<span class="nt">notifications</span><span class="p">:</span>
+  <span class="nt">email</span><span class="p">:</span>
+    <span class="nt">on_success</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
+    <span class="nt">on_failure</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="nt">env</span><span class="p">:</span>
+  <span class="nt">global</span><span class="p">:</span>
+<span class="nt">before_install</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">git submodule update --init --recursive</span>
-<span class="l l-Scalar l-Scalar-Plain">after_success</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">bash deploy.sh</span>
+<span class="nt">after_success</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bash deploy.sh</span>
 </pre></div>
 
 
