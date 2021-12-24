@@ -1,55 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo - terraform</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/terraform.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2021-12-01T00:00:00-07:00</updated><subtitle>The Lopez brothers' development blog</subtitle><entry><title>for_each loops w/ if statements in Terraform 0.12.6+</title><link href="http://www.devlo.io/terraform-for-each-if-statement.html" rel="alternate"></link><published>2021-12-01T00:00:00-07:00</published><updated>2021-12-01T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2021-12-01:/terraform-for-each-if-statement.html</id><summary type="html">&lt;p&gt;Real life example that demonstrates how to use for_each loops with an if conditional that determines if the resource is built or not.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: Terraform 0.12.6+
-Read: 5 minutes&lt;/p&gt;
-&lt;h2&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h2&gt;
-&lt;ul&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo - terraform</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/terraform.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2021-12-01T00:00:00-07:00</updated><subtitle>The Lopez brothers' development blog</subtitle><entry><title>for_each loops w/ if statements in Terraform 0.12.6+</title><link href="http://www.devlo.io/for-each-if-statements.html" rel="alternate"></link><published>2021-12-01T00:00:00-07:00</published><updated>2021-12-01T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2021-12-01:/for-each-if-statements.html</id><summary type="html">&lt;p class="first last"&gt;Real life example that demonstrates how to use for_each loops with an if conditional that determines if the resource is built or not.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;Technical Stack: Terraform 0.12.6+&lt;/p&gt;
+&lt;p&gt;Read: 5 minutes&lt;/p&gt;
+&lt;div class="section" id="prerequisites"&gt;
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+&lt;ul class="simple"&gt;
 &lt;li&gt;Terraform&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;These days, I recommend installing terraform with &lt;code&gt;tfenv&lt;/code&gt; and managing everything through there.&lt;/p&gt;
 &lt;p&gt;For mac users: &lt;code&gt;brew install tfenv &amp;amp;&amp;amp; tfenv install latest&lt;/code&gt;&lt;/p&gt;
-&lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;This tutorial will help you build Terraform resources in a &lt;code&gt;for_each&lt;/code&gt; loop with an &lt;code&gt;if&lt;/code&gt; statement conditional. That &lt;code&gt;if&lt;/code&gt; conditional will determine if &lt;code&gt;resource&lt;/code&gt; 
-is built or not.&lt;/p&gt;
-&lt;h2&gt;&lt;strong&gt;Building the For-Each Loop&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;Starting in Terraform &lt;code&gt;0.12.6+&lt;/code&gt; the &lt;code&gt;for_each&lt;/code&gt; loop was supported for all &lt;code&gt;resource&lt;/code&gt; and &lt;code&gt;module&lt;/code&gt; blocks in Terraform.&lt;/p&gt;
-&lt;p&gt;This was an incredibly powerful feature that enabled us to build complex &lt;code&gt;any&lt;/code&gt; blocks as inputs. You could define modules
-that had the same infrastructure goals but slightly different resources. &lt;/p&gt;
-&lt;hr&gt;
+&lt;/div&gt;
+&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This tutorial will help you build Terraform resources in a &lt;code&gt;for_each&lt;/code&gt; loop with an &lt;code&gt;if&lt;/code&gt; statement conditional.
+That &lt;code&gt;if&lt;/code&gt; conditional will determine if &lt;code&gt;resource&lt;/code&gt; is built or not.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="building-the-for-each-loop"&gt;
+&lt;h2&gt;Building the For-Each Loop&lt;/h2&gt;
+&lt;p&gt;Starting in &lt;code&gt;Terraform 0.12.6+&lt;/code&gt; the &lt;code&gt;for_each&lt;/code&gt; loop was supported for all &lt;code&gt;resource&lt;/code&gt; and &lt;code&gt;module&lt;/code&gt; blocks in Terraform.&lt;/p&gt;
+&lt;p&gt;This was an incredibly powerful feature that enabled us to build complex &lt;cite&gt;any&lt;/cite&gt; blocks as inputs. You could define modules
+that had the same infrastructure goals but slightly different resources.&lt;/p&gt;
+&lt;div class="section" id="background"&gt;
 &lt;h3&gt;Background&lt;/h3&gt;
-&lt;p&gt;Imagine you're building a microservice with API and worker services. Each service component will require an autoscaling group. 
-However, &lt;strong&gt;not&lt;/strong&gt; every autoscaling group requires a load balancer. &lt;/p&gt;
+&lt;p&gt;Imagine you're building a microservice with API and worker services. Each service component will require an autoscaling group.
+However, &lt;strong&gt;not&lt;/strong&gt; every autoscaling group requires a load balancer.&lt;/p&gt;
 &lt;p&gt;How can we build a module that does not require a load balancer for each service component being defined?&lt;/p&gt;
 &lt;p&gt;Take the following input as an example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-  &lt;span class="n"&gt;api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;instance_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;t4g&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;medium&lt;/span&gt;
-    &lt;span class="n"&gt;min_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="n"&gt;max_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="n"&gt;desired_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="n"&gt;load_balancer_enabled&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;true&lt;/span&gt;
-    &lt;span class="n"&gt;load_balancer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-      &lt;span class="n"&gt;internal&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;true&lt;/span&gt;
-      &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ommitted&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;simplicity&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="n"&gt;worker&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;instance_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;t4g&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;medium&lt;/span&gt;
-    &lt;span class="n"&gt;min_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="n"&gt;max_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="n"&gt;desired_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="n"&gt;load_balancer_enabled&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;false&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;em&gt;(represented as &lt;a href="https://www.terraform.io/language/functions/yamldecode"&gt;ymlencoded input&lt;/a&gt;, check out documentation for details)&lt;/em&gt;&lt;/p&gt;
-&lt;h3&gt;Building the Loop&lt;/h3&gt;
-&lt;p&gt;For this example, the &lt;code&gt;if&lt;/code&gt; statement lives inside the &lt;code&gt;for_each&lt;/code&gt; loop. Notice how I use &lt;code&gt;{ }&lt;/code&gt; around my loop. This tells 
-Terraform we are reducing our complex &lt;code&gt;var.services&lt;/code&gt; object based on the &lt;code&gt;if&lt;/code&gt; result.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;for_each = { for key, value in var.services : key =&amp;gt; value if value.load_balancer_enabled == true }&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;The most important bit of this line is &lt;code&gt;if value.load_balancer_enabled == true&lt;/code&gt;. If you take a look at my input above, 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;services&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;api&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;instance_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;t4g.medium&lt;/span&gt;
+    &lt;span class="nt"&gt;min_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
+    &lt;span class="nt"&gt;max_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
+    &lt;span class="nt"&gt;desired_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
+    &lt;span class="nt"&gt;load_balancer_enabled&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+    &lt;span class="nt"&gt;load_balancer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;internal&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+      &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;ommitted for simplicity&amp;gt;&lt;/span&gt;
+&lt;span class=" -Error"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;worker&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;instance_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;t4g.medium&lt;/span&gt;
+    &lt;span class="nt"&gt;min_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
+    &lt;span class="nt"&gt;max_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
+    &lt;span class="nt"&gt;desired_size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;1&lt;/span&gt;
+    &lt;span class="nt"&gt;load_balancer_enabled&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;false&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.terraform.io/language/functions/yamldecode"&gt;terraform input represented as ymlencoded input&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="building-the-for-each-loop-1"&gt;
+&lt;h3&gt;Building the for_each loop&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;for_each&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="err"&gt;for&lt;/span&gt; &lt;span class="err"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;var.services&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="na"&gt;key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;value.load_balancer_enabled&lt;/span&gt; &lt;span class="p"&gt;==&lt;/span&gt; &lt;span class="no"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this example, the &lt;code&gt;if&lt;/code&gt; statement lives inside the &lt;code&gt;for_each&lt;/code&gt; loop. Notice how I use &lt;code&gt;{ }&lt;/code&gt; around my loop. This tells
+Terraform we are reducing our complex &lt;cite&gt;var.services&lt;/cite&gt; object based on the &lt;code&gt;if&lt;/code&gt; result.&lt;/p&gt;
+&lt;p&gt;The most important bit of this line is &lt;code&gt;if value.load_balancer_enabled == true&lt;/code&gt;. If you take a look at my input above,
 you'll notice that the &lt;code&gt;worker&lt;/code&gt; has &lt;code&gt;load_balancer_enabled: false&lt;/code&gt;. This will result in the &lt;code&gt;if&lt;/code&gt; statement in our &lt;code&gt;for_each&lt;/code&gt;
-loop removing the &lt;code&gt;worker&lt;/code&gt; object from the loop. &lt;/p&gt;
-&lt;p&gt;Now only services that require will build out the load balancers they need. &lt;/p&gt;
+loop removing the &lt;code&gt;worker&lt;/code&gt; object from the loop.&lt;/p&gt;
+&lt;p&gt;Now only services that require will build out the load balancers they need.&lt;/p&gt;
 &lt;p&gt;This is an extremely useful trick for building dynamic modules with configurable resources.&lt;/p&gt;
 &lt;p&gt;Here is the full example on &lt;code&gt;load_balancer&lt;/code&gt; module:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;module&lt;/span&gt; &lt;span class="nv"&gt;&amp;quot;load_balancer&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;module&lt;/span&gt; &lt;span class="nv"&gt;&amp;quot;load_balancer&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="nb"&gt;for_each&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="err"&gt;for&lt;/span&gt; &lt;span class="err"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;var.services&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="na"&gt;key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;value.load_balancer_enabled&lt;/span&gt; &lt;span class="p"&gt;==&lt;/span&gt; &lt;span class="no"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
   &lt;span class="na"&gt;source&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;../load-balancer&amp;quot;&lt;/span&gt;&lt;span class="c1"&gt;  # custom module reference as an example&lt;/span&gt;
 
@@ -68,39 +76,47 @@ loop removing the &lt;code&gt;worker&lt;/code&gt; object from the loop. &lt;/p&g
   &lt;span class="na"&gt;extra_listener_rules&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;extra_listener_rules&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
   &lt;span class="na"&gt;extra_ssl_certs&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;extra_ssl_certs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3&gt;Additional Example&lt;/h3&gt;
-&lt;p&gt;The example above consumed a &lt;code&gt;load_balancer&lt;/code&gt; module in order to build the load balancer required by each service. &lt;/p&gt;
-&lt;p&gt;In case you wanted to see this &lt;code&gt;for_each&lt;/code&gt; loop on a &lt;code&gt;resource&lt;/code&gt;, I also included that. &lt;/p&gt;
-&lt;p&gt;In this example, we'll be using a complex variable called &lt;code&gt;extra_load_balancer&lt;/code&gt; to define array of objects that create 
-Terraform load balancers. Network load balancers will always require a VPC link in this scenario. &lt;/p&gt;
-&lt;p&gt;Inputs: &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;extra_load_balancers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-  &lt;span class="n"&gt;balancer_1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;load_balancer_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;application&lt;/span&gt;
-    &lt;span class="n"&gt;enable_deletion_protection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;false&lt;/span&gt;
-    &lt;span class="n"&gt;security_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="n"&gt;target_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-      &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ommitted&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;simplicity&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="n"&gt;balancer_2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;load_balancer_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;network&lt;/span&gt;
-    &lt;span class="n"&gt;enable_deletion_protection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;false&lt;/span&gt;
-    &lt;span class="n"&gt;security_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="n"&gt;target_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-      &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ommitted&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;simplicity&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Building the loop:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;resource&lt;/span&gt; &lt;span class="nc"&gt;&amp;quot;aws_api_gateway_vpc_link&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;&amp;quot;link&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="additional-example"&gt;
+&lt;h2&gt;Additional Example&lt;/h2&gt;
+&lt;p&gt;The example above consumed a &lt;code&gt;load_balancer&lt;/code&gt; module in order to build the load balancer required by each service.&lt;/p&gt;
+&lt;p&gt;In case you wanted to see this &lt;code&gt;for_each&lt;/code&gt; loop on a &lt;code&gt;resource&lt;/code&gt;, I also included that.&lt;/p&gt;
+&lt;p&gt;In this example, we'll be using a complex variable called &lt;code&gt;extra_load_balancer&lt;/code&gt; to define array of objects that create
+Terraform load balancers. Network load balancers will always require a VPC link in this scenario.&lt;/p&gt;
+&lt;div class="section" id="inputs"&gt;
+&lt;h3&gt;Inputs&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;extra_load_balancers:
+  balancer_1:
+    load_balancer_type: application
+    enable_deletion_protection: false
+    security_groups: [ ]
+    target_groups:
+      &amp;lt;ommitted for simplicity&amp;gt;
+  balancer_2:
+    load_balancer_type: network
+    enable_deletion_protection: false
+    security_groups: [ ]
+    target_groups:
+      &amp;lt;ommitted for simplicity&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="looping-through-a-resource"&gt;
+&lt;h3&gt;Looping through a Resource&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;resource&lt;/span&gt; &lt;span class="nc"&gt;&amp;quot;aws_api_gateway_vpc_link&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;&amp;quot;link&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="nb"&gt;for_each&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="err"&gt;for&lt;/span&gt; &lt;span class="err"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;var.extra_load_balancers&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="na"&gt;key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;if&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;load_balancer_type&amp;quot;, &amp;quot;application&amp;quot;) == &amp;quot;network&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
   &lt;span class="na"&gt;name&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;%s-%s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;each.key&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
   &lt;span class="na"&gt;target_arns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;module.extra_load_balancer[each.key].lb_arn&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 
   &lt;span class="na"&gt;depends_on&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;module.extra_load_balancer.lb_arn&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;Hope this helps!&lt;/p&gt;
-&lt;p&gt;-- Miguel Lopez&lt;/p&gt;</content><category term="terraform"></category><category term="terraform"></category><category term="logic"></category><category term="aws"></category><category term="if"></category><category term="loop"></category><category term="for-each"></category></entry></feed>
+&lt;p&gt;-- Miguel Lopez&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="terraform"></category><category term="terraform"></category><category term="logic"></category><category term="aws"></category><category term="if"></category><category term="loop"></category><category term="for-each"></category></entry></feed>
