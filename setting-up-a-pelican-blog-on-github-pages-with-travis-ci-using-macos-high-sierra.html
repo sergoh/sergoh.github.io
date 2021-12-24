@@ -157,105 +157,89 @@ so that anyone wanting to setup something similar can do so!</p>
 <h4>Bash profile setup</h4>
 <p>First thing is to make sure that we update the PATH to ensure that any Homebrew installations take precedence over stock macOS binaries.</p>
 <p>Open your <code>.bash_profile</code> using:</p>
-<div class="highlight"><pre><span></span>$ vim ~/.bash_profile
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ vim ~/.bash_profile
+</code></pre></div>
 
 <p>then add:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Ensure user-installed binaries take precedence</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ensure user-installed binaries take precedence</span>
 <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/share/python:<span class="nv">$PATH</span>
 <span class="c1"># Load .bashrc if it exists</span>
 <span class="nb">test</span> -f ~/.bashrc <span class="o">&amp;&amp;</span> <span class="nb">source</span> ~/.bashrc
-</pre></div>
-
+</code></pre></div>
 
 <p>Type <code>:wq</code> to write and save the <code>.bash_profile</code></p>
 <p>To have the directives take effect in the current session, without a restart needed. Type the following</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">source</span> ~/.bash_profile
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ <span class="nb">source</span> ~/.bash_profile
+</code></pre></div>
 
 <h4>Homebrew Install</h4>
 <p>Homebrew allows you to install stuff you need, quick and easy, that Apple didn't.</p>
 <p>To install paste the following in the terminal: </p>
-<div class="highlight"><pre><span></span>$ /usr/bin/ruby -e <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="k">)</span><span class="s2">&quot;</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ /usr/bin/ruby -e <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
 
 <p>Run the following:</p>
-<div class="highlight"><pre><span></span>$ brew doctor
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ brew doctor
+</code></pre></div>
 
 <p>To ensure that it installed correctly and see if anything needs to be addressed</p>
 <h4>Python Install</h4>
 <p>Now that Homebrew is installed, we can use it to install Python 2.7</p>
-<div class="highlight"><pre><span></span>$ brew install python@2
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ brew install python@2
+</code></pre></div>
 
 <p>Now, check what pythons are found on your OSX by typing:</p>
-<div class="highlight"><pre><span></span>$ which -a python
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ which -a python
+</code></pre></div>
 
 <p>There should be one python found at <code>/usr/bin/</code> (the Apple python) and one at <code>/usr/local/bin/</code> which is the Homebrew python.</p>
-<div class="highlight"><pre><span></span>$ which python
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ which python
+</code></pre></div>
 
 <p>will show you, which python is found first in your <code>$PATH</code> and will be executed when you invoke python.</p>
 <h4>Virtualenv Install</h4>
 <p>When you're working on python projects, you might run into the scenario where one project requires a specific version of a package
 and another project could require a newer version of that package. Now this could cause an issue if they were all installed 
 globally, in order to get around that I recommend we install Virtualenv</p>
-<div class="highlight"><pre><span></span>$ pip2 install virtualenv
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ pip2 install virtualenv
+</code></pre></div>
 
 <p>Once that is installed, we should create a directory to store our virtual environments. </p>
-<div class="highlight"><pre><span></span>$ mkdir -p ~/Virtualenvs
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ mkdir -p ~/Virtualenvs
+</code></pre></div>
 
 <h4>Restricting Pip to Virtual Environments</h4>
 <p>To ensure that pip will not install a package in global but only if a virtual environment is active, we need to create/update
 the pip configuration file.</p>
-<div class="highlight"><pre><span></span>$ mkdir -p ~/Library/Application<span class="se">\ </span>Support/pip
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ mkdir -p ~/Library/Application<span class="se">\ </span>Support/pip
+</code></pre></div>
 
 <p>We’ll then open Pip’s configuration file </p>
-<div class="highlight"><pre><span></span>$ vim ~/Library/Application<span class="se">\ </span>Support/pip/pip.conf
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ vim ~/Library/Application<span class="se">\ </span>Support/pip/pip.conf
+</code></pre></div>
 
 <p>add the following lines: </p>
-<div class="highlight"><pre><span></span><span class="o">[</span>install<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>install<span class="o">]</span>
 require-virtualenv <span class="o">=</span> <span class="nb">true</span>
 
 <span class="o">[</span>uninstall<span class="o">]</span>
 require-virtualenv <span class="o">=</span> <span class="nb">true</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2><strong>Create Pelican Virtual Environment </strong></h2>
 <p>With our MacOS configured we can now install pelican. First we create the virtual environment:</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~/Virtualenvs
+<div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> ~/Virtualenvs
 $ virtualenv pelican
-</pre></div>
-
+</code></pre></div>
 
 <p>and activate it via:</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> pelican
+<div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> pelican
 $ <span class="nb">source</span> bin/activate
-</pre></div>
-
+</code></pre></div>
 
 <p>Install pelican using pip2:</p>
-<div class="highlight"><pre><span></span>$ pip2 install pelican markdown typogrify
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ pip2 install pelican markdown typogrify
+</code></pre></div>
 
 <h2><strong>Setting up GitHub Pages</strong></h2>
 <p>To create a Github user page, make sure you're logged into github and create and initialize two new repositories:</p>
@@ -263,26 +247,23 @@ $ <span class="nb">source</span> bin/activate
 <p>The <em>yourusername.github.blog</em> repository will hold the source code of the blog and the  <em>yourusername.github.io</em> repository
 will hold the output HTML files that pelican generates.</p>
 <p>Next, you'll clone your <em>yourusername.github.blog</em> branch into your projects folder, if you don't have one. Go ahead and create one.</p>
-<div class="highlight"><pre><span></span>$ mkdir -p ~/Projects/
+<div class="highlight"><pre><span></span><code>$ mkdir -p ~/Projects/
 $ <span class="nb">cd</span> ~/Projects/
 $ git clone https://github.com/yourusername/yourusername.github.blog.git
-</pre></div>
-
+</code></pre></div>
 
 <h2><strong>Setting up Pelican</strong></h2>
 <p>Once Pelican has been installed, and your repositories are set up,  you can create a skeleton project via the pelican-quickstart command. First
 we need to switch to the directory of our project.</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~/Projects/yourusername.github.blog
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> ~/Projects/yourusername.github.blog
+</code></pre></div>
 
 <p>initiate pelican using the command: </p>
-<div class="highlight"><pre><span></span>$ pelican-quickstart
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ pelican-quickstart
+</code></pre></div>
 
 <p>It should ask you a series of questions:</p>
-<div class="highlight"><pre><span></span>$ Where <span class="k">do</span> you want to create your new web site? <span class="o">[</span>.<span class="o">]</span> ./
+<div class="highlight"><pre><span></span><code>$ Where <span class="k">do</span> you want to create your new web site? <span class="o">[</span>.<span class="o">]</span> ./
 $ What will be the title of this web site? blog
 $ Who will be the author of this web site? Your Name
 $ What will be the default language of this web site? <span class="o">[</span>pt<span class="o">]</span> en
@@ -300,45 +281,39 @@ $ Do you want to upload your website using Rackspace Cloud Files? <span class="o
 $ Do you want to upload your website using GitHub Pages? <span class="o">(</span>y/N<span class="o">)</span> y
 $ Is this your personal page <span class="o">(</span>yourusername.github.io<span class="o">)</span>? <span class="o">(</span>y/N<span class="o">)</span> y
 Done. Your new project is available at /home/yourusername/yourusername.github.io
-</pre></div>
-
+</code></pre></div>
 
 <h4>Picking a theme</h4>
 <p>The next step is to pick a theme for the blog, we can use this site <a href="http://www.pelicanthemes.com/">Pelican Themes</a> to see
 live examples of themes.</p>
 <p>Once a theme is picked you need create a submodule of the theme you want.
 Clone the pelican-themes repository into a submodule of <em>yourusername.github.blog</em>. For this example, I'm using the Flexi :</p>
-<div class="highlight"><pre><span></span>$ git submodule add git@github.com:alexandrevicenzi/Flex.git Flex
+<div class="highlight"><pre><span></span><code>$ git submodule add git@github.com:alexandrevicenzi/Flex.git Flex
 $ git submodule init
 $ git submodule update
-</pre></div>
-
+</code></pre></div>
 
 <p>Now you should have your pelican-themes repository stored at <em>~/Projects/yourusername.github.blog/Flex</em>.
 To use one of the themes, edit your Pelican settings file <code>pelicanconf.py</code> to include this line:</p>
-<div class="highlight"><pre><span></span><span class="nx">THEME</span> <span class="o">=</span> <span class="s2">&quot;./Flex&quot;</span>
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nx">THEME</span> <span class="o">=</span> <span class="s2">&quot;./Flex&quot;</span>
+</code></pre></div>
 
 <p>Save the changes and regenerate your site by using the make command </p>
-<div class="highlight"><pre><span></span>$ make devserver
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ make devserver
+</code></pre></div>
 
 <p>Which will simultaneously run Pelican in regeneration mode as well as serve the output at <code>http://localhost:8000</code>. 
 Once you are done viewing your changes, you should stop the development server via:</p>
-<div class="highlight"><pre><span></span>$ make stopserver
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ make stopserver
+</code></pre></div>
 
 <h4>Add Custom Domain to Blog</h4>
 <p>To use a custom domain with GitHub Pages, you need to put the domain of your site (e.g., blog.example.com)
 inside a CNAME file at the root of your site. To do this, create the content/extra/ directory and add a CNAME file to it.
 Then use the STATIC_PATHS setting to tell Pelican to copy this file to your output directory. For example:</p>
-<div class="highlight"><pre><span></span><span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="s1">&#39;extra/CNAME&#39;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="s1">&#39;extra/CNAME&#39;</span><span class="p">]</span>
 <span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;extra/CNAME&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="s1">&#39;CNAME&#39;</span><span class="p">},}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h4>Setting up Apex domain  DNS</h4>
 <p>You can set up an apex domain through your DNS provider and GitHub Pages' servers will automatically
@@ -356,24 +331,22 @@ Then use the STATIC_PATHS setting to tell Pelican to copy this file to your outp
 <p>To confirm that your DNS record is set up correctly, use the dig command with your custom domain. Using a custom domain as an example:</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span>$ dig +noall +answer example.com
+<div class="highlight"><pre><span></span><code>$ dig +noall +answer example.com
  example.com.   <span class="m">73</span>  IN  A <span class="m">192</span>.30.252.153
  example.com.   <span class="m">73</span>  IN  A <span class="m">192</span>.30.252.154
-</pre></div>
-
+</code></pre></div>
 
 <h2><strong>Setting up Travis CI</strong></h2>
 <p>Now we're going to setup Travis CI, which will allow us to deploy a new version of the blog everytime there is a commit to master.</p>
 <p>First, create a <code>requirements.txt</code> in the blog project folder:</p>
-<div class="highlight"><pre><span></span>pelican
+<div class="highlight"><pre><span></span><code>pelican
 Markdown
 typogrify
 fabric
-</pre></div>
-
+</code></pre></div>
 
 <p>Then create a <code>.travis.yml</code> file in the same folder:</p>
-<div class="highlight"><pre><span></span><span class="nt">branches</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">branches</span><span class="p">:</span>
   <span class="nt">only</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">master</span>
 <span class="nt">language</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">python</span>
@@ -392,11 +365,10 @@ fabric
 <span class="nt">before_install</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">git submodule update --init --recursive</span>
 <span class="nt">after_success</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bash deploy.sh</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Then add also the <code>deploy.sh</code> script and update the global variable with yours:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
 <span class="nv">BRANCH</span><span class="o">=</span>master
 <span class="nv">TARGET_REPO</span><span class="o">=</span>yourusername/yourusername.github.io.git
 <span class="nv">PELICAN_OUTPUT_FOLDER</span><span class="o">=</span>output
@@ -421,20 +393,17 @@ fabric
     git push -fq origin <span class="nv">$BRANCH</span> &gt; /dev/null
     <span class="nb">echo</span> -e <span class="s2">&quot;Deploy completed\n&quot;</span>
 <span class="k">fi</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Now we need to create the encrypted token under env global in order to let Travis CI intract withtthe repository.
 Login to the Github web interface to get an <a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">Authentication Token</a>, and then install the travis command line tool with:</p>
-<div class="highlight"><pre><span></span>$ sudo apt-get install ruby1.9.1-dev
+<div class="highlight"><pre><span></span><code>$ sudo apt-get install ruby1.9.1-dev
 $ sudo gem install travis
-</pre></div>
-
+</code></pre></div>
 
 <p>and run from inside the repository:</p>
-<div class="highlight"><pre><span></span>$ travis encrypt <span class="nv">GH_TOKEN</span><span class="o">=</span>AUTHENTICATIONTOKENFROMGITHUB --add env.global
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>$ travis encrypt <span class="nv">GH_TOKEN</span><span class="o">=</span>AUTHENTICATIONTOKENFROMGITHUB --add env.global
+</code></pre></div>
 
 <p>From now on, every time you commit a change to master, it should kick off a build in travis ci and push the code to your <em>yourusername.github.io</em></p>
 <p>Now go grab a drink, its well deserved! Cheers!</p>

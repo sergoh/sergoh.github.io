@@ -154,7 +154,7 @@
 <p>I recommend heading over to the <a href="https://jenkins.io/doc/book/pipeline/syntax/">Jenkins Pipeline documentation</a> if you've never heard of a Jenkinsfile. Writing your job as a Jenkinsfile is also known as <em>Jenkins-as-code</em> because it allows you to check your Jenkins job into source control. It allows you to version your build jobs and port them to other Jenkins boxes.</p>
 <h2><strong>Jenkins Credentials Store</strong></h2>
 <p>For the regular Jenkinsfile creators out there, you might be asking me why i'm using AWS Parameter Store to fetch credentials when Jenkins already has a <a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/#handling-credentials">credentials</a> store that looks something like this....</p>
-<div class="highlight"><pre><span></span>pipeline {
+<div class="highlight"><pre><span></span><code>pipeline {
     agent {
         // Define agent details here
     }
@@ -163,20 +163,18 @@
         AWS_SECRET_ACCESS_KEY = credentials(&#39;jenkins-aws-secret-access-key&#39;)
     }
 }
-</pre></div>
-
+</code></pre></div>
 
 <p>The answer is simple: portability of Jenkins jobs. I wanted to remove the dependency of my Jenkinsfiles depending on the credentials store on my Jenkins box being loaded up with parameters. </p>
 <p>I've seen some teams solve this issue by checking the environment variables into source control directly. </p>
-<div class="highlight"><pre><span></span>pipeline {
+<div class="highlight"><pre><span></span><code>pipeline {
     agent any
     environment { 
         env = &#39;stage&#39;
         secret = &#39;xxxxxxxxxxxxxxxx&#39;
     }
 }
-</pre></div>
-
+</code></pre></div>
 
 <p>However this isn't any better because it encourages you to possibly explose environment secrets or configurations via source control.</p>
 <h2><strong>AWS SSM</strong></h2>
@@ -188,16 +186,15 @@
 <li>AWS CLI installed on the box</li>
 </ul>
 <p>Here's how SSM looks in enviornment variables: </p>
-<div class="highlight"><pre><span></span>environment {
-        SECRET_ACCESS_KEY = &#39;$(aws ssm get-parameters --region $REGION --names /jenkins/nonprod/iam-role-secret --query Parameters[0].Value --with-decryption | sed \&#39;s/&quot;//g\&#39;)&#39;
-        ACCESS_KEY_ID = &#39;$(aws ssm get-parameters --region $REGION --names /jenkins/nonprod/iam-role-key --query Parameters[0].Value --with-decryption | sed \&#39;s/&quot;//g\&#39;)&#39;
-    }
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="n">environment</span> <span class="p">{</span>
+        <span class="n">SECRET_ACCESS_KEY</span> <span class="o">=</span> <span class="p">&#39;</span><span class="err">$</span><span class="p">(</span><span class="n">aws</span> <span class="n">ssm</span> <span class="n">get</span><span class="o">-</span><span class="n">parameters</span> <span class="o">--</span><span class="n">region</span> <span class="n">$REGION</span> <span class="o">--</span><span class="n">names</span> <span class="o">/</span><span class="n">jenkins</span><span class="o">/</span><span class="n">nonprod</span><span class="o">/</span><span class="n">iam</span><span class="o">-</span><span class="n">role</span><span class="o">-</span><span class="n">secret</span> <span class="o">--</span><span class="n">query</span> <span class="n">Parameters</span><span class="p">[</span><span class="mh">0</span><span class="p">].</span><span class="n">Value</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">decryption</span> <span class="o">|</span> <span class="n">sed</span> <span class="n">\&#39;s/&quot;//g\&#39;)&#39;</span>
+        <span class="n">ACCESS_KEY_ID</span> <span class="o">=</span> <span class="p">&#39;</span><span class="err">$</span><span class="p">(</span><span class="n">aws</span> <span class="n">ssm</span> <span class="n">get</span><span class="o">-</span><span class="n">parameters</span> <span class="o">--</span><span class="n">region</span> <span class="n">$REGION</span> <span class="o">--</span><span class="n">names</span> <span class="o">/</span><span class="n">jenkins</span><span class="o">/</span><span class="n">nonprod</span><span class="o">/</span><span class="n">iam</span><span class="o">-</span><span class="n">role</span><span class="o">-</span><span class="n">key</span> <span class="o">--</span><span class="n">query</span> <span class="n">Parameters</span><span class="p">[</span><span class="mh">0</span><span class="p">].</span><span class="n">Value</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">decryption</span> <span class="o">|</span> <span class="n">sed</span> <span class="n">\&#39;s/&quot;//g\&#39;)&#39;</span>
+    <span class="p">}</span>
+</code></pre></div>
 
 <p>Pretty simple right? Here you can see that the CLI commands are being loaded into <code>SECRET_ACCESS_KEY</code> and <code>ACCESS_KEY_ID</code>. It's important to note that the CLI commands will not be executed until they are run in a <code>sh</code> command in the <code>stages</code> section of your pipeline. </p>
 <p>Including the enviornment variables throughout your pipeline is easy. </p>
-<div class="highlight"><pre><span></span>stages {
+<div class="highlight"><pre><span></span><code>stages {
         stage (&#39;Initialize VPC&#39;) {
             steps {
                 dir(&#39;terraform&#39;){
@@ -207,8 +204,7 @@
                 }
             }
         }
-</pre></div>
-
+</code></pre></div>
 
 <p>There are two important things to note here. </p>
 <ol>

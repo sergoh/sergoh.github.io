@@ -158,9 +158,8 @@ Read: 5 minutes </p>
 <p>I've done my best to avoid installing any duplicates by checking if you've already installed the application in the /Applications folder of the Mac. </p>
 <h2><strong>Installation</strong></h2>
 <p>Once you've download the script, head to your downloads folder on terminal and run...</p>
-<div class="highlight"><pre><span></span>bash brew-install-mac-dev-environment.sh
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>bash brew-install-mac-dev-environment.sh
+</code></pre></div>
 
 <h2><strong>Packages Installed</strong></h2>
 <ul>
@@ -181,40 +180,37 @@ Read: 5 minutes </p>
 </ul>
 <p>Feel free to verify any of these packages after installation by checking your /Applications folder or checking for the instance in terminal. </p>
 <p>For example:</p>
-<div class="highlight"><pre><span></span>git --version
+<div class="highlight"><pre><span></span><code>git --version
 python --version
 pip3 --version
 node --version
-</pre></div>
-
+</code></pre></div>
 
 <p><em>If you don't need to extend the script, stop reading <strong>here</strong></em></p>
 <h2><strong>Packages it installs</strong></h2>
 <p>Extending the script is easy. </p>
 <p>If you wish to add other homebrew formulas, just add them at the end of the script. </p>
-<div class="highlight"><pre><span></span>## Install other miscellaneous tools
-brew install git
-brew install python
-brew install node
-brew install coreutils
-brew install &lt;your formula here&gt;
-.
-.
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="c1">## Install other miscellaneous tools</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">git</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">python</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">node</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">coreutils</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">formula</span> <span class="n">here</span><span class="o">&gt;</span>
+<span class="o">.</span>
+<span class="o">.</span>
+</code></pre></div>
 
 <p>If you wish to add another application, you'll need to use <code>brew cask install</code> and edit the script in two places.</p>
 <p><strong>1) Add to the application name to the application array list. (We'll add Skype as an example)</strong></p>
-<div class="highlight"><pre><span></span>## Applications we will install with `brew cask install`
-## additional applications can be added here if you wish to install them
-declare -a applications=( &quot;Skype&quot; Spotify Sourcetree Slack Docker iTerm &quot;IntelliJ Idea&quot; &quot;Google Chrome&quot; )
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>## <span class="nv">Applications</span> <span class="nv">we</span> <span class="nv">will</span> <span class="nv">install</span> <span class="nv">with</span> `<span class="nv">brew</span> <span class="nv">cask</span> <span class="nv">install</span>`
+## <span class="nv">additional</span> <span class="nv">applications</span> <span class="nv">can</span> <span class="nv">be</span> <span class="nv">added</span> <span class="nv">here</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">wish</span> <span class="nv">to</span> <span class="nv">install</span> <span class="nv">them</span>
+<span class="nv">declare</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">applications</span><span class="o">=</span><span class="ss">(</span> <span class="s2">&quot;</span><span class="s">Skype</span><span class="s2">&quot;</span> <span class="nv">Spotify</span> <span class="nv">Sourcetree</span> <span class="nv">Slack</span> <span class="nv">Docker</span> <span class="nv">iTerm</span> <span class="s2">&quot;</span><span class="s">IntelliJ Idea</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="s">Google Chrome</span><span class="s2">&quot;</span> <span class="ss">)</span>
+</code></pre></div>
 
 <p>Skype is capitalized because it would be saved to your /Applciations folder as Skype.app (the script will use this to make sure the application isn't already installed).</p>
 <p>Next, search for the application <code>cask-name</code> on the <a href="https://caskroom.github.io/search">cask room search</a>.</p>
 <p><strong>2) Add to the switch case statement and call brew_install with the cask-name pulled from the search</strong></p>
-<div class="highlight"><pre><span></span> case $1 in
+<div class="highlight"><pre><span></span><code> case $1 in
       Slack) brew_install slack;;
       Docker) brew_install docker;;
       iTerm) brew_install iterm2;;
@@ -225,8 +221,7 @@ declare -a applications=( &quot;Skype&quot; Spotify Sourcetree Slack Docker iTer
       Skype) brew_install skype;;
       *) echo &quot;Add $1 to check_before_install() to install additional applications.&quot; ;;
     esac
-</pre></div>
-
+</code></pre></div>
 
 <p>Again, keep the switch case key captilaized because it reflects the application name under the /Application folder. Next, we will pass the <code>cask-name</code> to the <code>`brew_install</code> function inside the shell script. </p>
 <h2><strong>Conclusion</strong></h2>

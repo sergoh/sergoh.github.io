@@ -171,37 +171,34 @@ running <strong>Terraform</strong>, <strong>Terragrunt</strong> and <strong>git<
 <h2><strong>GitPython</strong></h2>
 <p><strong>GitPython</strong> is a library built on git commands, therefore, it requires the git binary to be installed.</p>
 <p>Install it in your python package by running the following pip command or including it in your requirements file. </p>
-<div class="highlight"><pre><span></span>pip install GitPython
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>pip install GitPython
+</code></pre></div>
 
 <h2><strong>First Issues</strong></h2>
 <p>Here was my initial lambda function as defined in my <code>serverless.yml</code>:</p>
-<div class="highlight"><pre><span></span>  run-git:
+<div class="highlight"><pre><span></span><code>  run-git:
     handler: src/handler/run_git.lambda_handler
     name: <span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">provider</span><span class="o">.</span><span class="n">stage</span><span class="cp">}</span>-<span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">service</span><span class="cp">}</span>-git
     description: run git commands from lambda
     memorySize: 256
     timeout: 30
-</pre></div>
-
+</code></pre></div>
 
 <p>The lambda handle at <code>run_git.lambda_handler</code> ran the following python code:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">git</span> <span class="kn">import</span> <span class="n">Repo</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">git</span> <span class="kn">import</span> <span class="n">Repo</span>
 
 <span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
 
     <span class="n">project_name</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;github_project&#39;</span><span class="p">]</span>
     <span class="n">org</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;github_org&#39;</span><span class="p">]</span>
     <span class="n">git_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">org</span><span class="p">,</span> <span class="n">project_name</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Downloading repo from </span><span class="si">%s</span><span class="s2">............&quot;</span> <span class="o">%</span> <span class="n">git_url</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading repo from </span><span class="si">%s</span><span class="s2">............&quot;</span> <span class="o">%</span> <span class="n">git_url</span><span class="p">)</span>
     <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="o">.</span><span class="n">clone_from</span><span class="p">(</span><span class="n">git_url</span><span class="p">,</span> <span class="s1">&#39;/tmp/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">project_name</span><span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The code was simple, it would download a github project and store it in the <code>/tmp/</code>.</p>
 <p>Should have been easy until I ran into this error:</p>
-<div class="highlight"><pre><span></span><span class="n">Unable</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">module</span> <span class="s1">&#39;src/handler/run_git&#39;</span><span class="p">:</span> <span class="n">Failed</span> <span class="n">to</span> <span class="n">initialize</span><span class="p">:</span> <span class="n">Bad</span> <span class="n">git</span> <span class="n">executable</span><span class="o">.</span>
+<div class="highlight"><pre><span></span><code><span class="n">Unable</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">module</span> <span class="s1">&#39;src/handler/run_git&#39;</span><span class="p">:</span> <span class="n">Failed</span> <span class="n">to</span> <span class="n">initialize</span><span class="p">:</span> <span class="n">Bad</span> <span class="n">git</span> <span class="n">executable</span><span class="o">.</span>
 <span class="n">The</span> <span class="n">git</span> <span class="n">executable</span> <span class="n">must</span> <span class="n">be</span> <span class="n">specified</span> <span class="ow">in</span> <span class="n">one</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">ways</span><span class="p">:</span>
     <span class="o">-</span> <span class="n">be</span> <span class="n">included</span> <span class="ow">in</span> <span class="n">your</span> <span class="err">$</span><span class="n">PATH</span>
     <span class="o">-</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">via</span> <span class="err">$</span><span class="n">GIT_PYTHON_GIT_EXECUTABLE</span>
@@ -217,31 +214,29 @@ running <strong>Terraform</strong>, <strong>Terragrunt</strong> and <strong>git<
 
 <span class="n">Example</span><span class="p">:</span>
     <span class="n">export</span> <span class="n">GIT_PYTHON_REFRESH</span><span class="o">=</span><span class="n">quiet</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Looking for a quick solution; I immediately put <code>GIT_PYTHON_REFRESH=quiet</code> in to the <code>ENVIRONMENT</code> variables section of my Lambda function. </p>
 <p>That resulted in:</p>
-<div class="highlight"><pre><span></span>Cmd(&#39;git&#39;) not found due to: FileNotFoundError(&#39;[Errno 2] No such file or directory: &#39;git&#39;: &#39;git&#39;&#39;)
-  cmdline: git clone -v https://github.com/hearsaycorp/hearsay-messages /tmp/hearsay-messages: GitCommandNotFound
-Traceback (most recent call last):
-  File &quot;/var/task/src/handler/run_terraform.py&quot;, line 13, in lambda_handler
-    download_hearsay_repo(repo_name, git_hash)
-  File &quot;/var/task/src/utils/github_utils.py&quot;, line 16, in download_hearsay_repo
-    repo = Repo.clone_from(git_url, &#39;/tmp/%s&#39; % project_name)
-  File &quot;/var/task/git/repo/base.py&quot;, line 988, in clone_from
-    return cls._clone(git, url, to_path, GitCmdObjectDB, progress, **kwargs)
-  File &quot;/var/task/git/repo/base.py&quot;, line 933, in _clone
-    v=True, universal_newlines=True, **add_progress(kwargs, git, progress))
-  File &quot;/var/task/git/cmd.py&quot;, line 548, in &lt;lambda&gt;
-    return lambda *args, **kwargs: self._call_process(name, *args, **kwargs)
-  File &quot;/var/task/git/cmd.py&quot;, line 1014, in _call_process
-    return self.execute(call, **exec_kwargs)
-  File &quot;/var/task/git/cmd.py&quot;, line 738, in execute
-    raise GitCommandNotFound(command, err)
-git.exc.GitCommandNotFound: Cmd(&#39;git&#39;) not found due to: FileNotFoundError(&#39;[Errno 2] No such file or directory: &#39;git&#39;: &#39;git&#39;&#39;)
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="n">Cmd</span><span class="p">(</span><span class="s1">&#39;git&#39;</span><span class="p">)</span> <span class="ow">not</span> <span class="n">found</span> <span class="n">due</span> <span class="n">to</span><span class="p">:</span> <span class="n">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;[Errno 2] No such file or directory: &#39;</span><span class="n">git</span><span class="s1">&#39;: &#39;</span><span class="n">git</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+  <span class="n">cmdline</span><span class="p">:</span> <span class="n">git</span> <span class="n">clone</span> <span class="o">-</span><span class="n">v</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hearsaycorp</span><span class="o">/</span><span class="n">hearsay</span><span class="o">-</span><span class="n">messages</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hearsay</span><span class="o">-</span><span class="n">messages</span><span class="p">:</span> <span class="n">GitCommandNotFound</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/src/handler/run_terraform.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">13</span><span class="p">,</span> <span class="ow">in</span> <span class="n">lambda_handler</span>
+    <span class="n">download_hearsay_repo</span><span class="p">(</span><span class="n">repo_name</span><span class="p">,</span> <span class="n">git_hash</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/src/utils/github_utils.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">16</span><span class="p">,</span> <span class="ow">in</span> <span class="n">download_hearsay_repo</span>
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="o">.</span><span class="n">clone_from</span><span class="p">(</span><span class="n">git_url</span><span class="p">,</span> <span class="s1">&#39;/tmp/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">project_name</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/repo/base.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">988</span><span class="p">,</span> <span class="ow">in</span> <span class="n">clone_from</span>
+    <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="n">git</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">to_path</span><span class="p">,</span> <span class="n">GitCmdObjectDB</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/repo/base.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">933</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_clone</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="o">**</span><span class="n">add_progress</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">git</span><span class="p">,</span> <span class="n">progress</span><span class="p">))</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">548</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">lambda</span><span class="o">&gt;</span>
+    <span class="k">return</span> <span class="n">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_process</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1014</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_call_process</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="o">**</span><span class="n">exec_kwargs</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">738</span><span class="p">,</span> <span class="ow">in</span> <span class="n">execute</span>
+    <span class="n">raise</span> <span class="n">GitCommandNotFound</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+<span class="n">git</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">GitCommandNotFound</span><span class="p">:</span> <span class="n">Cmd</span><span class="p">(</span><span class="s1">&#39;git&#39;</span><span class="p">)</span> <span class="ow">not</span> <span class="n">found</span> <span class="n">due</span> <span class="n">to</span><span class="p">:</span> <span class="n">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;[Errno 2] No such file or directory: &#39;</span><span class="n">git</span><span class="s1">&#39;: &#39;</span><span class="n">git</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 <p>That error made it clear to me. AWS Lambda functions did not come bundled with <code>git</code> executables in the runtime container. Therefore, <strong>GitPython</strong> 
 could not run commands against <code>git</code> in the container's <code>$PATH</code>. </p>
@@ -252,9 +247,8 @@ At first glance, it seemed way too complicated. However, the more I read it, the
 <p>I figured I'd give it a shot and run their python code before running <code>GitPython</code> code. </p>
 <p>I downloaded the <code>git</code> binary from Amazon Repositories and added the <code>/tmp/</code> path to my <code>$PATH</code>.</p>
 <p>Still this resulted in: </p>
-<div class="highlight"><pre><span></span>git.exc.GitCommandNotFound: Cmd(&#39;git&#39;) not found due to: FileNotFoundError(&#39;[Errno 2] No such file or directory: &#39;git&#39;: &#39;git&#39;&#39;)
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>git.exc.GitCommandNotFound: Cmd(&#39;git&#39;) not found due to: FileNotFoundError(&#39;[Errno 2] No such file or directory: &#39;git&#39;: &#39;git&#39;&#39;)
+</code></pre></div>
 
 <h2><strong>Solution</strong></h2>
 <p>I was about to give up when I stumbled upon the following <a href="https://github.com/lambci/git-lambda-layer">Lambda Layer</a>.</p>
@@ -263,7 +257,7 @@ At first glance, it seemed way too complicated. However, the more I read it, the
 <p>(Read about Lambda Layers <a href="https://aws.amazon.com/blogs/aws/new-for-aws-lambda-use-any-programming-language-and-share-common-components/">here</a>)</p>
 <p>Seemed too simple. I had searched the internet for hours on a solution for installing git on AWS Lambda Functions. </p>
 <p>I included the layer in my <code>serverless.yml</code> file like so:</p>
-<div class="highlight"><pre><span></span>  run-git:
+<div class="highlight"><pre><span></span><code>  run-git:
     handler: src/handler/run_git.lambda_handler
     name: <span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">provider</span><span class="o">.</span><span class="n">stage</span><span class="cp">}</span>-<span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">service</span><span class="cp">}</span>-git
     description: run git commands from lambda
@@ -271,8 +265,7 @@ At first glance, it seemed way too complicated. However, the more I read it, the
     timeout: 30
     layers:
       - arn:aws:lambda:us-west-2:553035198032:layer:git:5
-</pre></div>
-
+</code></pre></div>
 
 <p>I deployed my function and BOOM! It worked. Just like that. My lambda function now included a ~layer~ that would allow me to use the <code>git</code> binary. So simple. Now I could play
 around with <code>git</code> in my lambda functions.</p>

@@ -22,37 +22,34 @@ running &lt;strong&gt;Terraform&lt;/strong&gt;, &lt;strong&gt;Terragrunt&lt;/str
 &lt;h2&gt;&lt;strong&gt;GitPython&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;GitPython&lt;/strong&gt; is a library built on git commands, therefore, it requires the git binary to be installed.&lt;/p&gt;
 &lt;p&gt;Install it in your python package by running the following pip command or including it in your requirements file. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install GitPython
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip install GitPython
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;&lt;strong&gt;First Issues&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Here was my initial lambda function as defined in my &lt;code&gt;serverless.yml&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  run-git:
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  run-git:
     handler: src/handler/run_git.lambda_handler
     name: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-git
     description: run git commands from lambda
     memorySize: 256
     timeout: 30
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The lambda handle at &lt;code&gt;run_git.lambda_handler&lt;/code&gt; ran the following python code:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;git&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Repo&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;git&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Repo&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;lambda_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 
     &lt;span class="n"&gt;project_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;github_project&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="n"&gt;org&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;github_org&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="n"&gt;git_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;https://github.com/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;project_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Downloading repo from &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;............&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;git_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Downloading repo from &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s2"&gt;............&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;git_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="n"&gt;repo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;clone_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;git_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/tmp/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;project_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The code was simple, it would download a github project and store it in the &lt;code&gt;/tmp/&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Should have been easy until I ran into this error:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;module&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;src/handler/run_git&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Failed&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Bad&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;module&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;src/handler/run_git&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Failed&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Bad&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
 &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;executable&lt;/span&gt; &lt;span class="n"&gt;must&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;specified&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;one&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="n"&gt;ways&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;
     &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="nb"&gt;set&lt;/span&gt; &lt;span class="n"&gt;via&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;GIT_PYTHON_GIT_EXECUTABLE&lt;/span&gt;
@@ -68,31 +65,29 @@ running &lt;strong&gt;Terraform&lt;/strong&gt;, &lt;strong&gt;Terragrunt&lt;/str
 
 &lt;span class="n"&gt;Example&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;GIT_PYTHON_REFRESH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;quiet&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Looking for a quick solution; I immediately put &lt;code&gt;GIT_PYTHON_REFRESH=quiet&lt;/code&gt; in to the &lt;code&gt;ENVIRONMENT&lt;/code&gt; variables section of my Lambda function. &lt;/p&gt;
 &lt;p&gt;That resulted in:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Cmd(&amp;#39;git&amp;#39;) not found due to: FileNotFoundError(&amp;#39;[Errno 2] No such file or directory: &amp;#39;git&amp;#39;: &amp;#39;git&amp;#39;&amp;#39;)
-  cmdline: git clone -v https://github.com/hearsaycorp/hearsay-messages /tmp/hearsay-messages: GitCommandNotFound
-Traceback (most recent call last):
-  File &amp;quot;/var/task/src/handler/run_terraform.py&amp;quot;, line 13, in lambda_handler
-    download_hearsay_repo(repo_name, git_hash)
-  File &amp;quot;/var/task/src/utils/github_utils.py&amp;quot;, line 16, in download_hearsay_repo
-    repo = Repo.clone_from(git_url, &amp;#39;/tmp/%s&amp;#39; % project_name)
-  File &amp;quot;/var/task/git/repo/base.py&amp;quot;, line 988, in clone_from
-    return cls._clone(git, url, to_path, GitCmdObjectDB, progress, **kwargs)
-  File &amp;quot;/var/task/git/repo/base.py&amp;quot;, line 933, in _clone
-    v=True, universal_newlines=True, **add_progress(kwargs, git, progress))
-  File &amp;quot;/var/task/git/cmd.py&amp;quot;, line 548, in &amp;lt;lambda&amp;gt;
-    return lambda *args, **kwargs: self._call_process(name, *args, **kwargs)
-  File &amp;quot;/var/task/git/cmd.py&amp;quot;, line 1014, in _call_process
-    return self.execute(call, **exec_kwargs)
-  File &amp;quot;/var/task/git/cmd.py&amp;quot;, line 738, in execute
-    raise GitCommandNotFound(command, err)
-git.exc.GitCommandNotFound: Cmd(&amp;#39;git&amp;#39;) not found due to: FileNotFoundError(&amp;#39;[Errno 2] No such file or directory: &amp;#39;git&amp;#39;: &amp;#39;git&amp;#39;&amp;#39;)
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;Cmd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;git&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;found&lt;/span&gt; &lt;span class="n"&gt;due&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;FileNotFoundError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;[Errno 2] No such file or directory: &amp;#39;&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;: &amp;#39;&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;cmdline&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;clone&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;hearsaycorp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;hearsay&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;hearsay&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;GitCommandNotFound&lt;/span&gt;
+&lt;span class="n"&gt;Traceback&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;most&lt;/span&gt; &lt;span class="n"&gt;recent&lt;/span&gt; &lt;span class="n"&gt;call&lt;/span&gt; &lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/task/src/handler/run_terraform.py&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;lambda_handler&lt;/span&gt;
+    &lt;span class="n"&gt;download_hearsay_repo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;repo_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;git_hash&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/task/src/utils/github_utils.py&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;download_hearsay_repo&lt;/span&gt;
+    &lt;span class="n"&gt;repo&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Repo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;clone_from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;git_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/tmp/&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;project_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/task/git/repo/base.py&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;988&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;clone_from&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cls&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_clone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to_path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GitCmdObjectDB&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/task/git/repo/base.py&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;933&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;_clone&lt;/span&gt;
+    &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;universal_newlines&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;add_progress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;progress&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/task/git/cmd.py&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;548&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;lambda&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_call_process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/task/git/cmd.py&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;1014&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;_call_process&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;execute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;exec_kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;File&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/task/git/cmd.py&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="mi"&gt;738&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;execute&lt;/span&gt;
+    &lt;span class="n"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;GitCommandNotFound&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;err&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;GitCommandNotFound&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Cmd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;git&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;found&lt;/span&gt; &lt;span class="n"&gt;due&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;FileNotFoundError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;[Errno 2] No such file or directory: &amp;#39;&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;: &amp;#39;&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That error made it clear to me. AWS Lambda functions did not come bundled with &lt;code&gt;git&lt;/code&gt; executables in the runtime container. Therefore, &lt;strong&gt;GitPython&lt;/strong&gt; 
 could not run commands against &lt;code&gt;git&lt;/code&gt; in the container's &lt;code&gt;$PATH&lt;/code&gt;. &lt;/p&gt;
@@ -103,9 +98,8 @@ At first glance, it seemed way too complicated. However, the more I read it, the
 &lt;p&gt;I figured I'd give it a shot and run their python code before running &lt;code&gt;GitPython&lt;/code&gt; code. &lt;/p&gt;
 &lt;p&gt;I downloaded the &lt;code&gt;git&lt;/code&gt; binary from Amazon Repositories and added the &lt;code&gt;/tmp/&lt;/code&gt; path to my &lt;code&gt;$PATH&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Still this resulted in: &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git.exc.GitCommandNotFound: Cmd(&amp;#39;git&amp;#39;) not found due to: FileNotFoundError(&amp;#39;[Errno 2] No such file or directory: &amp;#39;git&amp;#39;: &amp;#39;git&amp;#39;&amp;#39;)
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git.exc.GitCommandNotFound: Cmd(&amp;#39;git&amp;#39;) not found due to: FileNotFoundError(&amp;#39;[Errno 2] No such file or directory: &amp;#39;git&amp;#39;: &amp;#39;git&amp;#39;&amp;#39;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;&lt;strong&gt;Solution&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;I was about to give up when I stumbled upon the following &lt;a href="https://github.com/lambci/git-lambda-layer"&gt;Lambda Layer&lt;/a&gt;.&lt;/p&gt;
@@ -114,7 +108,7 @@ At first glance, it seemed way too complicated. However, the more I read it, the
 &lt;p&gt;(Read about Lambda Layers &lt;a href="https://aws.amazon.com/blogs/aws/new-for-aws-lambda-use-any-programming-language-and-share-common-components/"&gt;here&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Seemed too simple. I had searched the internet for hours on a solution for installing git on AWS Lambda Functions. &lt;/p&gt;
 &lt;p&gt;I included the layer in my &lt;code&gt;serverless.yml&lt;/code&gt; file like so:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;  run-git:
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  run-git:
     handler: src/handler/run_git.lambda_handler
     name: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;-git
     description: run git commands from lambda
@@ -122,49 +116,45 @@ At first glance, it seemed way too complicated. However, the more I read it, the
     timeout: 30
     layers:
       - arn:aws:lambda:us-west-2:553035198032:layer:git:5
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I deployed my function and BOOM! It worked. Just like that. My lambda function now included a ~layer~ that would allow me to use the &lt;code&gt;git&lt;/code&gt; binary. So simple. Now I could play
 around with &lt;code&gt;git&lt;/code&gt; in my lambda functions.&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;This should help you install &lt;code&gt;git&lt;/code&gt; on AWS Lambda functions and use the &lt;strong&gt;GitPython&lt;/strong&gt; python package.&lt;/p&gt;
 &lt;p&gt;PM me on LinkedIn if you have any questions! Info should be located on the left.&lt;/p&gt;
-&lt;p&gt;-- Miguel Lopez&lt;/p&gt;</content><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="python"></category><category term="cloud"></category><category term="layers"></category></entry><entry><title>Solving Connectivity Issues w/ Global Protect</title><link href="http://www.devlo.io/global-protect-issues.html" rel="alternate"></link><published>2018-04-13T00:00:00-07:00</published><updated>2018-04-13T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-13:/global-protect-issues.html</id><summary type="html">&lt;p&gt;Solving Connectivity Issues on Global Protect&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Resend Credential Error&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;-- Miguel Lopez&lt;/p&gt;</content><category term="tutorials"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="python"></category><category term="cloud"></category><category term="layers"></category></entry><entry><title>Solving Connectivity Issues w/ Global Protect</title><link href="http://www.devlo.io/global-protect-issues.html" rel="alternate"></link><published>2018-04-13T00:00:00-07:00</published><updated>2018-04-13T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-13:/global-protect-issues.html</id><summary type="html">&lt;p&gt;Solving Connectivity Issues on Global Protect&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Resend Credential Error&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;I recently got a new Mac at work and spent the past 8 hours trying to solve connectivity issues with Global Protect.&lt;/p&gt;
 &lt;p&gt;My global protect would throw out this generic error that said:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Resend Credential
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;Resend&lt;/span&gt; &lt;span class="nv"&gt;Credential&lt;/span&gt;
 
-Cannot connect to service socket
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;span class="nv"&gt;Cannot&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;service&lt;/span&gt; &lt;span class="nv"&gt;socket&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I was able to poke around and find the logs for this issue at &lt;code&gt;~/Library/Logs/PaloAltoNetworks/GlobalProtect/PanGPA.log&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;I ran a &lt;code&gt;tail -f&lt;/code&gt; on that log and found the following trace:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;P 595-T771   Apr 10 20:40:42:225745 Info ( 291): InitConnection ...
-P 595-T771   Apr 10 20:40:42:225785 Info (  59): fd still open before connect
-P 595-T771   Apr 10 20:40:42:225988 Info (  80): Failed to connect to server at port:4767
-P 595-T771   Apr 10 20:40:42:226004 Info ( 295): Cannot connect to service, error: 61
-P 595-T771   Apr 10 20:40:42:226010 Debug( 474): Unable to connect to Pan Service
-P 595-T771   Apr 10 20:40:47:225540 Info ( 291): InitConnection ...
-P 595-T771   Apr 10 20:40:47:225581 Info (  59): fd still open before connect
-P 595-T771   Apr 10 20:40:47:225782 Info (  80): Failed to connect to server at port:4767
-P 595-T771   Apr 10 20:40:47:225799 Info ( 295): Cannot connect to service, error: 61
-P 595-T771   Apr 10 20:40:47:225805 Debug( 474): Unable to connect to Pan Service
-P 595-T771   Apr 10 20:40:52:226040 Info ( 291): InitConnection ...
-P 595-T771   Apr 10 20:40:52:226069 Info (  59): fd still open before connect
-P 595-T771   Apr 10 20:40:52:226206 Info (  80): Failed to connect to server at port:4767
-P 595-T771   Apr 10 20:40:52:226218 Info ( 295): Cannot connect to service, error: 61
-P 595-T771   Apr 10 20:40:52:226223 Debug( 474): Unable to connect to Pan Service
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;42&lt;/span&gt;:&lt;span class="mi"&gt;225745&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;291&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;InitConnection&lt;/span&gt; ...
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;42&lt;/span&gt;:&lt;span class="mi"&gt;225785&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;  &lt;span class="mi"&gt;59&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;fd&lt;/span&gt; &lt;span class="nv"&gt;still&lt;/span&gt; &lt;span class="nv"&gt;open&lt;/span&gt; &lt;span class="nv"&gt;before&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;42&lt;/span&gt;:&lt;span class="mi"&gt;225988&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;  &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Failed&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;server&lt;/span&gt; &lt;span class="nv"&gt;at&lt;/span&gt; &lt;span class="nv"&gt;port&lt;/span&gt;:&lt;span class="mi"&gt;4767&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;42&lt;/span&gt;:&lt;span class="mi"&gt;226004&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;295&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Cannot&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;service&lt;/span&gt;, &lt;span class="nv"&gt;error&lt;/span&gt;: &lt;span class="mi"&gt;61&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;42&lt;/span&gt;:&lt;span class="mi"&gt;226010&lt;/span&gt; &lt;span class="nv"&gt;Debug&lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;474&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Unable&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;Pan&lt;/span&gt; &lt;span class="nv"&gt;Service&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;47&lt;/span&gt;:&lt;span class="mi"&gt;225540&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;291&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;InitConnection&lt;/span&gt; ...
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;47&lt;/span&gt;:&lt;span class="mi"&gt;225581&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;  &lt;span class="mi"&gt;59&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;fd&lt;/span&gt; &lt;span class="nv"&gt;still&lt;/span&gt; &lt;span class="nv"&gt;open&lt;/span&gt; &lt;span class="nv"&gt;before&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;47&lt;/span&gt;:&lt;span class="mi"&gt;225782&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;  &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Failed&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;server&lt;/span&gt; &lt;span class="nv"&gt;at&lt;/span&gt; &lt;span class="nv"&gt;port&lt;/span&gt;:&lt;span class="mi"&gt;4767&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;47&lt;/span&gt;:&lt;span class="mi"&gt;225799&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;295&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Cannot&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;service&lt;/span&gt;, &lt;span class="nv"&gt;error&lt;/span&gt;: &lt;span class="mi"&gt;61&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;47&lt;/span&gt;:&lt;span class="mi"&gt;225805&lt;/span&gt; &lt;span class="nv"&gt;Debug&lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;474&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Unable&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;Pan&lt;/span&gt; &lt;span class="nv"&gt;Service&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;52&lt;/span&gt;:&lt;span class="mi"&gt;226040&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;291&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;InitConnection&lt;/span&gt; ...
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;52&lt;/span&gt;:&lt;span class="mi"&gt;226069&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;  &lt;span class="mi"&gt;59&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;fd&lt;/span&gt; &lt;span class="nv"&gt;still&lt;/span&gt; &lt;span class="nv"&gt;open&lt;/span&gt; &lt;span class="nv"&gt;before&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;52&lt;/span&gt;:&lt;span class="mi"&gt;226206&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;  &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Failed&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;server&lt;/span&gt; &lt;span class="nv"&gt;at&lt;/span&gt; &lt;span class="nv"&gt;port&lt;/span&gt;:&lt;span class="mi"&gt;4767&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;52&lt;/span&gt;:&lt;span class="mi"&gt;226218&lt;/span&gt; &lt;span class="nv"&gt;Info&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;295&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Cannot&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;service&lt;/span&gt;, &lt;span class="nv"&gt;error&lt;/span&gt;: &lt;span class="mi"&gt;61&lt;/span&gt;
+&lt;span class="nv"&gt;P&lt;/span&gt; &lt;span class="mi"&gt;595&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;T771&lt;/span&gt;   &lt;span class="nv"&gt;Apr&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;40&lt;/span&gt;:&lt;span class="mi"&gt;52&lt;/span&gt;:&lt;span class="mi"&gt;226223&lt;/span&gt; &lt;span class="nv"&gt;Debug&lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;474&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;: &lt;span class="nv"&gt;Unable&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="k"&gt;connect&lt;/span&gt; &lt;span class="nv"&gt;to&lt;/span&gt; &lt;span class="nv"&gt;Pan&lt;/span&gt; &lt;span class="nv"&gt;Service&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Over and over again.&lt;/p&gt;
 &lt;p&gt;As it turns out, this was because Global Protect could not connect to an agent called the pangps service. You can check if this service is loaded by running the following command in your terminal.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangpa.plist
-launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;launchctl&lt;/span&gt; &lt;span class="nb"&gt;load&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Library&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;LaunchAgents&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;paloaltonetworks&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pangpa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plist&lt;/span&gt;
+&lt;span class="n"&gt;launchctl&lt;/span&gt; &lt;span class="nb"&gt;load&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Library&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;LaunchAgents&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;paloaltonetworks&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pangps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plist&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;If you're ~lucky~ like me, you'll see that the service is running. So what the hell right? Why isn't Pan Service working???&lt;/p&gt;
 &lt;hr&gt;
@@ -178,7 +168,7 @@ launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist
 &lt;/ol&gt;
 &lt;p&gt;Once you reinstall, head back over to the "Security and Privacy" settings. You'll see a prompt that asks if Global Protect is allowed to run on this machine. Click yes. &lt;/p&gt;
 &lt;p&gt;&lt;img alt="Security and Privacy" src="http://cdn.osxdaily.com/wp-content/uploads/2016/09/gatekeeper-allow-apps-anywhere-macos-2.jpg" title="Security and Privacy"&gt;&lt;/p&gt;
-&lt;p&gt;By this point you should able to connect to Global Protect. If not, i'm sorry. Best of luck :(&lt;/p&gt;</content><category term="mac"></category><category term="vpn"></category></entry><entry><title>Managing Envrionments on Serverless Framework</title><link href="http://www.devlo.io/serverless-environments.html" rel="alternate"></link><published>2018-04-02T00:00:00-07:00</published><updated>2018-04-02T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-02:/serverless-environments.html</id><summary type="html">&lt;p&gt;Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Lambda, Java 8 
+&lt;p&gt;By this point you should able to connect to Global Protect. If not, i'm sorry. Best of luck :(&lt;/p&gt;</content><category term="tutorials"></category><category term="mac"></category><category term="vpn"></category></entry><entry><title>Managing Envrionments on Serverless Framework</title><link href="http://www.devlo.io/serverless-environments.html" rel="alternate"></link><published>2018-04-02T00:00:00-07:00</published><updated>2018-04-02T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-02:/serverless-environments.html</id><summary type="html">&lt;p&gt;Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Lambda, Java 8 
 Read: 10 minutes &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h2&gt;
 &lt;ul&gt;
@@ -205,7 +195,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;Serverless Framework uses a serverless.yml file to deploy your functions to a cloud provider. &lt;/p&gt;
 &lt;p&gt;Here is a basic example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;aws&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;simple&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;endpoint&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;aws&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;simple&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;endpoint&lt;/span&gt;
 
 &lt;span class="n"&gt;frameworkVersion&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;gt;=1.2.0 &amp;lt;2.0.0&amp;quot;&lt;/span&gt;
 
@@ -223,14 +213,13 @@ Read: 10 minutes &lt;/p&gt;
       &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
           &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ping&lt;/span&gt;
           &lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;get&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes to deploy their boilerplate function &lt;a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Building Environments in Serverless&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;A creative way to build environments on your serverless.yml file is to take advantage of the serverless variable system. The Serverless variable system allows you to reference other yml files by loading them into a variable. This will be the bread and butter of the pattern i'm about to show you.&lt;/p&gt;
 &lt;p&gt;For example: &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;custom&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;custom&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
   &lt;span class="n"&gt;configFile&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;$&lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="o"&gt;(./&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;$&lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;stage&lt;/span&gt;&lt;span class="o"&gt;}.&lt;/span&gt;&lt;span class="n"&gt;yml&lt;/span&gt;&lt;span class="o"&gt;)}&lt;/span&gt;
 
 &lt;span class="n"&gt;provider&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
@@ -241,8 +230,7 @@ Read: 10 minutes &lt;/p&gt;
   &lt;span class="n"&gt;profile&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;personal&lt;/span&gt;
 
   &lt;span class="n"&gt;vpc&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;$&lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;custom&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;configFile&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;vpc&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ul&gt;
 &lt;li&gt;if &lt;code&gt;sls deploy --stage prod&lt;/code&gt; is ran, the &lt;code&gt;provider.stage&lt;/code&gt; variable in the yml will be set to &lt;code&gt;prod&lt;/code&gt;&lt;/li&gt;
@@ -254,7 +242,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;p&gt;Likewise, if you ran &lt;code&gt;sls deploy --stage test&lt;/code&gt;, the stage variablle would be set to &lt;code&gt;test&lt;/code&gt; and the &lt;code&gt;test.yml&lt;/code&gt; would be loaded into &lt;code&gt;custom.configFile&lt;/code&gt;. &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Organizing your environmentfiles&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;I'd recommend laying out your files in the following pattern:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;| configs 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;| configs 
 | - dev.yml
 | - test.yml
 | - stage.yml
@@ -267,12 +255,11 @@ Read: 10 minutes &lt;/p&gt;
 | - - - - example
 | - - - - - ExampleHandler
 | serverless.yml
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;A typical config file will look like this:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;dev.yml&lt;/em&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;region: &amp;quot;us-east-2&amp;quot;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;region: &amp;quot;us-east-2&amp;quot;
 
 APNS_BASE_ARN: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;ssm&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;NONPROD&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;apns&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;development&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
 GCM_BASE_ARN: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;ssm&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;NONPROD&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;gcm&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;development&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
@@ -280,13 +267,12 @@ GCM_BASE_ARN: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;ssm&lt
 KMS_KEY: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;ssm&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;NONPROD&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;security&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kms&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
 ELASTICACHE_CONFIGURATION_ENDPOINT: &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;ssm&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;DEV&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;memcached&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;connection&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;
 MEMCACHED_DEFAULT_TTL_VALUE: &amp;quot;604800&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the &lt;code&gt;MEMCACHED_DEFAULT_TTL_VALUE:&lt;/code&gt; needs to be &lt;code&gt;172800&lt;/code&gt; in PROD as opposed to the &lt;code&gt;604800&lt;/code&gt; in DEV. You could call different SSM values or even define different VPC Security Groups and Subnets. &lt;/p&gt;
 &lt;p&gt;This pattern gives you a clear-readable format for your environment config files that are loaded into the parent &lt;code&gt;serverless.yml&lt;/code&gt; file. &lt;/p&gt;
 &lt;p&gt;Here is a general &lt;code&gt;serverless.yml&lt;/code&gt; that will use the following &lt;code&gt;dev.yml&lt;/code&gt; file. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;aws&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;aws&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;
 
 &lt;span class="n"&gt;frameworkVersion&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;gt;=1.2.0 &amp;lt;2.0.0&amp;quot;&lt;/span&gt;
 
@@ -309,14 +295,13 @@ MEMCACHED_DEFAULT_TTL_VALUE: &amp;quot;604800&amp;quot;
 
         &lt;span class="n"&gt;ELASTICACHE_CONFIGURATION_ENDPOINT&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;$&lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;custom&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;configFile&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;ELASTICACHE_CONFIGURATION_ENDPOINT&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
         &lt;span class="n"&gt;MEMCACHED_DEFAULT_TTL_VALUE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;$&lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;custom&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;configFile&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;MEMCACHED_DEFAULT_TTL_VALUE&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code&gt;APNS_BAS_ARN&lt;/code&gt;, &lt;code&gt;GCM_BASE_ARN&lt;/code&gt;, &lt;code&gt;ELASTICACHE_CONFIGURATION_ENDPOINT&lt;/code&gt;, and &lt;code&gt;MEMCACHED_DEFAULT_TTL_VALUE&lt;/code&gt; variables are loaded from the &lt;code&gt;custom.configFile&lt;/code&gt; file we loaded earlier with &lt;code&gt;sls deploy --stage {env}&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Tip: &lt;code&gt;${opt:stage, 'dev'}&lt;/code&gt; just means to use the text passed in after the &lt;code&gt;--stage&lt;/code&gt; cli argument. If no &lt;code&gt;--stage&lt;/code&gt; argument is used then default to &lt;code&gt;dev&lt;/code&gt;.&lt;/em&gt; &lt;/p&gt;
 &lt;h3&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;I've found this file pattern to be extremely useful for defining my AWS resources throughout serverless.yml. It gives me full control over what I'm passing to the serverless.yml file for each of my lambda environments. &lt;/p&gt;
-&lt;p&gt;You can find an example of the config pattern i've discussed &lt;a href="https://github.com/lopezm1/java-aws-template/tree/master/app-lambda"&gt;here&lt;/a&gt;.&lt;/p&gt;</content><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="java"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;You can find an example of the config pattern i've discussed &lt;a href="https://github.com/lopezm1/java-aws-template/tree/master/app-lambda"&gt;here&lt;/a&gt;.&lt;/p&gt;</content><category term="tutorials"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="java"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Setting up this blog was not a difficult task, but it did some digging around the internet to get everything up and 
 running the way my brother and I visioned our blog. I'm going to document the steps I followed from start to finish, combined from all those resources, 
 so that anyone wanting to setup something similar can do so!&lt;/p&gt;
@@ -324,105 +309,89 @@ so that anyone wanting to setup something similar can do so!&lt;/p&gt;
 &lt;h4&gt;Bash profile setup&lt;/h4&gt;
 &lt;p&gt;First thing is to make sure that we update the PATH to ensure that any Homebrew installations take precedence over stock macOS binaries.&lt;/p&gt;
 &lt;p&gt;Open your &lt;code&gt;.bash_profile&lt;/code&gt; using:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ vim ~/.bash_profile
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ vim ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;then add:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Ensure user-installed binaries take precedence&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Ensure user-installed binaries take precedence&lt;/span&gt;
 &lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/share/python:&lt;span class="nv"&gt;$PATH&lt;/span&gt;
 &lt;span class="c1"&gt;# Load .bashrc if it exists&lt;/span&gt;
 &lt;span class="nb"&gt;test&lt;/span&gt; -f ~/.bashrc &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;source&lt;/span&gt; ~/.bashrc
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Type &lt;code&gt;:wq&lt;/code&gt; to write and save the &lt;code&gt;.bash_profile&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;To have the directives take effect in the current session, without a restart needed. Type the following&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;source&lt;/span&gt; ~/.bash_profile
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ &lt;span class="nb"&gt;source&lt;/span&gt; ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;Homebrew Install&lt;/h4&gt;
 &lt;p&gt;Homebrew allows you to install stuff you need, quick and easy, that Apple didn't.&lt;/p&gt;
 &lt;p&gt;To install paste the following in the terminal: &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ /usr/bin/ruby -e &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ /usr/bin/ruby -e &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Run the following:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ brew doctor
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew doctor
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To ensure that it installed correctly and see if anything needs to be addressed&lt;/p&gt;
 &lt;h4&gt;Python Install&lt;/h4&gt;
 &lt;p&gt;Now that Homebrew is installed, we can use it to install Python 2.7&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ brew install python@2
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ brew install python@2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now, check what pythons are found on your OSX by typing:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ which -a python
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ which -a python
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;There should be one python found at &lt;code&gt;/usr/bin/&lt;/code&gt; (the Apple python) and one at &lt;code&gt;/usr/local/bin/&lt;/code&gt; which is the Homebrew python.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ which python
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ which python
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;will show you, which python is found first in your &lt;code&gt;$PATH&lt;/code&gt; and will be executed when you invoke python.&lt;/p&gt;
 &lt;h4&gt;Virtualenv Install&lt;/h4&gt;
 &lt;p&gt;When you're working on python projects, you might run into the scenario where one project requires a specific version of a package
 and another project could require a newer version of that package. Now this could cause an issue if they were all installed 
 globally, in order to get around that I recommend we install Virtualenv&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip2 install virtualenv
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ pip2 install virtualenv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Once that is installed, we should create a directory to store our virtual environments. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p ~/Virtualenvs
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ mkdir -p ~/Virtualenvs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;Restricting Pip to Virtual Environments&lt;/h4&gt;
 &lt;p&gt;To ensure that pip will not install a package in global but only if a virtual environment is active, we need to create/update
 the pip configuration file.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p ~/Library/Application&lt;span class="se"&gt;\ &lt;/span&gt;Support/pip
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ mkdir -p ~/Library/Application&lt;span class="se"&gt;\ &lt;/span&gt;Support/pip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We’ll then open Pip’s configuration file &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ vim ~/Library/Application&lt;span class="se"&gt;\ &lt;/span&gt;Support/pip/pip.conf
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ vim ~/Library/Application&lt;span class="se"&gt;\ &lt;/span&gt;Support/pip/pip.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;add the following lines: &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;install&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;install&lt;span class="o"&gt;]&lt;/span&gt;
 require-virtualenv &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
 
 &lt;span class="o"&gt;[&lt;/span&gt;uninstall&lt;span class="o"&gt;]&lt;/span&gt;
 require-virtualenv &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;&lt;strong&gt;Create Pelican Virtual Environment &lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;With our MacOS configured we can now install pelican. First we create the virtual environment:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Virtualenvs
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Virtualenvs
 $ virtualenv pelican
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;and activate it via:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; pelican
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; pelican
 $ &lt;span class="nb"&gt;source&lt;/span&gt; bin/activate
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Install pelican using pip2:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip2 install pelican markdown typogrify
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ pip2 install pelican markdown typogrify
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;&lt;strong&gt;Setting up GitHub Pages&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;To create a Github user page, make sure you're logged into github and create and initialize two new repositories:&lt;/p&gt;
@@ -430,26 +399,23 @@ $ &lt;span class="nb"&gt;source&lt;/span&gt; bin/activate
 &lt;p&gt;The &lt;em&gt;yourusername.github.blog&lt;/em&gt; repository will hold the source code of the blog and the  &lt;em&gt;yourusername.github.io&lt;/em&gt; repository
 will hold the output HTML files that pelican generates.&lt;/p&gt;
 &lt;p&gt;Next, you'll clone your &lt;em&gt;yourusername.github.blog&lt;/em&gt; branch into your projects folder, if you don't have one. Go ahead and create one.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p ~/Projects/
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ mkdir -p ~/Projects/
 $ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/
 $ git clone https://github.com/yourusername/yourusername.github.blog.git
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;&lt;strong&gt;Setting up Pelican&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Once Pelican has been installed, and your repositories are set up,  you can create a skeleton project via the pelican-quickstart command. First
 we need to switch to the directory of our project.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/yourusername.github.blog
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ &lt;span class="nb"&gt;cd&lt;/span&gt; ~/Projects/yourusername.github.blog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;initiate pelican using the command: &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pelican-quickstart
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ pelican-quickstart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;It should ask you a series of questions:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ Where &lt;span class="k"&gt;do&lt;/span&gt; you want to create your new web site? &lt;span class="o"&gt;[&lt;/span&gt;.&lt;span class="o"&gt;]&lt;/span&gt; ./
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ Where &lt;span class="k"&gt;do&lt;/span&gt; you want to create your new web site? &lt;span class="o"&gt;[&lt;/span&gt;.&lt;span class="o"&gt;]&lt;/span&gt; ./
 $ What will be the title of this web site? blog
 $ Who will be the author of this web site? Your Name
 $ What will be the default language of this web site? &lt;span class="o"&gt;[&lt;/span&gt;pt&lt;span class="o"&gt;]&lt;/span&gt; en
@@ -467,45 +433,39 @@ $ Do you want to upload your website using Rackspace Cloud Files? &lt;span class
 $ Do you want to upload your website using GitHub Pages? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; y
 $ Is this your personal page &lt;span class="o"&gt;(&lt;/span&gt;yourusername.github.io&lt;span class="o"&gt;)&lt;/span&gt;? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; y
 Done. Your new project is available at /home/yourusername/yourusername.github.io
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;Picking a theme&lt;/h4&gt;
 &lt;p&gt;The next step is to pick a theme for the blog, we can use this site &lt;a href="http://www.pelicanthemes.com/"&gt;Pelican Themes&lt;/a&gt; to see
 live examples of themes.&lt;/p&gt;
 &lt;p&gt;Once a theme is picked you need create a submodule of the theme you want.
 Clone the pelican-themes repository into a submodule of &lt;em&gt;yourusername.github.blog&lt;/em&gt;. For this example, I'm using the Flexi :&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git submodule add git@github.com:alexandrevicenzi/Flex.git Flex
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ git submodule add git@github.com:alexandrevicenzi/Flex.git Flex
 $ git submodule init
 $ git submodule update
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now you should have your pelican-themes repository stored at &lt;em&gt;~/Projects/yourusername.github.blog/Flex&lt;/em&gt;.
 To use one of the themes, edit your Pelican settings file &lt;code&gt;pelicanconf.py&lt;/code&gt; to include this line:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nx"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;./Flex&amp;quot;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nx"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;./Flex&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Save the changes and regenerate your site by using the make command &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make devserver
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ make devserver
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Which will simultaneously run Pelican in regeneration mode as well as serve the output at &lt;code&gt;http://localhost:8000&lt;/code&gt;. 
 Once you are done viewing your changes, you should stop the development server via:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ make stopserver
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ make stopserver
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;Add Custom Domain to Blog&lt;/h4&gt;
 &lt;p&gt;To use a custom domain with GitHub Pages, you need to put the domain of your site (e.g., blog.example.com)
 inside a CNAME file at the root of your site. To do this, create the content/extra/ directory and add a CNAME file to it.
 Then use the STATIC_PATHS setting to tell Pelican to copy this file to your output directory. For example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;images&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;extra/CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;images&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;extra/CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;extra/CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;path&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;CNAME&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;Setting up Apex domain  DNS&lt;/h4&gt;
 &lt;p&gt;You can set up an apex domain through your DNS provider and GitHub Pages' servers will automatically
@@ -523,24 +483,22 @@ Then use the STATIC_PATHS setting to tell Pelican to copy this file to your outp
 &lt;p&gt;To confirm that your DNS record is set up correctly, use the dig command with your custom domain. Using a custom domain as an example:&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ dig +noall +answer example.com
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ dig +noall +answer example.com
  example.com.   &lt;span class="m"&gt;73&lt;/span&gt;  IN  A &lt;span class="m"&gt;192&lt;/span&gt;.30.252.153
  example.com.   &lt;span class="m"&gt;73&lt;/span&gt;  IN  A &lt;span class="m"&gt;192&lt;/span&gt;.30.252.154
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;&lt;strong&gt;Setting up Travis CI&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Now we're going to setup Travis CI, which will allow us to deploy a new version of the blog everytime there is a commit to master.&lt;/p&gt;
 &lt;p&gt;First, create a &lt;code&gt;requirements.txt&lt;/code&gt; in the blog project folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pelican
 Markdown
 typogrify
 fabric
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Then create a &lt;code&gt;.travis.yml&lt;/code&gt; file in the same folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
   &lt;span class="nt"&gt;only&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
   &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;master&lt;/span&gt;
 &lt;span class="nt"&gt;language&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;python&lt;/span&gt;
@@ -559,11 +517,10 @@ fabric
 &lt;span class="nt"&gt;before_install&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
   &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;git submodule update --init --recursive&lt;/span&gt;
 &lt;span class="nt"&gt;after_success&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bash deploy.sh&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Then add also the &lt;code&gt;deploy.sh&lt;/code&gt; script and update the global variable with yours:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
 &lt;span class="nv"&gt;BRANCH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;master
 &lt;span class="nv"&gt;TARGET_REPO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;yourusername/yourusername.github.io.git
 &lt;span class="nv"&gt;PELICAN_OUTPUT_FOLDER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;output
@@ -588,20 +545,17 @@ fabric
     git push -fq origin &lt;span class="nv"&gt;$BRANCH&lt;/span&gt; &amp;gt; /dev/null
     &lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;Deploy completed\n&amp;quot;&lt;/span&gt;
 &lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now we need to create the encrypted token under env global in order to let Travis CI intract withtthe repository.
 Login to the Github web interface to get an &lt;a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/"&gt;Authentication Token&lt;/a&gt;, and then install the travis command line tool with:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo apt-get install ruby1.9.1-dev
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ sudo apt-get install ruby1.9.1-dev
 $ sudo gem install travis
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;and run from inside the repository:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ travis encrypt &lt;span class="nv"&gt;GH_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;AUTHENTICATIONTOKENFROMGITHUB --add env.global
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ travis encrypt &lt;span class="nv"&gt;GH_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;AUTHENTICATIONTOKENFROMGITHUB --add env.global
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;From now on, every time you commit a change to master, it should kick off a build in travis ci and push the code to your &lt;em&gt;yourusername.github.io&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Now go grab a drink, its well deserved! Cheers!&lt;/p&gt;
@@ -617,4 +571,4 @@ $ sudo gem install travis
 &lt;p&gt;&lt;em&gt;https://help.github.com/articles/using-a-custom-domain-with-github-pages/&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;https://zonca.github.io/2013/09/automatically-build-pelican-and-publish-to-github-pages.html&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;https://docs.travis-ci.com/user/github-oauth-scopes&lt;/em&gt;&lt;/p&gt;</content><category term="pelican"></category><category term="mac"></category><category term="python"></category><category term="blog"></category><category term="setup"></category><category term="travis-ci"></category><category term="github pages"></category></entry></feed>
+&lt;p&gt;&lt;em&gt;https://docs.travis-ci.com/user/github-oauth-scopes&lt;/em&gt;&lt;/p&gt;</content><category term="tutorials"></category><category term="pelican"></category><category term="mac"></category><category term="python"></category><category term="blog"></category><category term="setup"></category><category term="travis-ci"></category><category term="github pages"></category></entry></feed>

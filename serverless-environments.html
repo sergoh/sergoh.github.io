@@ -174,7 +174,7 @@ Read: 10 minutes </p>
 </ul>
 <p>Serverless Framework uses a serverless.yml file to deploy your functions to a cloud provider. </p>
 <p>Here is a basic example:</p>
-<div class="highlight"><pre><span></span><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span>
+<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span>
 
 <span class="n">frameworkVersion</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
 
@@ -192,14 +192,13 @@ Read: 10 minutes </p>
       <span class="o">-</span> <span class="n">http</span><span class="o">:</span>
           <span class="n">path</span><span class="o">:</span> <span class="n">ping</span>
           <span class="n">method</span><span class="o">:</span> <span class="kd">get</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes to deploy their boilerplate function <a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/">here</a>.</p>
 <h2><strong>Building Environments in Serverless</strong></h2>
 <p>A creative way to build environments on your serverless.yml file is to take advantage of the serverless variable system. The Serverless variable system allows you to reference other yml files by loading them into a variable. This will be the bread and butter of the pattern i'm about to show you.</p>
 <p>For example: </p>
-<div class="highlight"><pre><span></span><span class="n">custom</span><span class="o">:</span>
+<div class="highlight"><pre><span></span><code><span class="n">custom</span><span class="o">:</span>
   <span class="n">configFile</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">file</span><span class="o">(./</span><span class="n">config</span><span class="o">/</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}.</span><span class="n">yml</span><span class="o">)}</span>
 
 <span class="n">provider</span><span class="o">:</span>
@@ -210,8 +209,7 @@ Read: 10 minutes </p>
   <span class="n">profile</span><span class="o">:</span> <span class="n">personal</span>
 
   <span class="n">vpc</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">vpc</span><span class="o">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <ul>
 <li>if <code>sls deploy --stage prod</code> is ran, the <code>provider.stage</code> variable in the yml will be set to <code>prod</code></li>
@@ -223,7 +221,7 @@ Read: 10 minutes </p>
 <p>Likewise, if you ran <code>sls deploy --stage test</code>, the stage variablle would be set to <code>test</code> and the <code>test.yml</code> would be loaded into <code>custom.configFile</code>. </p>
 <h2><strong>Organizing your environmentfiles</strong></h2>
 <p>I'd recommend laying out your files in the following pattern:</p>
-<div class="highlight"><pre><span></span>| configs 
+<div class="highlight"><pre><span></span><code>| configs 
 | - dev.yml
 | - test.yml
 | - stage.yml
@@ -236,12 +234,11 @@ Read: 10 minutes </p>
 | - - - - example
 | - - - - - ExampleHandler
 | serverless.yml
-</pre></div>
-
+</code></pre></div>
 
 <p>A typical config file will look like this:</p>
 <p><em>dev.yml</em></p>
-<div class="highlight"><pre><span></span>region: &quot;us-east-2&quot;
+<div class="highlight"><pre><span></span><code>region: &quot;us-east-2&quot;
 
 APNS_BASE_ARN: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">apns</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
 GCM_BASE_ARN: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">gcm</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
@@ -249,13 +246,12 @@ GCM_BASE_ARN: <span class="cp">${</span><span class="n">ssm</span><span class="p
 KMS_KEY: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">security</span><span class="o">/</span><span class="n">default</span><span class="o">-</span><span class="n">kms</span><span class="o">-</span><span class="n">key</span><span class="cp">}</span>
 ELASTICACHE_CONFIGURATION_ENDPOINT: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">DEV</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">memcached</span><span class="o">/</span><span class="n">connection</span><span class="o">-</span><span class="n">url</span><span class="cp">}</span>
 MEMCACHED_DEFAULT_TTL_VALUE: &quot;604800&quot;
-</pre></div>
-
+</code></pre></div>
 
 <p>This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the <code>MEMCACHED_DEFAULT_TTL_VALUE:</code> needs to be <code>172800</code> in PROD as opposed to the <code>604800</code> in DEV. You could call different SSM values or even define different VPC Security Groups and Subnets. </p>
 <p>This pattern gives you a clear-readable format for your environment config files that are loaded into the parent <code>serverless.yml</code> file. </p>
 <p>Here is a general <code>serverless.yml</code> that will use the following <code>dev.yml</code> file. </p>
-<div class="highlight"><pre><span></span><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">sample</span>
+<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">sample</span>
 
 <span class="n">frameworkVersion</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
 
@@ -278,8 +274,7 @@ MEMCACHED_DEFAULT_TTL_VALUE: &quot;604800&quot;
 
         <span class="n">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">}</span>
         <span class="n">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>The <code>APNS_BAS_ARN</code>, <code>GCM_BASE_ARN</code>, <code>ELASTICACHE_CONFIGURATION_ENDPOINT</code>, and <code>MEMCACHED_DEFAULT_TTL_VALUE</code> variables are loaded from the <code>custom.configFile</code> file we loaded earlier with <code>sls deploy --stage {env}</code>.</p>
 <p><em>Tip: <code>${opt:stage, 'dev'}</code> just means to use the text passed in after the <code>--stage</code> cli argument. If no <code>--stage</code> argument is used then default to <code>dev</code>.</em> </p>

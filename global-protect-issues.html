@@ -147,38 +147,35 @@
     <h2><strong>Resend Credential Error</strong></h2>
 <p>I recently got a new Mac at work and spent the past 8 hours trying to solve connectivity issues with Global Protect.</p>
 <p>My global protect would throw out this generic error that said:</p>
-<div class="highlight"><pre><span></span>Resend Credential
+<div class="highlight"><pre><span></span><code><span class="nv">Resend</span> <span class="nv">Credential</span>
 
-Cannot connect to service socket
-</pre></div>
-
+<span class="nv">Cannot</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">service</span> <span class="nv">socket</span>
+</code></pre></div>
 
 <p>I was able to poke around and find the logs for this issue at <code>~/Library/Logs/PaloAltoNetworks/GlobalProtect/PanGPA.log</code>.</p>
 <p>I ran a <code>tail -f</code> on that log and found the following trace:</p>
-<div class="highlight"><pre><span></span>P 595-T771   Apr 10 20:40:42:225745 Info ( 291): InitConnection ...
-P 595-T771   Apr 10 20:40:42:225785 Info (  59): fd still open before connect
-P 595-T771   Apr 10 20:40:42:225988 Info (  80): Failed to connect to server at port:4767
-P 595-T771   Apr 10 20:40:42:226004 Info ( 295): Cannot connect to service, error: 61
-P 595-T771   Apr 10 20:40:42:226010 Debug( 474): Unable to connect to Pan Service
-P 595-T771   Apr 10 20:40:47:225540 Info ( 291): InitConnection ...
-P 595-T771   Apr 10 20:40:47:225581 Info (  59): fd still open before connect
-P 595-T771   Apr 10 20:40:47:225782 Info (  80): Failed to connect to server at port:4767
-P 595-T771   Apr 10 20:40:47:225799 Info ( 295): Cannot connect to service, error: 61
-P 595-T771   Apr 10 20:40:47:225805 Debug( 474): Unable to connect to Pan Service
-P 595-T771   Apr 10 20:40:52:226040 Info ( 291): InitConnection ...
-P 595-T771   Apr 10 20:40:52:226069 Info (  59): fd still open before connect
-P 595-T771   Apr 10 20:40:52:226206 Info (  80): Failed to connect to server at port:4767
-P 595-T771   Apr 10 20:40:52:226218 Info ( 295): Cannot connect to service, error: 61
-P 595-T771   Apr 10 20:40:52:226223 Debug( 474): Unable to connect to Pan Service
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">42</span>:<span class="mi">225745</span> <span class="nv">Info</span> <span class="ss">(</span> <span class="mi">291</span><span class="ss">)</span>: <span class="nv">InitConnection</span> ...
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">42</span>:<span class="mi">225785</span> <span class="nv">Info</span> <span class="ss">(</span>  <span class="mi">59</span><span class="ss">)</span>: <span class="nv">fd</span> <span class="nv">still</span> <span class="nv">open</span> <span class="nv">before</span> <span class="k">connect</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">42</span>:<span class="mi">225988</span> <span class="nv">Info</span> <span class="ss">(</span>  <span class="mi">80</span><span class="ss">)</span>: <span class="nv">Failed</span> <span class="nv">to</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">server</span> <span class="nv">at</span> <span class="nv">port</span>:<span class="mi">4767</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">42</span>:<span class="mi">226004</span> <span class="nv">Info</span> <span class="ss">(</span> <span class="mi">295</span><span class="ss">)</span>: <span class="nv">Cannot</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">service</span>, <span class="nv">error</span>: <span class="mi">61</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">42</span>:<span class="mi">226010</span> <span class="nv">Debug</span><span class="ss">(</span> <span class="mi">474</span><span class="ss">)</span>: <span class="nv">Unable</span> <span class="nv">to</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">Pan</span> <span class="nv">Service</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">47</span>:<span class="mi">225540</span> <span class="nv">Info</span> <span class="ss">(</span> <span class="mi">291</span><span class="ss">)</span>: <span class="nv">InitConnection</span> ...
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">47</span>:<span class="mi">225581</span> <span class="nv">Info</span> <span class="ss">(</span>  <span class="mi">59</span><span class="ss">)</span>: <span class="nv">fd</span> <span class="nv">still</span> <span class="nv">open</span> <span class="nv">before</span> <span class="k">connect</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">47</span>:<span class="mi">225782</span> <span class="nv">Info</span> <span class="ss">(</span>  <span class="mi">80</span><span class="ss">)</span>: <span class="nv">Failed</span> <span class="nv">to</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">server</span> <span class="nv">at</span> <span class="nv">port</span>:<span class="mi">4767</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">47</span>:<span class="mi">225799</span> <span class="nv">Info</span> <span class="ss">(</span> <span class="mi">295</span><span class="ss">)</span>: <span class="nv">Cannot</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">service</span>, <span class="nv">error</span>: <span class="mi">61</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">47</span>:<span class="mi">225805</span> <span class="nv">Debug</span><span class="ss">(</span> <span class="mi">474</span><span class="ss">)</span>: <span class="nv">Unable</span> <span class="nv">to</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">Pan</span> <span class="nv">Service</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">52</span>:<span class="mi">226040</span> <span class="nv">Info</span> <span class="ss">(</span> <span class="mi">291</span><span class="ss">)</span>: <span class="nv">InitConnection</span> ...
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">52</span>:<span class="mi">226069</span> <span class="nv">Info</span> <span class="ss">(</span>  <span class="mi">59</span><span class="ss">)</span>: <span class="nv">fd</span> <span class="nv">still</span> <span class="nv">open</span> <span class="nv">before</span> <span class="k">connect</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">52</span>:<span class="mi">226206</span> <span class="nv">Info</span> <span class="ss">(</span>  <span class="mi">80</span><span class="ss">)</span>: <span class="nv">Failed</span> <span class="nv">to</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">server</span> <span class="nv">at</span> <span class="nv">port</span>:<span class="mi">4767</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">52</span>:<span class="mi">226218</span> <span class="nv">Info</span> <span class="ss">(</span> <span class="mi">295</span><span class="ss">)</span>: <span class="nv">Cannot</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">service</span>, <span class="nv">error</span>: <span class="mi">61</span>
+<span class="nv">P</span> <span class="mi">595</span><span class="o">-</span><span class="nv">T771</span>   <span class="nv">Apr</span> <span class="mi">10</span> <span class="mi">20</span>:<span class="mi">40</span>:<span class="mi">52</span>:<span class="mi">226223</span> <span class="nv">Debug</span><span class="ss">(</span> <span class="mi">474</span><span class="ss">)</span>: <span class="nv">Unable</span> <span class="nv">to</span> <span class="k">connect</span> <span class="nv">to</span> <span class="nv">Pan</span> <span class="nv">Service</span>
+</code></pre></div>
 
 <p>Over and over again.</p>
 <p>As it turns out, this was because Global Protect could not connect to an agent called the pangps service. You can check if this service is loaded by running the following command in your terminal.</p>
-<div class="highlight"><pre><span></span>launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangpa.plist
-launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangps.plist
-</pre></div>
-
+<div class="highlight"><pre><span></span><code><span class="n">launchctl</span> <span class="nb">load</span> <span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">LaunchAgents</span><span class="o">/</span><span class="n">com</span><span class="o">.</span><span class="n">paloaltonetworks</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">pangpa</span><span class="o">.</span><span class="n">plist</span>
+<span class="n">launchctl</span> <span class="nb">load</span> <span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">LaunchAgents</span><span class="o">/</span><span class="n">com</span><span class="o">.</span><span class="n">paloaltonetworks</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">pangps</span><span class="o">.</span><span class="n">plist</span>
+</code></pre></div>
 
 <p>If you're ~lucky~ like me, you'll see that the service is running. So what the hell right? Why isn't Pan Service working???</p>
 <hr>
