@@ -10,26 +10,36 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/stylesheet/style.min.css">
+    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
 
 
     <link id="pygments-light-theme" rel="stylesheet" type="text/css"
-          href="http://localhost:8000/theme/pygments/arduino.min.css">
+          href="http://www.devlo.io/theme/pygments/arduino.min.css">
 
 
 
-  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/font-awesome/css/fontawesome.css">
-  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/font-awesome/css/brands.css">
-  <link rel="stylesheet" type="text/css" href="http://localhost:8000/theme/font-awesome/css/solid.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/solid.css">
 
-  <link rel="stylesheet" type="text/css" href="http://localhost:8000/extra/static/custom.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/extra/static/custom.css">
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
 
 
+  <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Atom">
 
 
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
@@ -47,11 +57,11 @@
   <meta property="og:title" content="for_each loops w/ if statements in Terraform 0.12.6+"/>
   <meta property="og:description" content="Real life example that demonstrates how to use for_each loops with an if conditional that determines if the resource is built or not."/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:url" content="http://localhost:8000/for-each-if-statements.html"/>
+  <meta property="og:url" content="http://www.devlo.io/for-each-if-statements.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2021-12-01 00:00:00-07:00"/>
   <meta property="article:modified_time" content="2021-12-01 00:00:00-07:00"/>
-  <meta property="article:author" content="http://localhost:8000/author/miguel-lopez.html">
+  <meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
   <meta property="article:section" content="terraform"/>
   <meta property="article:tag" content="terraform"/>
   <meta property="article:tag" content="logic"/>
@@ -66,17 +76,30 @@
   <title>DevLo &ndash; for_each loops w/ if statements in Terraform 0.12.6+</title>
 
 
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
 </head>
 <body class="light-theme">
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
 
 <aside>
   <div>
-    <a href="http://localhost:8000/">
+    <a href="http://www.devlo.io/">
       <img src="/images/Devlo-Logo.png" alt="" title="">
     </a>
 
     <h1>
-      <a href="http://localhost:8000/"></a>
+      <a href="http://www.devlo.io/"></a>
     </h1>
 
     <p>Lopez Brothers Techies Blog</p>
@@ -84,7 +107,7 @@
     <div class="authors-profiles">
       <div>
         <figure>
-          <img src="http://localhost:8000/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
           <figcaption>Miguel</figcaption>
         </figure>
         <ul class="social">
@@ -106,7 +129,7 @@
       </div>
       <div>
         <figure>
-          <img src="http://localhost:8000/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
           <figcaption>Sergio</figcaption>
         </figure>
         <ul class="social">
@@ -136,7 +159,7 @@
 
             <li>
               <a target="_self"
-                 href="http://localhost:8000/pages/about.html">
+                 href="http://www.devlo.io/pages/about.html">
                 About
               </a>
             </li>
@@ -150,12 +173,13 @@
   <main>
 
 <nav>
-  <a href="http://localhost:8000/">Home</a>
+  <a href="http://www.devlo.io/">Home</a>
 
   <a href="/archives.html">Archives</a>
   <a href="/categories.html">Categories</a>
   <a href="/tags.html">Tags</a>
 
+  <a href="http://www.devlo.io/feeds/all.atom.xml">Atom</a>
 
 </nav>
 
@@ -164,7 +188,7 @@
       
     <h1 id="for-each-if-statements">for_each loops w/ if statements in Terraform 0.12.6+</h1>
     <p>
-      Posted by <a href="http://localhost:8000/author/miguel-lopez.html">Miguel Lopez</a> on Wed 01 December 2021 in <a href="http://localhost:8000/category/terraform.html">terraform</a>
+      Posted by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Wed 01 December 2021 in <a href="http://www.devlo.io/category/terraform.html">terraform</a>
 
     </p>
   </header>
@@ -294,14 +318,14 @@ Terraform load balancers. Network load balancers will always require a VPC link 
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="http://localhost:8000/tag/terraform.html">terraform</a>
-      <a href="http://localhost:8000/tag/logic.html">logic</a>
-      <a href="http://localhost:8000/tag/aws.html">aws</a>
-      <a href="http://localhost:8000/tag/if.html">if</a>
-      <a href="http://localhost:8000/tag/loop.html">loop</a>
-      <a href="http://localhost:8000/tag/for-each.html">for-each</a>
-      <a href="http://localhost:8000/tag/for-loop.html">for-loop</a>
-      <a href="http://localhost:8000/tag/loops.html">loops</a>
+      <a href="http://www.devlo.io/tag/terraform.html">terraform</a>
+      <a href="http://www.devlo.io/tag/logic.html">logic</a>
+      <a href="http://www.devlo.io/tag/aws.html">aws</a>
+      <a href="http://www.devlo.io/tag/if.html">if</a>
+      <a href="http://www.devlo.io/tag/loop.html">loop</a>
+      <a href="http://www.devlo.io/tag/for-each.html">for-each</a>
+      <a href="http://www.devlo.io/tag/for-loop.html">for-loop</a>
+      <a href="http://www.devlo.io/tag/loops.html">loops</a>
     </p>
   </div>
 
@@ -323,7 +347,7 @@ Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a 
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo ",
-  "url" : "http://localhost:8000",
+  "url" : "http://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Development Blog."
 }
