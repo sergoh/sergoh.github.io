@@ -1,0 +1,44 @@
+:root {
+    --dark-blue: #414C6B;
+    --blue: #1E80C1;
+    --teal: #5BAEB7;
+    --blizzard-blue: #A5DEF2;
+    --white: #ffffff
+  }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--dark-blue);
+}
+
+a {
+    color: var(--teal);
+  }
+
+h2 > a {
+    color: var(--blue);
+}
+
+a.btn {
+    background-color: var(--blue);
+}
+
+.authors-profiles {
+    padding: 2px;
+}
+
+.authors-profiles > div {
+    display: inline-block;
+}
+
+.authors-profiles > figure {
+    margin: 0 10px;
+}
+
+.authors-profiles > div > figure >figcaption {
+    color: var(--white);
+}
