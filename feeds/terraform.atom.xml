@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo - terraform</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/terraform.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2021-12-01T00:00:00-07:00</updated><subtitle>The Lopez brothers' development blog</subtitle><entry><title>for_each loops w/ if statements in Terraform 0.12.6+</title><link href="http://www.devlo.io/for-each-if-statements.html" rel="alternate"></link><published>2021-12-01T00:00:00-07:00</published><updated>2021-12-01T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2021-12-01:/for-each-if-statements.html</id><summary type="html">&lt;p class="first last"&gt;Real life example that demonstrates how to use for_each loops with an if conditional that determines if the resource is built or not.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo Software Blog - terraform</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/terraform.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2021-12-01T00:00:00-07:00</updated><subtitle>Lopez Brothers Blog</subtitle><entry><title>Terraform for_each loops w/ if statements in Terraform 0.12.6+</title><link href="http://www.devlo.io/for-each-if-statements.html" rel="alternate"></link><published>2021-12-01T00:00:00-07:00</published><updated>2021-12-01T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2021-12-01:/for-each-if-statements.html</id><summary type="html">&lt;p class="first last"&gt;Real life example that demonstrates how to use for_each loops with an if conditional that determines if the resource is built or not.&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;Technical Stack: Terraform 0.12.6+&lt;/p&gt;
 &lt;p&gt;Read: 5 minutes&lt;/p&gt;
 &lt;div class="section" id="prerequisites"&gt;
@@ -61,7 +61,7 @@ loop removing the &lt;code&gt;worker&lt;/code&gt; object from the loop.&lt;/p&gt
   &lt;span class="nb"&gt;for_each&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="err"&gt;for&lt;/span&gt; &lt;span class="err"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;var.services&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="na"&gt;key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;gt;&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;value.load_balancer_enabled&lt;/span&gt; &lt;span class="p"&gt;==&lt;/span&gt; &lt;span class="no"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
   &lt;span class="na"&gt;source&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;../load-balancer&amp;quot;&lt;/span&gt;&lt;span class="c1"&gt;  # custom module reference as an example&lt;/span&gt;
 
-  &lt;span class="na"&gt;name&lt;/span&gt;                       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;${each.key}&amp;quot;&lt;/span&gt;
+  &lt;span class="na"&gt;name&lt;/span&gt;                       &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;each.key&lt;/span&gt;
   &lt;span class="na"&gt;enable_deletion_protection&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;enable_deletion_protection&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
   &lt;span class="na"&gt;domain&lt;/span&gt;             &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;domain&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;null&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -71,7 +71,7 @@ loop removing the &lt;code&gt;worker&lt;/code&gt; object from the loop.&lt;/p&gt
 
   &lt;span class="na"&gt;tags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;jsondecode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;var.tags&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;tags&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{}),&lt;/span&gt; &lt;span class="nv"&gt;local.common_tags&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-  &lt;span class="nb"&gt;target_groups&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="err"&gt;for&lt;/span&gt; &lt;span class="err"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;value&lt;/span&gt; &lt;span class="err"&gt;in&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;target_groups&amp;quot;, {}) : key =&amp;gt; merge(value, { target_group_name = format(&amp;quot;%s-%s-%s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;each.key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="err"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;var.color&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;})&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="na"&gt;target_groups&lt;/span&gt;        &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;target_groups&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
   &lt;span class="na"&gt;load_balancer_listeners&lt;/span&gt;         &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;listeners&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
   &lt;span class="na"&gt;extra_listener_rules&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;extra_listener_rules&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
   &lt;span class="na"&gt;extra_ssl_certs&lt;/span&gt;      &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;each.value.load_balancer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;extra_ssl_certs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
@@ -87,19 +87,19 @@ loop removing the &lt;code&gt;worker&lt;/code&gt; object from the loop.&lt;/p&gt
 Terraform load balancers. Network load balancers will always require a VPC link in this scenario.&lt;/p&gt;
 &lt;div class="section" id="inputs"&gt;
 &lt;h3&gt;Inputs&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;extra_load_balancers:
-  balancer_1:
-    load_balancer_type: application
-    enable_deletion_protection: false
-    security_groups: [ ]
-    target_groups:
-      &amp;lt;ommitted for simplicity&amp;gt;
-  balancer_2:
-    load_balancer_type: network
-    enable_deletion_protection: false
-    security_groups: [ ]
-    target_groups:
-      &amp;lt;ommitted for simplicity&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;extra_load_balancers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;balancer_1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;load_balancer_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;application&lt;/span&gt;
+    &lt;span class="nt"&gt;enable_deletion_protection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;false&lt;/span&gt;
+    &lt;span class="nt"&gt;security_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;[&lt;/span&gt; &lt;span class="p p-Indicator"&gt;]&lt;/span&gt;
+    &lt;span class="nt"&gt;target_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;ommitted for simplicity&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;balancer_2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;load_balancer_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;network&lt;/span&gt;
+    &lt;span class="nt"&gt;enable_deletion_protection&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;false&lt;/span&gt;
+    &lt;span class="nt"&gt;security_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;[&lt;/span&gt; &lt;span class="p p-Indicator"&gt;]&lt;/span&gt;
+    &lt;span class="nt"&gt;target_groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;ommitted for simplicity&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="looping-through-a-resource"&gt;
@@ -119,4 +119,4 @@ Terraform load balancers. Network load balancers will always require a VPC link 
 &lt;p&gt;Hope this helps!&lt;/p&gt;
 &lt;p&gt;-- Miguel Lopez&lt;/p&gt;
 &lt;/div&gt;
-</content><category term="terraform"></category><category term="terraform"></category><category term="logic"></category><category term="aws"></category><category term="if"></category><category term="loop"></category><category term="for-each"></category></entry></feed>
+</content><category term="terraform"></category><category term="terraform"></category><category term="logic"></category><category term="aws"></category><category term="if"></category><category term="loop"></category><category term="for-each"></category><category term="for-loop"></category><category term="loops"></category></entry></feed>
