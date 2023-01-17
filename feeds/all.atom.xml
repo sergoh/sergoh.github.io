@@ -1,5 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo Software Blog</title><link href="http://www.devlo.io/" rel="alternate"></link><link href="http://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>http://www.devlo.io/</id><updated>2021-12-01T00:00:00-07:00</updated><subtitle>Lopez Brothers Blog</subtitle><entry><title>Terraform for_each loops w/ if statements in Terraform 0.12.6+</title><link href="http://www.devlo.io/for-each-if-statements.html" rel="alternate"></link><published>2021-12-01T00:00:00-07:00</published><updated>2021-12-01T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2021-12-01:/for-each-if-statements.html</id><summary type="html">&lt;p class="first last"&gt;Real life example that demonstrates how to use for_each loops with an if conditional that determines if the resource is built or not.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo Software Blog</title><link href="https://www.devlo.io/" rel="alternate"></link><link href="https://www.devlo.io/feeds/all.atom.xml" rel="self"></link><id>https://www.devlo.io/</id><updated>2022-01-16T00:00:00-07:00</updated><subtitle>Lopez Brothers Blog</subtitle><entry><title>Entrypoint Script with Localstack and Docker-Compose</title><link href="https://www.devlo.io/entrypoint-script-with-localstack.html" rel="alternate"></link><published>2022-01-16T00:00:00-07:00</published><updated>2022-01-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2022-01-16:/entrypoint-script-with-localstack.html</id><summary type="html">&lt;p&gt;Use Entrypoint Script to Automatically Provision AWS Resources in Localstack&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS, Localstack, Docker, Docker-Compose&lt;/p&gt;
+&lt;p&gt;Read: 2 minutes&lt;/p&gt;
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Docker, Docker-Compose&lt;/li&gt;
+&lt;li&gt;Localstack Docker Image&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Localstack&lt;/strong&gt; is a cloud service emulator that runs in a single container on your laptop or in your CI environment. &lt;a href="https://docs.localstack.cloud/getting-started/?__hstc=108988063.4c3716ab9432d996297196d8a59201a6.1673401275754.1673401275754.1673907003067.2&amp;amp;__hssc=108988063.1.1673907003067&amp;amp;__hsfp=1395183370"&gt;Read More Here.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After reading this, your docker-compose will: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Run Localstack&lt;/li&gt;
+&lt;li&gt;Create mocked resources in Localstack upon launch&lt;/li&gt;
+&lt;li&gt;Local AWS services can be mocked at &lt;code&gt;http://localstack:4566&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Entrypoint Script to Create Mock S3 Buckets in Localstack&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Create and paste the following content to &lt;code&gt;start-localstack.sh&lt;/code&gt;. This will be our entrypoint scipt. &lt;ul&gt;
+&lt;li&gt;&lt;code&gt;awslocal&lt;/code&gt; is a thin wrapper for AWS CLI that overriddes the AWS &lt;code&gt;endpoint-url&lt;/code&gt; to &lt;code&gt;localhost:4566&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;When using the default &lt;code&gt;aws&lt;/code&gt; CLI be sure to set the flag &lt;code&gt;--endpoint-url&lt;/code&gt; to &lt;code&gt;localhost:4566&lt;/code&gt; manually. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;awslocal&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;s3&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;s3:&lt;/span&gt;&lt;span class="c1"&gt;//hsl-local-terraform --region us-west-2&lt;/span&gt;
+&lt;span class="n"&gt;awslocal&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;s3&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mb&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;s3:&lt;/span&gt;&lt;span class="c1"&gt;//hsl-local-serverless --region us-west-2&lt;/span&gt;
+&lt;span class="n"&gt;awslocal&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;s3&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ls&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;region&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;us&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;west&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mh"&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pass the &lt;code&gt;start-localstack.sh&lt;/code&gt; script in through our &lt;code&gt;localstack&lt;/code&gt; container in the &lt;code&gt;volume&lt;/code&gt; section. &lt;ul&gt;
+&lt;li&gt;All localstack entrypoint files are located at &lt;code&gt;/docker-entrypoint-initaws.d/&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="s s-Atom"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;3.8&amp;quot;&lt;/span&gt; 
+&lt;span class="s s-Atom"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+        &lt;span class="p"&gt;...&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&amp;quot;&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/run/docker.sock:/var/run/docker.sock&amp;quot;&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;sh&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;entrypoint&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;initaws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;sh&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Start the containers using &lt;code&gt;docker-compose up&lt;/code&gt; and observe the S3 buckets being made. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;localstack-1  | /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initaws.d/start-localstack.sh
+localstack-1  | make_bucket: hsl-local-terraform
+localstack-1  | make_bucket: hsl-local-serverless
+localstack-1  | 2023-01-16 23:43:34 hsl-local-terraform
+localstack-1  | 2023-01-16 23:43:34 hsl-local-serverless
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Access the S3 Buckets Across Docker Compose Containers&lt;/h2&gt;
+&lt;p&gt;If you're running additional containers alongside the &lt;code&gt;localstack&lt;/code&gt; container, you will need to access the &lt;code&gt;localstack&lt;/code&gt; container using the URL &lt;code&gt;http://localstack:4566&lt;/code&gt;. Any boto3 S3 client will need &lt;code&gt;endpoint_url&lt;/code&gt; overridden for &lt;code&gt;localstack&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you're running commands inside the &lt;code&gt;localstack&lt;/code&gt; container, then you can stick to &lt;code&gt;localhost:4566&lt;/code&gt; since you're not on the local network. &lt;/p&gt;
+&lt;h2&gt;Full Docker-Compose Example&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="s s-Atom"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;3.8&amp;quot;&lt;/span&gt; 
+&lt;span class="s s-Atom"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;4566&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;4566&lt;/span&gt;            &lt;span class="s s-Atom"&gt;#&lt;/span&gt; &lt;span class="nv"&gt;LocalStack&lt;/span&gt; &lt;span class="nv"&gt;Edge&lt;/span&gt; &lt;span class="nv"&gt;Proxy&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nv"&gt;AWS_DEFAULT_REGION&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;us&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;west&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;
+        &lt;span class="nv"&gt;AWS_ACCESS_KEY_ID&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;test&lt;/span&gt;
+        &lt;span class="nv"&gt;AWS_SECRET_ACCESS_KEY&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;test&lt;/span&gt;
+        &lt;span class="nv"&gt;DEBUG&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;DEBUG&lt;/span&gt;&lt;span class="o"&gt;:-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="nv"&gt;DEFAULT_REGION&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;us&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;west&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;
+        &lt;span class="nv"&gt;DOCKER_HOST&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s s-Atom"&gt;///var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;sock&lt;/span&gt;
+        &lt;span class="nv"&gt;DATA_DIR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;DATA_DIR&lt;/span&gt;&lt;span class="s s-Atom"&gt;-&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="nv"&gt;LAMBDA_EXECUTOR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;LAMBDA_EXECUTOR&lt;/span&gt;&lt;span class="o"&gt;:-&lt;/span&gt;&lt;span class="s s-Atom"&gt;local&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="nv"&gt;LS_LOG&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nv"&gt;WARN&lt;/span&gt;
+        &lt;span class="nv"&gt;HOST_TMP_FOLDER&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;TMPDIR&lt;/span&gt;&lt;span class="o"&gt;:-/&lt;/span&gt;&lt;span class="s s-Atom"&gt;tmp/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+        &lt;span class="nv"&gt;HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+        &lt;span class="nv"&gt;HOSTNAME_EXTERNAL&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+        &lt;span class="nv"&gt;USE_SINGLE_REGION&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&amp;quot;&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/run/docker.sock:/var/run/docker.sock&amp;quot;&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;sh&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;entrypoint&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;initaws&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;sh&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Overall Benefits of Localstack&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Developers can spin up a fully localized enviornment&lt;/li&gt;
+&lt;li&gt;Less $$ spent provisioning and cleaning up AWS&lt;/li&gt;
+&lt;li&gt;Isolated developer environments&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I hope this guide helps you quickly orchestrate localstack next to your existing applications!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Miguel Lopez&lt;/li&gt;
+&lt;/ul&gt;</content><category term="localstack"></category><category term="docker"></category><category term="docker-compose"></category><category term="localstack"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="python"></category><category term="cloud"></category><category term="eventbridge"></category><category term="sns"></category><category term="s3"></category><category term="sqs"></category><category term="api"></category><category term="gateway"></category><category term="local"></category><category term="developer"></category><category term="django"></category><category term="entrypoint"></category></entry><entry><title>Run Localstack with Docker-Compose</title><link href="https://www.devlo.io/run-localstack-with-docker-compose.html" rel="alternate"></link><published>2022-01-16T00:00:00-07:00</published><updated>2022-01-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2022-01-16:/run-localstack-with-docker-compose.html</id><summary type="html">&lt;p&gt;Use Localstack to Mock AWS Services For Local Containers&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS, Localstack, Docker, Docker-Compose&lt;/p&gt;
+&lt;p&gt;Read: 5 minutes&lt;/p&gt;
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Docker, Docker-Compose&lt;/li&gt;
+&lt;li&gt;Localstack Docker Image&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Looking to run AWS services locally and improve the development experience? Are you hoping to make a fully isolated enviornment with no (real) shared AWS resources? Then look no further!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Localstack&lt;/strong&gt; is a cloud service emulator that runs in a single container on your laptop or in your CI environment. &lt;a href="https://docs.localstack.cloud/getting-started/?__hstc=108988063.4c3716ab9432d996297196d8a59201a6.1673401275754.1673401275754.1673907003067.2&amp;amp;__hssc=108988063.1.1673907003067&amp;amp;__hsfp=1395183370"&gt;Read More Here.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After reading this, your application will: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Run Localstack in docker-compose&lt;/li&gt;
+&lt;li&gt;Local AWS services can be mocked at &lt;code&gt;http://localstack:4566&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Boto3 Client is overridden to point to Localstack in docker-compose&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Localstack on Docker Compose&lt;/h2&gt;
+&lt;p&gt;In this example, I will start two services through docker-compose, &lt;code&gt;localstack&lt;/code&gt; and &lt;code&gt;api&lt;/code&gt;: &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;localstack&lt;/code&gt; runs the AWS Emulator and will expose AWS services at &lt;code&gt;http://localstack:4566&lt;/code&gt;. &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;api&lt;/code&gt; is running a Django API Server&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="s s-Atom"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;3.8&amp;quot;&lt;/span&gt; 
+&lt;span class="s s-Atom"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;4566&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;4566&lt;/span&gt;            &lt;span class="s s-Atom"&gt;#&lt;/span&gt; &lt;span class="nv"&gt;LocalStack&lt;/span&gt; &lt;span class="nv"&gt;Edge&lt;/span&gt; &lt;span class="nv"&gt;Proxy&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="nv"&gt;AWS_DEFAULT_REGION&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;us&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;west&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;
+            &lt;span class="nv"&gt;AWS_ACCESS_KEY_ID&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;test&lt;/span&gt;
+            &lt;span class="nv"&gt;AWS_SECRET_ACCESS_KEY&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;test&lt;/span&gt;
+            &lt;span class="nv"&gt;DEBUG&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;DEBUG&lt;/span&gt;&lt;span class="o"&gt;:-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="nv"&gt;DEFAULT_REGION&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;us&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;west&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;
+            &lt;span class="nv"&gt;DOCKER_HOST&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s s-Atom"&gt;///var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;sock&lt;/span&gt;
+            &lt;span class="nv"&gt;DATA_DIR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;DATA_DIR&lt;/span&gt;&lt;span class="s s-Atom"&gt;-&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="nv"&gt;LAMBDA_EXECUTOR&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;LAMBDA_EXECUTOR&lt;/span&gt;&lt;span class="o"&gt;:-&lt;/span&gt;&lt;span class="s s-Atom"&gt;local&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="nv"&gt;LS_LOG&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nv"&gt;WARN&lt;/span&gt;
+            &lt;span class="nv"&gt;HOST_TMP_FOLDER&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;TMPDIR&lt;/span&gt;&lt;span class="o"&gt;:-/&lt;/span&gt;&lt;span class="s s-Atom"&gt;tmp/&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+            &lt;span class="nv"&gt;HOSTNAME&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+            &lt;span class="nv"&gt;HOSTNAME_EXTERNAL&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+            &lt;span class="nv"&gt;USE_SINGLE_REGION&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&amp;quot;&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/var/run/docker.sock:/var/run/docker.sock&amp;quot;&lt;/span&gt;
+    &lt;span class="s s-Atom"&gt;api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;build&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="s s-Atom"&gt;dockerfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nv"&gt;Dockerfile&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="nv"&gt;AWS_ENDPOINT_URL&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;4566&lt;/span&gt;
+            &lt;span class="nv"&gt;CELERY_BROKER_URL&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;sqs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="s s-Atom"&gt;test&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s s-Atom"&gt;test@localstack&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;4566&lt;/span&gt;
+            &lt;span class="nv"&gt;DJANGO_SETTINGS_MODULE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;messages&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;settings&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;docker_localstack&lt;/span&gt;
+            &lt;span class="nv"&gt;LOG_HANDLER&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;console&lt;/span&gt;
+            &lt;span class="nv"&gt;LOG_LEVEL&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;
+            &lt;span class="nv"&gt;PYTHONUNBUFFERED&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;depends_on&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s s-Atom"&gt;localstack&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;80:80&amp;quot;&lt;/span&gt;
+        &lt;span class="s s-Atom"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;uwsgi&lt;/span&gt; &lt;span class="s s-Atom"&gt;--http&lt;/span&gt; &lt;span class="mf"&gt;0.0.0.0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9090&lt;/span&gt; &lt;span class="s s-Atom"&gt;--wsgi&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;file&lt;/span&gt; &lt;span class="s s-Atom"&gt;messages&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;wsgi&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;dev&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;py&lt;/span&gt; &lt;span class="s s-Atom"&gt;--callable&lt;/span&gt; &lt;span class="s s-Atom"&gt;application&lt;/span&gt; &lt;span class="s s-Atom"&gt;--uid&lt;/span&gt; &lt;span class="s s-Atom"&gt;appuser&lt;/span&gt; &lt;span class="s s-Atom"&gt;--gid&lt;/span&gt; &lt;span class="s s-Atom"&gt;appuser&lt;/span&gt; &lt;span class="s s-Atom"&gt;--enable&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;threads&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Copy and paste the following code into &lt;code&gt;docker-compose.yml&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Build the images: &lt;code&gt;docker-compose -f docker-compose.yml build --pull&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Run the containers: &lt;code&gt;docker-compose -f docker-compose.yml up&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;At this point, &lt;code&gt;localstack&lt;/code&gt; will start alongside the &lt;code&gt;api&lt;/code&gt; container and will be ready to mock AWS services at &lt;code&gt;http://localstack:4566&lt;/code&gt;. &lt;/p&gt;
+&lt;h2&gt;Override Default S3 Endpoint to Localstack URL&lt;/h2&gt;
+&lt;p&gt;Just because you started &lt;code&gt;localstack&lt;/code&gt; doesn't mean AWS services are automatically mocked. Your applications will need to override the &lt;code&gt;endpoint_url&lt;/code&gt; for &lt;strong&gt;every&lt;/strong&gt; boto3 client call you wish to mock.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Set the envrionment variable &lt;code&gt;AWS_ENDPOINT_URL&lt;/code&gt; for your API application in &lt;code&gt;docker-compose.yml&lt;/code&gt;. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;AWS_ENDPOINT_URL&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="o"&gt;://&lt;/span&gt;&lt;span class="n"&gt;localstack&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;4566&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pull &lt;code&gt;AWS_ENDPOINT_URL&lt;/code&gt; into your application settings&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;AWS_ENDPOINT_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;environ&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;AWS_ENDPOINT_URL&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Override the boto3 client &lt;code&gt;endpoint_url&lt;/code&gt; to point to your localstack container&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;boto3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;endpoint_url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AWS_ENDPOINT_URL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;All calls to &lt;code&gt;s3&lt;/code&gt; will now go to your localstack container. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You &lt;strong&gt;must&lt;/strong&gt; override the &lt;code&gt;boto3&lt;/code&gt; client for &lt;strong&gt;each&lt;/strong&gt; AWS service that you wish to mock.&lt;/p&gt;
+&lt;h2&gt;Changing the Hostname for Localstack Container&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;hostname&lt;/code&gt; of the localstack container is determined by:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The alias name of the &lt;code&gt;services&lt;/code&gt; block running the &lt;code&gt;localstack&lt;/code&gt; image. (&lt;code&gt;localstack&lt;/code&gt; in this case)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;    version: &amp;quot;3.8&amp;quot; 
+    services:
+        localstack:  # &amp;lt;---- Alias name used to call the localstack container
+            image: localstack/localstack
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The Environment Variable &lt;code&gt;HOSTNAME_EXTERNAL&lt;/code&gt; on the &lt;code&gt;localstack&lt;/code&gt; image. &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The localstack &lt;code&gt;hostname&lt;/code&gt; is how other containers in your &lt;code&gt;docker-compose&lt;/code&gt; network will communicate to your localstack container.&lt;/p&gt;
+&lt;h2&gt;Overall Benefits of Localstack&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Developers can spin up a fully localized enviornment&lt;/li&gt;
+&lt;li&gt;Less $$ spent provisioning and cleaning up AWS&lt;/li&gt;
+&lt;li&gt;Isolated developer environments&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I hope this guide helps you quickly orchestrate localstack next to your existing applications!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Miguel Lopez&lt;/li&gt;
+&lt;/ul&gt;</content><category term="localstack"></category><category term="docker"></category><category term="docker-compose"></category><category term="localstack"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="python"></category><category term="cloud"></category><category term="eventbridge"></category><category term="sns"></category><category term="s3"></category><category term="sqs"></category><category term="api"></category><category term="gateway"></category><category term="local"></category><category term="developer"></category><category term="django"></category></entry><entry><title>Terraform for_each loops w/ if statements in Terraform 0.12.6+</title><link href="https://www.devlo.io/for-each-if-statements.html" rel="alternate"></link><published>2021-12-01T00:00:00-07:00</published><updated>2021-12-01T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2021-12-01:/for-each-if-statements.html</id><summary type="html">&lt;p class="first last"&gt;Real life example that demonstrates how to use for_each loops with an if conditional that determines if the resource is built or not.&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;Technical Stack: Terraform 0.12.6+&lt;/p&gt;
 &lt;p&gt;Read: 5 minutes&lt;/p&gt;
 &lt;div class="section" id="prerequisites"&gt;
@@ -119,7 +335,7 @@ Terraform load balancers. Network load balancers will always require a VPC link 
 &lt;p&gt;Hope this helps!&lt;/p&gt;
 &lt;p&gt;-- Miguel Lopez&lt;/p&gt;
 &lt;/div&gt;
-</content><category term="terraform"></category><category term="terraform"></category><category term="logic"></category><category term="aws"></category><category term="if"></category><category term="loop"></category><category term="for-each"></category><category term="for-loop"></category><category term="loops"></category></entry><entry><title>Running Git in AWS Lambda Functions</title><link href="http://www.devlo.io/git-in-aws-lambda.html" rel="alternate"></link><published>2019-03-07T00:00:00-07:00</published><updated>2019-03-07T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2019-03-07:/git-in-aws-lambda.html</id><summary type="html">&lt;p&gt;Use GitPython w/ a Git Executable in AWS Lambda&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Lambda, Python 3.7, Serverless 
+</content><category term="terraform"></category><category term="terraform"></category><category term="logic"></category><category term="aws"></category><category term="if"></category><category term="loop"></category><category term="for-each"></category><category term="for-loop"></category><category term="loops"></category></entry><entry><title>Running Git in AWS Lambda Functions</title><link href="https://www.devlo.io/git-in-aws-lambda.html" rel="alternate"></link><published>2019-03-07T00:00:00-07:00</published><updated>2019-03-07T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2019-03-07:/git-in-aws-lambda.html</id><summary type="html">&lt;p&gt;Use GitPython w/ a Git Executable in AWS Lambda&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Lambda, Python 3.7, Serverless 
 Read: 5 minutes&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h2&gt;
 &lt;ul&gt;
@@ -243,7 +459,7 @@ around with &lt;code&gt;git&lt;/code&gt; in my lambda functions.&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;This should help you install &lt;code&gt;git&lt;/code&gt; on AWS Lambda functions and use the &lt;strong&gt;GitPython&lt;/strong&gt; python package.&lt;/p&gt;
 &lt;p&gt;PM me on LinkedIn if you have any questions! Info should be located on the left.&lt;/p&gt;
-&lt;p&gt;-- Miguel Lopez&lt;/p&gt;</content><category term="tutorials"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="python"></category><category term="cloud"></category><category term="layers"></category></entry><entry><title>Building Robust Packer AMIs</title><link href="http://www.devlo.io/packer-ami-apt-get.html" rel="alternate"></link><published>2018-11-16T00:00:00-07:00</published><updated>2018-11-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-11-16:/packer-ami-apt-get.html</id><summary type="html">&lt;p&gt;How to avoid &lt;code&gt;Could not get lock /var/lib/dpkg/lock&lt;/code&gt; while using Packer&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS EC2 (AWS AMI CentOS), Packer, Ubuntu 18.04
+&lt;p&gt;-- Miguel Lopez&lt;/p&gt;</content><category term="tutorials"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="python"></category><category term="cloud"></category><category term="layers"></category></entry><entry><title>Building Robust Packer AMIs</title><link href="https://www.devlo.io/packer-ami-apt-get.html" rel="alternate"></link><published>2018-11-16T00:00:00-07:00</published><updated>2018-11-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-11-16:/packer-ami-apt-get.html</id><summary type="html">&lt;p&gt;How to avoid &lt;code&gt;Could not get lock /var/lib/dpkg/lock&lt;/code&gt; while using Packer&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS EC2 (AWS AMI CentOS), Packer, Ubuntu 18.04
 Read: 10 minutes &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Hey everyone! Sorry for the absence. I started a new job in San Francisco that attracted my attetnion the past few months.&lt;/p&gt;
@@ -315,7 +531,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Finding this solution was important to me because I wanted to Packer to work 100% of the time. I didn't want to randomly encounter &lt;code&gt;CIS: E: Could not get lock /var/lib/dpkg/lock&lt;/code&gt; errors. &lt;/p&gt;</content><category term="automation"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category><category term="packer"></category><category term="apt"></category><category term="apt-get"></category><category term="ub ubutnu"></category></entry><entry><title>Solving Connectivity Issues w/ Global Protect</title><link href="http://www.devlo.io/global-protect-issues.html" rel="alternate"></link><published>2018-04-13T00:00:00-07:00</published><updated>2018-04-13T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-13:/global-protect-issues.html</id><summary type="html">&lt;p&gt;Solving Connectivity Issues on Global Protect&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Resend Credential Error&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Finding this solution was important to me because I wanted to Packer to work 100% of the time. I didn't want to randomly encounter &lt;code&gt;CIS: E: Could not get lock /var/lib/dpkg/lock&lt;/code&gt; errors. &lt;/p&gt;</content><category term="automation"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category><category term="packer"></category><category term="apt"></category><category term="apt-get"></category><category term="ub ubutnu"></category></entry><entry><title>Solving Connectivity Issues w/ Global Protect</title><link href="https://www.devlo.io/global-protect-issues.html" rel="alternate"></link><published>2018-04-13T00:00:00-07:00</published><updated>2018-04-13T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-13:/global-protect-issues.html</id><summary type="html">&lt;p&gt;Solving Connectivity Issues on Global Protect&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Resend Credential Error&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;I recently got a new Mac at work and spent the past 8 hours trying to solve connectivity issues with Global Protect.&lt;/p&gt;
 &lt;p&gt;My global protect would throw out this generic error that said:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;Resend&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Credential&lt;/span&gt;
@@ -360,7 +576,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;/ol&gt;
 &lt;p&gt;Once you reinstall, head back over to the "Security and Privacy" settings. You'll see a prompt that asks if Global Protect is allowed to run on this machine. Click yes. &lt;/p&gt;
 &lt;p&gt;&lt;img alt="Security and Privacy" src="http://cdn.osxdaily.com/wp-content/uploads/2016/09/gatekeeper-allow-apps-anywhere-macos-2.jpg" title="Security and Privacy"&gt;&lt;/p&gt;
-&lt;p&gt;By this point you should able to connect to Global Protect. If not, i'm sorry. Best of luck :(&lt;/p&gt;</content><category term="tutorials"></category><category term="mac"></category><category term="vpn"></category></entry><entry><title>Jenkins Pipeline Env Variables w/ AWS SSM</title><link href="http://www.devlo.io/ssm-env-jenkins.html" rel="alternate"></link><published>2018-04-12T00:00:00-07:00</published><updated>2018-04-12T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-12:/ssm-env-jenkins.html</id><summary type="html">&lt;p&gt;Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Parameter Store, Jenkins, Jenkinsfile, Shell&lt;/p&gt;
+&lt;p&gt;By this point you should able to connect to Global Protect. If not, i'm sorry. Best of luck :(&lt;/p&gt;</content><category term="tutorials"></category><category term="mac"></category><category term="vpn"></category></entry><entry><title>Jenkins Pipeline Env Variables w/ AWS SSM</title><link href="https://www.devlo.io/ssm-env-jenkins.html" rel="alternate"></link><published>2018-04-12T00:00:00-07:00</published><updated>2018-04-12T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-12:/ssm-env-jenkins.html</id><summary type="html">&lt;p&gt;Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Parameter Store, Jenkins, Jenkinsfile, Shell&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;By the end of this article, you should understand how to use AWS Parameter Store (SSM) to pull down environment variables in your Jenkins Declarative Pipeline.&lt;/p&gt;
 &lt;p&gt;I recommend heading over to the &lt;a href="https://jenkins.io/doc/book/pipeline/syntax/"&gt;Jenkins Pipeline documentation&lt;/a&gt; if you've never heard of a Jenkinsfile. Writing your job as a Jenkinsfile is also known as &lt;em&gt;Jenkins-as-code&lt;/em&gt; because it allows you to check your Jenkins job into source control. It allows you to version your build jobs and port them to other Jenkins boxes.&lt;/p&gt;
@@ -426,7 +642,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;p&gt;In the previous example, you can see that we are exporting AWS Secret Keys and AWS Access Keys so that the Serverless CLI can use the credentials. It should be noted that the CLI Commands are being evaluated on the fly. This means that a string containing the AWS SSM CLI Command is loaded from the &lt;code&gt;environment&lt;/code&gt; block, the command is ran, and the result is then loaded into the CLI command. The CLI command from the &lt;code&gt;enviornment&lt;/code&gt; block is &lt;strong&gt;NOT&lt;/strong&gt; ran until it is called within the &lt;code&gt;sh&lt;/code&gt; command. &lt;/p&gt;
 &lt;p&gt;Using AWS SSM in our Jenkinsfile has been awesome because it allows our pipeline to remain flexibile. My cloud team only has to remember to update ther Jenkins IAM role key and secret in one location should they ever choose to rotate it. &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;At the end of the day, using the AWS SSM Store helps my team move towards their goal of having all infrastructure-as-code. It also standarizes our parameters on the AWS Parameter store so that application secrets aren't scattered all over the place. &lt;/p&gt;</content><category term="automation"></category><category term="jenkins"></category><category term="aws"></category><category term="cloud"></category><category term="groovy"></category><category term="automation"></category><category term="ssm"></category></entry><entry><title>If, If-else Statements in Terraform</title><link href="http://www.devlo.io/if-else-terraform.html" rel="alternate"></link><published>2018-04-10T00:00:00-07:00</published><updated>2018-04-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-10:/if-else-terraform.html</id><summary type="html">&lt;p&gt;Using if-else statements in terraforms&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Terraform v0.11.5&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;At the end of the day, using the AWS SSM Store helps my team move towards their goal of having all infrastructure-as-code. It also standarizes our parameters on the AWS Parameter store so that application secrets aren't scattered all over the place. &lt;/p&gt;</content><category term="automation"></category><category term="jenkins"></category><category term="aws"></category><category term="cloud"></category><category term="groovy"></category><category term="automation"></category><category term="ssm"></category></entry><entry><title>If, If-else Statements in Terraform</title><link href="https://www.devlo.io/if-else-terraform.html" rel="alternate"></link><published>2018-04-10T00:00:00-07:00</published><updated>2018-04-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-10:/if-else-terraform.html</id><summary type="html">&lt;p&gt;Using if-else statements in terraforms&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Terraform v0.11.5&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;In HCL, a boolean is one of the many ways you can create an if-statement.&lt;/p&gt;
 &lt;p&gt;Booleans can be used in a Terraform tenerary operation to create an if-else statement. Ternary operations follow the syntax: &lt;/p&gt;
@@ -492,7 +708,7 @@ This means a value of 1 would be passed on to the &lt;code&gt;count&lt;/code&gt;
 
 &lt;p&gt;If the &lt;code&gt;create_first_eip&lt;/code&gt; variable was set to &lt;code&gt;true&lt;/code&gt; then the first &lt;code&gt;aws_eip&lt;/code&gt; would be created because the &lt;code&gt;create_first_eip == true&lt;/code&gt; would result in a &lt;code&gt;count&lt;/code&gt; of 1.&lt;/p&gt;
 &lt;p&gt;If the &lt;code&gt;create_first_eip&lt;/code&gt; variable was set to &lt;code&gt;false&lt;/code&gt;, then the second &lt;code&gt;aws_eip&lt;/code&gt; would be created because the &lt;code&gt;create_first_eip == false&lt;/code&gt; would result in a &lt;code&gt;count&lt;/code&gt; of 1. The first &lt;code&gt;aws_eip&lt;/code&gt; would not be created because it would fail the conditional statement. &lt;/p&gt;
-&lt;p&gt;This creates an if-else pattern. &lt;/p&gt;</content><category term="automation"></category><category term="aws"></category><category term="cloud"></category><category term="terraform"></category><category term="hcl"></category><category term="hashicorp"></category></entry><entry><title>Install Common Developement Tools on Mac</title><link href="http://www.devlo.io/mac-developer-enviornment.html" rel="alternate"></link><published>2018-04-04T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-04:/mac-developer-enviornment.html</id><summary type="html">&lt;p&gt;Automatically install common developer tools on macOS with this script.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: macOS High Sierra 
+&lt;p&gt;This creates an if-else pattern. &lt;/p&gt;</content><category term="automation"></category><category term="aws"></category><category term="cloud"></category><category term="terraform"></category><category term="hcl"></category><category term="hashicorp"></category></entry><entry><title>Install Common Developement Tools on Mac</title><link href="https://www.devlo.io/mac-developer-enviornment.html" rel="alternate"></link><published>2018-04-04T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-04:/mac-developer-enviornment.html</id><summary type="html">&lt;p&gt;Automatically install common developer tools on macOS with this script.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: macOS High Sierra 
 Read: 5 minutes &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h2&gt;
 &lt;ul&gt;
@@ -572,7 +788,7 @@ node&lt;span class="w"&gt; &lt;/span&gt;--version
 
 &lt;p&gt;Again, keep the switch case key captilaized because it reflects the application name under the /Application folder. Next, we will pass the &lt;code&gt;cask-name&lt;/code&gt; to the &lt;code&gt;`brew_install&lt;/code&gt; function inside the shell script. &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
-&lt;p&gt;Hope this helps, happy coding!&lt;/p&gt;</content><category term="automation"></category><category term="automation"></category><category term="mac"></category><category term="dev"></category></entry><entry><title>Managing Envrionments on Serverless Framework</title><link href="http://www.devlo.io/serverless-environments.html" rel="alternate"></link><published>2018-04-02T00:00:00-07:00</published><updated>2018-04-02T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-02:/serverless-environments.html</id><summary type="html">&lt;p&gt;Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Lambda, Java 8 
+&lt;p&gt;Hope this helps, happy coding!&lt;/p&gt;</content><category term="automation"></category><category term="automation"></category><category term="mac"></category><category term="dev"></category></entry><entry><title>Managing Envrionments on Serverless Framework</title><link href="https://www.devlo.io/serverless-environments.html" rel="alternate"></link><published>2018-04-02T00:00:00-07:00</published><updated>2018-04-02T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-04-02:/serverless-environments.html</id><summary type="html">&lt;p&gt;Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS Lambda, Java 8 
 Read: 10 minutes &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h2&gt;
 &lt;ul&gt;
@@ -705,7 +921,7 @@ MEMCACHED_DEFAULT_TTL_VALUE:&lt;span class="w"&gt; &lt;/span&gt;&amp;quot;604800
 &lt;p&gt;&lt;em&gt;Tip: &lt;code&gt;${opt:stage, 'dev'}&lt;/code&gt; just means to use the text passed in after the &lt;code&gt;--stage&lt;/code&gt; cli argument. If no &lt;code&gt;--stage&lt;/code&gt; argument is used then default to &lt;code&gt;dev&lt;/code&gt;.&lt;/em&gt; &lt;/p&gt;
 &lt;h3&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;I've found this file pattern to be extremely useful for defining my AWS resources throughout serverless.yml. It gives me full control over what I'm passing to the serverless.yml file for each of my lambda environments. &lt;/p&gt;
-&lt;p&gt;You can find an example of the config pattern i've discussed &lt;a href="https://github.com/lopezm1/java-aws-template/tree/master/app-lambda"&gt;here&lt;/a&gt;.&lt;/p&gt;</content><category term="tutorials"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="java"></category><category term="cloud"></category></entry><entry><title>Managing Automation Around Auto Scaling Groups</title><link href="http://www.devlo.io/asg-automation-toolset.html" rel="alternate"></link><published>2018-03-31T00:00:00-07:00</published><updated>2018-03-31T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-31:/asg-automation-toolset.html</id><summary type="html">&lt;p&gt;How to pick an automation toolset that supports auto scaling in the cloud&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS EC2 (AWS AMI CentOS), SaltStack (2018.7.X), CodeDeploy&lt;br&gt;
+&lt;p&gt;You can find an example of the config pattern i've discussed &lt;a href="https://github.com/lopezm1/java-aws-template/tree/master/app-lambda"&gt;here&lt;/a&gt;.&lt;/p&gt;</content><category term="tutorials"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="java"></category><category term="cloud"></category></entry><entry><title>Managing Automation Around Auto Scaling Groups</title><link href="https://www.devlo.io/asg-automation-toolset.html" rel="alternate"></link><published>2018-03-31T00:00:00-07:00</published><updated>2018-03-31T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-31:/asg-automation-toolset.html</id><summary type="html">&lt;p&gt;How to pick an automation toolset that supports auto scaling in the cloud&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS EC2 (AWS AMI CentOS), SaltStack (2018.7.X), CodeDeploy&lt;br&gt;
 Read: 10 minutes &lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;There are 4 key components when it comes to creating stateless servers for an autoscaling groups (ASGs). &lt;/p&gt;
@@ -776,7 +992,7 @@ Read: 10 minutes &lt;/p&gt;
 &lt;li&gt;&lt;em&gt;Introduction to Salt-Master&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;Organizing States on Salt-Master&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;Introduction to CodeDeploy&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><category term="automation"></category><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category><category term="codedeploy"></category></entry><entry><title>Automate Salt-Minion Registrations on EC2</title><link href="http://www.devlo.io/bootstrap-salt.html" rel="alternate"></link><published>2018-03-30T00:00:00-07:00</published><updated>2018-03-30T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-30:/bootstrap-salt.html</id><summary type="html">&lt;p&gt;Use scripts to automatically register new EC2 minions with Salt-Master&lt;/p&gt;</summary><content type="html">&lt;p&gt;Automate Salt-Minion Registrations on EC2&lt;/p&gt;
+&lt;/ul&gt;</content><category term="automation"></category><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category><category term="codedeploy"></category></entry><entry><title>Automate Salt-Minion Registrations on EC2</title><link href="https://www.devlo.io/bootstrap-salt.html" rel="alternate"></link><published>2018-03-30T00:00:00-07:00</published><updated>2018-03-30T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-30:/bootstrap-salt.html</id><summary type="html">&lt;p&gt;Use scripts to automatically register new EC2 minions with Salt-Master&lt;/p&gt;</summary><content type="html">&lt;p&gt;Automate Salt-Minion Registrations on EC2&lt;/p&gt;
 &lt;h6&gt;&lt;/h6&gt;
 &lt;h2&gt;Intro&lt;/h2&gt;
 &lt;p&gt;These scripts can be used to register your salt minion to Salt-Master upon successfully launching. &lt;/p&gt;
@@ -886,7 +1102,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;rm&lt;span class="w"&gt; &lt;/span&gt;-f
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;em&gt;You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance&lt;/em&gt; &lt;/p&gt;
-&lt;p&gt;Replace $SALT_MASTER_IP with your own variables.&lt;/p&gt;</content><category term="automation"></category><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category></entry><entry><title>Introduction to SaltStack</title><link href="http://www.devlo.io/my-super-post.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/my-super-post.html</id><summary type="html">&lt;p&gt;SaltStack 101, Set up your first Salt-Master and Salt-Minion&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Technical Environment: SaltStack v2018.3.0 , AWS EC2 (CentOS ami)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Replace $SALT_MASTER_IP with your own variables.&lt;/p&gt;</content><category term="automation"></category><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category><category term="EC2"></category><category term="automation"></category></entry><entry><title>Introduction to SaltStack</title><link href="https://www.devlo.io/my-super-post.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-16T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/my-super-post.html</id><summary type="html">&lt;p&gt;SaltStack 101, Set up your first Salt-Master and Salt-Minion&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;em&gt;Technical Environment: SaltStack v2018.3.0 , AWS EC2 (CentOS ami)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Difficulty: Easy&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Read: 25 minutes&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;&lt;strong&gt;Introduction to SaltStack&lt;/strong&gt;&lt;/h2&gt;
@@ -1182,7 +1398,7 @@ echo &amp;quot;dev-minion-01&amp;quot; &amp;gt; /etc/salt/minion_id;
 &lt;/ul&gt;
 &lt;p&gt;By this point, I hope you can understand how awesome Salt really is. SaltStack has been fantastic for our company and I hope it can do the same for you.&lt;/p&gt;
 &lt;p&gt;In case you are evaluating other tools, I recommend you check out &lt;a href="https://www.chef.io/chef/"&gt;Chef&lt;/a&gt;, &lt;a href="https://www.ansible.com/"&gt;Ansible&lt;/a&gt; and &lt;a href="https://puppet.com/"&gt;Puppet&lt;/a&gt; as they all have very similar functionality. &lt;/p&gt;
-&lt;p&gt;It takes time and patience to fully adopt a configuration manager but the payoff is totally worth it. &lt;/p&gt;</content><category term="automation"></category><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;It takes time and patience to fully adopt a configuration manager but the payoff is totally worth it. &lt;/p&gt;</content><category term="automation"></category><category term="saltstack"></category><category term="aws"></category><category term="cloud"></category></entry><entry><title>Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title><link href="https://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html" rel="alternate"></link><published>2018-03-22T00:00:00-07:00</published><updated>2018-04-04T00:00:00-07:00</updated><author><name>Sergio Lopez</name></author><id>tag:www.devlo.io,2018-03-22:/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html</id><summary type="html">&lt;p&gt;The step-by-step instructions to get this blog up and running.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Intro&lt;/strong&gt;&lt;/h2&gt;
 &lt;p&gt;Setting up this blog was not a difficult task, but it did some digging around the internet to get everything up and 
 running the way my brother and I visioned our blog. I'm going to document the steps I followed from start to finish, combined from all those resources, 
 so that anyone wanting to setup something similar can do so!&lt;/p&gt;

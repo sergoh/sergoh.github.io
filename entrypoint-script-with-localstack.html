@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/pygments/arduino.min.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
+
+    <link href="https://www.devlo.io/extra/static/custom.css" rel="stylesheet">
+
+    <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
+    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Use Entrypoint Script to Automatically Provision AWS Resources in Localstack" />
+<meta name="keywords" content="docker, docker-compose, localstack, serverless, lambda, aws, python, cloud, eventbridge, sns, s3, sqs, api, gateway, local, developer, django, entrypoint">
+
+<meta property="og:site_name" content="DevLo Software Blog"/>
+<meta property="og:title" content="Entrypoint Script with Localstack and Docker-Compose"/>
+<meta property="og:description" content="Use Entrypoint Script to Automatically Provision AWS Resources in Localstack"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://www.devlo.io/entrypoint-script-with-localstack.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2022-01-16 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2022-01-16 00:00:00-07:00"/>
+<meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="localstack"/>
+<meta property="article:tag" content="docker"/>
+<meta property="article:tag" content="docker-compose"/>
+<meta property="article:tag" content="localstack"/>
+<meta property="article:tag" content="serverless"/>
+<meta property="article:tag" content="lambda"/>
+<meta property="article:tag" content="aws"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="cloud"/>
+<meta property="article:tag" content="eventbridge"/>
+<meta property="article:tag" content="sns"/>
+<meta property="article:tag" content="s3"/>
+<meta property="article:tag" content="sqs"/>
+<meta property="article:tag" content="api"/>
+<meta property="article:tag" content="gateway"/>
+<meta property="article:tag" content="local"/>
+<meta property="article:tag" content="developer"/>
+<meta property="article:tag" content="django"/>
+<meta property="article:tag" content="entrypoint"/>
+<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <title>DevLo Software Blog &ndash; Entrypoint Script with Localstack and Docker-Compose</title>
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+<!-- Google Tag Manager -->
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
+<!-- End Google Tag Manager --></head>
+<body>
+<!-- Google Tag Manager -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager -->  <aside>
+    <div>
+      <a href="https://www.devlo.io">
+        <img src="/images/Devlo-Logo.png" alt="" title="">
+      </a>
+      <!--<h1><a href="https://www.devlo.io"></a></h1>-->
+
+<p>Lopez Brothers Blog</p>
+      <div class="authors-profiles">
+        <div>
+          <figure>
+            <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+            <figcaption>Miguel</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
+          </ul>
+        </div>
+        <div>
+          <figure>
+            <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+            <figcaption>Sergio</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="list">
+          <li><a href="https://www.devlo.io/pages/about.html">About</a></li>
+
+        </ul>
+      </nav>
+
+    </div>
+
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle ads-aside"
+           data-ad-client="ca-pub-2119138261035978"
+           data-ad-slot="1234561"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="https://www.devlo.io">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="https://www.devlo.io/feeds/all.atom.xml">    Atom
+</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="entrypoint-script-with-localstack">Entrypoint Script with Localstack and Docker-Compose</h1>
+    <p>
+          Posted on Sun 16 January 2022 in <a href="https://www.devlo.io/category/localstack.html">localstack</a>
+
+
+          by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
+
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Technical Stack: AWS, Localstack, Docker, Docker-Compose</p>
+<p>Read: 2 minutes</p>
+<h2>Prerequisites</h2>
+<ul>
+<li>Docker, Docker-Compose</li>
+<li>Localstack Docker Image</li>
+</ul>
+<h2>Introduction</h2>
+<p><strong>Localstack</strong> is a cloud service emulator that runs in a single container on your laptop or in your CI environment. <a href="https://docs.localstack.cloud/getting-started/?__hstc=108988063.4c3716ab9432d996297196d8a59201a6.1673401275754.1673401275754.1673907003067.2&amp;__hssc=108988063.1.1673907003067&amp;__hsfp=1395183370">Read More Here.</a></p>
+<p>After reading this, your docker-compose will: </p>
+<ul>
+<li>Run Localstack</li>
+<li>Create mocked resources in Localstack upon launch</li>
+<li>Local AWS services can be mocked at <code>http://localstack:4566</code></li>
+</ul>
+<h2>Entrypoint Script to Create Mock S3 Buckets in Localstack</h2>
+<ul>
+<li>Create and paste the following content to <code>start-localstack.sh</code>. This will be our entrypoint scipt. <ul>
+<li><code>awslocal</code> is a thin wrapper for AWS CLI that overriddes the AWS <code>endpoint-url</code> to <code>localhost:4566</code>.</li>
+<li>When using the default <code>aws</code> CLI be sure to set the flag <code>--endpoint-url</code> to <code>localhost:4566</code> manually. </li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">awslocal</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">mb</span><span class="w"> </span><span class="nl">s3:</span><span class="c1">//hsl-local-terraform --region us-west-2</span>
+<span class="n">awslocal</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">mb</span><span class="w"> </span><span class="nl">s3:</span><span class="c1">//hsl-local-serverless --region us-west-2</span>
+<span class="n">awslocal</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mh">2</span>
+</code></pre></div>
+
+<ul>
+<li>Pass the <code>start-localstack.sh</code> script in through our <code>localstack</code> container in the <code>volume</code> section. <ul>
+<li>All localstack entrypoint files are located at <code>/docker-entrypoint-initaws.d/</code></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="s s-Atom">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
+<span class="s s-Atom">services</span><span class="p">:</span>
+    <span class="s s-Atom">localstack</span><span class="p">:</span>
+        <span class="s s-Atom">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
+        <span class="p">...</span>
+        <span class="s s-Atom">volumes</span><span class="p">:</span>
+            <span class="o">-</span> <span class="s2">&quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&quot;</span>
+            <span class="o">-</span> <span class="s2">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
+            <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span><span class="p">:</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="o">-</span><span class="s s-Atom">entrypoint</span><span class="o">-</span><span class="s s-Atom">initaws</span><span class="p">.</span><span class="s s-Atom">d</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span>
+</code></pre></div>
+
+<ul>
+<li>Start the containers using <code>docker-compose up</code> and observe the S3 buckets being made. </li>
+</ul>
+<div class="highlight"><pre><span></span><code>localstack-1  | /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initaws.d/start-localstack.sh
+localstack-1  | make_bucket: hsl-local-terraform
+localstack-1  | make_bucket: hsl-local-serverless
+localstack-1  | 2023-01-16 23:43:34 hsl-local-terraform
+localstack-1  | 2023-01-16 23:43:34 hsl-local-serverless
+</code></pre></div>
+
+<h2>Access the S3 Buckets Across Docker Compose Containers</h2>
+<p>If you're running additional containers alongside the <code>localstack</code> container, you will need to access the <code>localstack</code> container using the URL <code>http://localstack:4566</code>. Any boto3 S3 client will need <code>endpoint_url</code> overridden for <code>localstack</code>.</p>
+<p>If you're running commands inside the <code>localstack</code> container, then you can stick to <code>localhost:4566</code> since you're not on the local network. </p>
+<h2>Full Docker-Compose Example</h2>
+<div class="highlight"><pre><span></span><code><span class="s s-Atom">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
+<span class="s s-Atom">services</span><span class="p">:</span>
+    <span class="s s-Atom">localstack</span><span class="p">:</span>
+        <span class="s s-Atom">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
+        <span class="s s-Atom">ports</span><span class="p">:</span>
+            <span class="o">-</span> <span class="mi">4566</span><span class="o">:</span><span class="mi">4566</span>            <span class="s s-Atom">#</span> <span class="nv">LocalStack</span> <span class="nv">Edge</span> <span class="nv">Proxy</span>
+        <span class="s s-Atom">environment</span><span class="p">:</span>
+        <span class="nv">AWS_DEFAULT_REGION</span><span class="o">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
+        <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">:</span> <span class="s s-Atom">test</span>
+        <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">:</span> <span class="s s-Atom">test</span>
+        <span class="nv">DEBUG</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DEBUG</span><span class="o">:-</span><span class="mi">1</span><span class="p">}</span>
+        <span class="nv">DEFAULT_REGION</span><span class="o">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
+        <span class="nv">DOCKER_HOST</span><span class="o">:</span> <span class="s s-Atom">unix</span><span class="p">:</span><span class="s s-Atom">///var</span><span class="o">/</span><span class="s s-Atom">run</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="p">.</span><span class="s s-Atom">sock</span>
+        <span class="nv">DATA_DIR</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DATA_DIR</span><span class="s s-Atom">-</span><span class="p">}</span>
+        <span class="nv">LAMBDA_EXECUTOR</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">LAMBDA_EXECUTOR</span><span class="o">:-</span><span class="s s-Atom">local</span><span class="p">}</span>
+        <span class="nv">LS_LOG</span><span class="o">:</span> <span class="nv">WARN</span>
+        <span class="nv">HOST_TMP_FOLDER</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">TMPDIR</span><span class="o">:-/</span><span class="s s-Atom">tmp/</span><span class="p">}</span><span class="s s-Atom">localstack</span>
+        <span class="nv">HOSTNAME</span><span class="o">:</span> <span class="s s-Atom">localstack</span>
+        <span class="nv">HOSTNAME_EXTERNAL</span><span class="o">:</span> <span class="s s-Atom">localstack</span>
+        <span class="nv">USE_SINGLE_REGION</span><span class="o">:</span> <span class="mi">1</span>
+        <span class="s s-Atom">volumes</span><span class="p">:</span>
+            <span class="o">-</span> <span class="s2">&quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&quot;</span>
+            <span class="o">-</span> <span class="s2">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
+            <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span><span class="p">:</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="o">-</span><span class="s s-Atom">entrypoint</span><span class="o">-</span><span class="s s-Atom">initaws</span><span class="p">.</span><span class="s s-Atom">d</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span>
+</code></pre></div>
+
+<h2>Overall Benefits of Localstack</h2>
+<ul>
+<li>Developers can spin up a fully localized enviornment</li>
+<li>Less $$ spent provisioning and cleaning up AWS</li>
+<li>Isolated developer environments</li>
+</ul>
+<p>I hope this guide helps you quickly orchestrate localstack next to your existing applications!</p>
+<ul>
+<li>Miguel Lopez</li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://www.devlo.io/tag/docker.html">docker</a>
+      <a href="https://www.devlo.io/tag/docker-compose.html">docker-compose</a>
+      <a href="https://www.devlo.io/tag/localstack.html">localstack</a>
+      <a href="https://www.devlo.io/tag/serverless.html">serverless</a>
+      <a href="https://www.devlo.io/tag/lambda.html">lambda</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/python.html">python</a>
+      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/eventbridge.html">eventbridge</a>
+      <a href="https://www.devlo.io/tag/sns.html">sns</a>
+      <a href="https://www.devlo.io/tag/s3.html">s3</a>
+      <a href="https://www.devlo.io/tag/sqs.html">sqs</a>
+      <a href="https://www.devlo.io/tag/api.html">api</a>
+      <a href="https://www.devlo.io/tag/gateway.html">gateway</a>
+      <a href="https://www.devlo.io/tag/local.html">local</a>
+      <a href="https://www.devlo.io/tag/developer.html">developer</a>
+      <a href="https://www.devlo.io/tag/django.html">django</a>
+      <a href="https://www.devlo.io/tag/entrypoint.html">entrypoint</a>
+    </p>
+  </div>
+
+
+
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234566"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</article>
+
+    <footer>
+<p>&copy;  </p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo Software Blog ",
+  "url" : "https://www.devlo.io",
+  "image": "/images/Devlo-Logo.png",
+  "description": "DevLo - Software Blog."
+}
+</script>
+
+</body>
+</html>
