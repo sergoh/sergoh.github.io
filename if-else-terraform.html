@@ -6,31 +6,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
+    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
 
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
 
-    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
-          href="https://www.devlo.io/theme/pygments/arduino.min.css">
+    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
 
-
-
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
-
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
-
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
 
 
-  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-
+<!-- Google Analytics -->
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -40,46 +33,32 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-
-
-
-
-
-
- 
+<!-- End Google Analytics -->
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Using if-else statements in terraforms" />
 <meta name="keywords" content="aws, cloud, terraform, hcl, hashicorp">
 
-
-  <meta property="og:site_name" content="DevLo Software Blog"/>
-  <meta property="og:title" content="If, If-else Statements in Terraform"/>
-  <meta property="og:description" content="Using if-else statements in terraforms"/>
-  <meta property="og:locale" content="en_US"/>
-  <meta property="og:url" content="https://www.devlo.io/if-else-terraform.html"/>
-  <meta property="og:type" content="article"/>
-  <meta property="article:published_time" content="2018-04-10 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2018-04-10 00:00:00-07:00"/>
-  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
-  <meta property="article:section" content="automation"/>
-  <meta property="article:tag" content="aws"/>
-  <meta property="article:tag" content="cloud"/>
-  <meta property="article:tag" content="terraform"/>
-  <meta property="article:tag" content="hcl"/>
-  <meta property="article:tag" content="hashicorp"/>
-  <meta property="og:image" content="/images/Devlo-Logo.png">
+<meta property="og:site_name" content="DevLo Software Blog"/>
+<meta property="og:title" content="If, If-else Statements in Terraform"/>
+<meta property="og:description" content="Using if-else statements in terraforms"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://www.devlo.io/if-else-terraform.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-04-10 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-10 00:00:00-07:00"/>
+<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="automation"/>
+<meta property="article:tag" content="aws"/>
+<meta property="article:tag" content="cloud"/>
+<meta property="article:tag" content="terraform"/>
+<meta property="article:tag" content="hcl"/>
+<meta property="article:tag" content="hashicorp"/>
+<meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; If, If-else Statements in Terraform</title>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-      google_ad_client: "ca-pub-2119138261035978",
-      enable_page_level_ads: true
-    });
-  </script>
-
+<!-- Google Tag Manager -->
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -90,116 +69,79 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-</head>
-<body class="light-theme">
+<!-- End Google Tag Manager --></head>
+<body>
+<!-- Google Tag Manager -->
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
+<!-- End Google Tag Manager -->  <aside>
+    <div>
+      <a href="http://www.devlo.io">
+        <img src="/images/Devlo-Logo.png" alt="" title="">
+      </a>
+      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<aside>
-  <div>
-    <a href="https://www.devlo.io/">
-      <img src="/images/Devlo-Logo.png" alt="" title="">
-    </a>
-
-    <h1>
-      <a href="https://www.devlo.io/"></a>
-    </h1>
-
-    <p>Lopez Brothers Blog</p>
-
-    <div class="authors-profiles">
-      <div>
-        <figure>
-          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-          <figcaption>Miguel</figcaption>
-        </figure>
-        <ul class="social">
-          <li>
-            <a class="sc-linkedin"
-               href="https://www.linkedin.com/in/lopezm1/"
-               target="_blank">
-              <i class="fa-brands fa-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a class="sc-github"
-               href="https://github.com/lopezm1"
-               target="_blank">
-              <i class="fa-brands fa-github"></i>
-            </a>
-          </li>
-        </ul>
+<p>Lopez Brothers Blog</p>
+      <div class="authors-profiles">
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+            <figcaption>Miguel</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
+          </ul>
+        </div>
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+            <figcaption>Sergio</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <figure>
-          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-          <figcaption>Sergio</figcaption>
-        </figure>
-        <ul class="social">
-          <li>
-            <a class="sc-linkedin"
-               href="https://www.linkedin.com/in/sergiolopezjr/"
-               target="_blank">
-              <i class="fa-brands fa-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a class="sc-github"
-               href="https://github.com/sergoh"
-               target="_blank">
-              <i class="fa-brands fa-github"></i>
-            </a>
-          </li>
+
+      <nav>
+        <ul class="list">
+          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+
         </ul>
-      </div>
+      </nav>
+
     </div>
 
 
-
-    <nav>
-      <ul class="list">
-
-
-            <li>
-              <a target="_self"
-                 href="https://www.devlo.io/pages/about.html">
-                About
-              </a>
-            </li>
-
-      </ul>
-    </nav>
-
-  </div>
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle ads-aside"
-         data-ad-client="ca-pub-2119138261035978"
-         data-ad-slot="1234561"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</aside>
+  </aside>
   <main>
 
-<nav>
-  <a href="https://www.devlo.io/">Home</a>
+    <nav>
+      <a href="http://www.devlo.io">    Home
+</a>
 
-  <a href="/archives.html">Archives</a>
-  <a href="/categories.html">Categories</a>
-  <a href="/tags.html">Tags</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
 
-  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
+</a>
 
-</nav>
+    </nav>
 
 <article class="single">
   <header>
       
     <h1 id="if-else-terraform">If, If-else Statements in Terraform</h1>
     <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Tue 10 April 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
+          Posted on Tue 10 April 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
+
+
+          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
+
 
     </p>
   </header>
@@ -214,7 +156,7 @@
 </code></pre></div>
 
 <p>Combine this idea with a boolean conditional and you have an if statement. A boolean ternary function would look like....</p>
-<div class="highlight"><pre><span></span><code><span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">.</span><span class="n">create_eip</span> <span class="o">==</span> <span class="bp">true</span> <span class="err">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">.</span><span class="n">create_eip</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="bp">true</span><span class="w"> </span><span class="err">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">}</span>
 </code></pre></div>
 
 <p>If the variable <code>create_ip</code> == <code>true</code> then return 1, else return 0. We will combine this idea with the <code>count</code> attribtue of a resource to create an if-else statement. </p>
@@ -232,13 +174,13 @@
 <p>Based on HCL semantics, setting the <code>create_eip</code> to <code>true</code> would result in the ternary operation <code>${var.create_eip == true ? 1 : 0}</code> resolving to value of 1.
 This means a value of 1 would be passed on to the <code>count</code> parameter of the <code>aws_eip</code> resource. This would create one eip resource.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># frontend-app module</span>
-<span class="n">variable</span> <span class="s2">&quot;create_eip&quot;</span> <span class="p">{</span>
-  <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Create an EIP if set to True&quot;</span>
+<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;create_eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create an EIP if set to True&quot;</span>
 <span class="p">}</span>
 
-<span class="n">resource</span> <span class="s2">&quot;aws_eip&quot;</span> <span class="s2">&quot;web-eip&quot;</span> <span class="p">{</span>
-  <span class="n">count</span> <span class="o">=</span> <span class="s2">&quot;${var.create_eip == true ? 1 : 0}&quot;</span>
-  <span class="n">instance</span> <span class="o">=</span> <span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;web-eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_eip == true ? 1 : 0}&quot;</span>
+<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -255,18 +197,18 @@ This means a value of 1 would be passed on to the <code>count</code> parameter o
 </code></pre></div>
 
 <div class="highlight"><pre><span></span><code><span class="c1"># frontend-app module</span>
-<span class="n">variable</span> <span class="s2">&quot;create_first_eip&quot;</span> <span class="p">{</span>
-  <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Create the first eip if set to true, otherwise create the second eip if set to false&quot;</span>
+<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;create_first_eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create the first eip if set to true, otherwise create the second eip if set to false&quot;</span>
 <span class="p">}</span>
 
-<span class="n">resource</span> <span class="s2">&quot;aws_eip&quot;</span> <span class="s2">&quot;if-eip&quot;</span> <span class="p">{</span>
-  <span class="n">count</span> <span class="o">=</span> <span class="s2">&quot;${var.create_first_eip == true ? 1 : 0}&quot;</span>
-  <span class="n">instance</span> <span class="o">=</span> <span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;if-eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_first_eip == true ? 1 : 0}&quot;</span>
+<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
 <span class="p">}</span>
 
-<span class="n">resource</span> <span class="s2">&quot;aws_eip&quot;</span> <span class="s2">&quot;else-eip&quot;</span> <span class="p">{</span>
-  <span class="n">count</span> <span class="o">=</span> <span class="s2">&quot;${var.create_first_eip == false ? 1 : 0}&quot;</span>
-  <span class="n">instance</span> <span class="o">=</span> <span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;else-eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_first_eip == false ? 1 : 0}&quot;</span>
+<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -276,11 +218,11 @@ This means a value of 1 would be passed on to the <code>count</code> parameter o
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="https://www.devlo.io/tag/aws.html">aws</a>
-      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
-      <a href="https://www.devlo.io/tag/terraform.html">terraform</a>
-      <a href="https://www.devlo.io/tag/hcl.html">hcl</a>
-      <a href="https://www.devlo.io/tag/hashicorp.html">hashicorp</a>
+      <a href="http://www.devlo.io/tag/aws.html">aws</a>
+      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="http://www.devlo.io/tag/terraform.html">terraform</a>
+      <a href="http://www.devlo.io/tag/hcl.html">hcl</a>
+      <a href="http://www.devlo.io/tag/hashicorp.html">hashicorp</a>
     </p>
   </div>
 
@@ -288,31 +230,27 @@ This means a value of 1 would be passed on to the <code>count</code> parameter o
 
 
 
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle ads-responsive"
-         data-ad-client="ca-pub-2119138261035978"
-         data-ad-slot="1234566"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
 </article>
 
-<footer>
+    <footer>
 <p>&copy;  </p>
-<p>
-Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
-</p></footer>  </main>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "https://www.devlo.io",
+  "url" : "http://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
+
 </body>
 </html>

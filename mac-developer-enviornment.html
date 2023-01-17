@@ -6,31 +6,24 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
+    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
 
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
+  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
 
-    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
-          href="https://www.devlo.io/theme/pygments/arduino.min.css">
+    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
 
-
-
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
-
-  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
-
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
 
 
-  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-
+<!-- Google Analytics -->
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -40,44 +33,30 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-
-
-
-
-
-
- 
+<!-- End Google Analytics -->
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Automatically install common developer tools on macOS with this script." />
 <meta name="keywords" content="automation, mac, dev">
 
-
-  <meta property="og:site_name" content="DevLo Software Blog"/>
-  <meta property="og:title" content="Install Common Developement Tools on Mac"/>
-  <meta property="og:description" content="Automatically install common developer tools on macOS with this script."/>
-  <meta property="og:locale" content="en_US"/>
-  <meta property="og:url" content="https://www.devlo.io/mac-developer-enviornment.html"/>
-  <meta property="og:type" content="article"/>
-  <meta property="article:published_time" content="2018-04-04 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2018-04-04 00:00:00-07:00"/>
-  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
-  <meta property="article:section" content="automation"/>
-  <meta property="article:tag" content="automation"/>
-  <meta property="article:tag" content="mac"/>
-  <meta property="article:tag" content="dev"/>
-  <meta property="og:image" content="/images/Devlo-Logo.png">
+<meta property="og:site_name" content="DevLo Software Blog"/>
+<meta property="og:title" content="Install Common Developement Tools on Mac"/>
+<meta property="og:description" content="Automatically install common developer tools on macOS with this script."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://www.devlo.io/mac-developer-enviornment.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-04-04 00:00:00-07:00"/>
+<meta property="article:modified_time" content="2018-04-04 00:00:00-07:00"/>
+<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
+<meta property="article:section" content="automation"/>
+<meta property="article:tag" content="automation"/>
+<meta property="article:tag" content="mac"/>
+<meta property="article:tag" content="dev"/>
+<meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Install Common Developement Tools on Mac</title>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-      google_ad_client: "ca-pub-2119138261035978",
-      enable_page_level_ads: true
-    });
-  </script>
-
+<!-- Google Tag Manager -->
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -88,116 +67,79 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-</head>
-<body class="light-theme">
+<!-- End Google Tag Manager --></head>
+<body>
+<!-- Google Tag Manager -->
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
+<!-- End Google Tag Manager -->  <aside>
+    <div>
+      <a href="http://www.devlo.io">
+        <img src="/images/Devlo-Logo.png" alt="" title="">
+      </a>
+      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<aside>
-  <div>
-    <a href="https://www.devlo.io/">
-      <img src="/images/Devlo-Logo.png" alt="" title="">
-    </a>
-
-    <h1>
-      <a href="https://www.devlo.io/"></a>
-    </h1>
-
-    <p>Lopez Brothers Blog</p>
-
-    <div class="authors-profiles">
-      <div>
-        <figure>
-          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-          <figcaption>Miguel</figcaption>
-        </figure>
-        <ul class="social">
-          <li>
-            <a class="sc-linkedin"
-               href="https://www.linkedin.com/in/lopezm1/"
-               target="_blank">
-              <i class="fa-brands fa-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a class="sc-github"
-               href="https://github.com/lopezm1"
-               target="_blank">
-              <i class="fa-brands fa-github"></i>
-            </a>
-          </li>
-        </ul>
+<p>Lopez Brothers Blog</p>
+      <div class="authors-profiles">
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+            <figcaption>Miguel</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
+          </ul>
+        </div>
+        <div>
+          <figure>
+            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+            <figcaption>Sergio</figcaption>
+          </figure>
+          <ul class="social">
+            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <figure>
-          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-          <figcaption>Sergio</figcaption>
-        </figure>
-        <ul class="social">
-          <li>
-            <a class="sc-linkedin"
-               href="https://www.linkedin.com/in/sergiolopezjr/"
-               target="_blank">
-              <i class="fa-brands fa-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a class="sc-github"
-               href="https://github.com/sergoh"
-               target="_blank">
-              <i class="fa-brands fa-github"></i>
-            </a>
-          </li>
+
+      <nav>
+        <ul class="list">
+          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+
         </ul>
-      </div>
+      </nav>
+
     </div>
 
 
-
-    <nav>
-      <ul class="list">
-
-
-            <li>
-              <a target="_self"
-                 href="https://www.devlo.io/pages/about.html">
-                About
-              </a>
-            </li>
-
-      </ul>
-    </nav>
-
-  </div>
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle ads-aside"
-         data-ad-client="ca-pub-2119138261035978"
-         data-ad-slot="1234561"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</aside>
+  </aside>
   <main>
 
-<nav>
-  <a href="https://www.devlo.io/">Home</a>
+    <nav>
+      <a href="http://www.devlo.io">    Home
+</a>
 
-  <a href="/archives.html">Archives</a>
-  <a href="/categories.html">Categories</a>
-  <a href="/tags.html">Tags</a>
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
 
-  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
+</a>
 
-</nav>
+    </nav>
 
 <article class="single">
   <header>
       
     <h1 id="mac-developer-enviornment">Install Common Developement Tools on Mac</h1>
     <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Wed 04 April 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
+          Posted on Wed 04 April 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
+
+
+          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
+
 
     </p>
   </header>
@@ -217,7 +159,7 @@ Read: 5 minutes </p>
 <p>I've done my best to avoid installing any duplicates by checking if you've already installed the application in the /Applications folder of the Mac. </p>
 <h2><strong>Installation</strong></h2>
 <p>Once you've download the script, head to your downloads folder on terminal and run...</p>
-<div class="highlight"><pre><span></span><code>bash brew-install-mac-dev-environment.sh
+<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>brew-install-mac-dev-environment.sh
 </code></pre></div>
 
 <h2><strong>Packages Installed</strong></h2>
@@ -239,10 +181,10 @@ Read: 5 minutes </p>
 </ul>
 <p>Feel free to verify any of these packages after installation by checking your /Applications folder or checking for the instance in terminal. </p>
 <p>For example:</p>
-<div class="highlight"><pre><span></span><code>git --version
-python --version
-pip3 --version
-node --version
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>--version
+python<span class="w"> </span>--version
+pip3<span class="w"> </span>--version
+node<span class="w"> </span>--version
 </code></pre></div>
 
 <p><em>If you don't need to extend the script, stop reading <strong>here</strong></em></p>
@@ -250,20 +192,20 @@ node --version
 <p>Extending the script is easy. </p>
 <p>If you wish to add other homebrew formulas, just add them at the end of the script. </p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Install other miscellaneous tools</span>
-<span class="n">brew</span> <span class="n">install</span> <span class="n">git</span>
-<span class="n">brew</span> <span class="n">install</span> <span class="n">python</span>
-<span class="n">brew</span> <span class="n">install</span> <span class="n">node</span>
-<span class="n">brew</span> <span class="n">install</span> <span class="n">coreutils</span>
-<span class="n">brew</span> <span class="n">install</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">formula</span> <span class="n">here</span><span class="o">&gt;</span>
+<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">git</span>
+<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">python</span>
+<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">node</span>
+<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">coreutils</span>
+<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">&lt;</span><span class="n">your</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="n">here</span><span class="o">&gt;</span>
 <span class="o">.</span>
 <span class="o">.</span>
 </code></pre></div>
 
 <p>If you wish to add another application, you'll need to use <code>brew cask install</code> and edit the script in two places.</p>
 <p><strong>1) Add to the application name to the application array list. (We'll add Skype as an example)</strong></p>
-<div class="highlight"><pre><span></span><code>## <span class="nv">Applications</span> <span class="nv">we</span> <span class="nv">will</span> <span class="nv">install</span> <span class="nv">with</span> `<span class="nv">brew</span> <span class="nv">cask</span> <span class="nv">install</span>`
-## <span class="nv">additional</span> <span class="nv">applications</span> <span class="nv">can</span> <span class="nv">be</span> <span class="nv">added</span> <span class="nv">here</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">wish</span> <span class="nv">to</span> <span class="nv">install</span> <span class="nv">them</span>
-<span class="nv">declare</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">applications</span><span class="o">=</span><span class="ss">(</span> <span class="s2">&quot;</span><span class="s">Skype</span><span class="s2">&quot;</span> <span class="nv">Spotify</span> <span class="nv">Sourcetree</span> <span class="nv">Slack</span> <span class="nv">Docker</span> <span class="nv">iTerm</span> <span class="s2">&quot;</span><span class="s">IntelliJ Idea</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="s">Google Chrome</span><span class="s2">&quot;</span> <span class="ss">)</span>
+<div class="highlight"><pre><span></span><code>##<span class="w"> </span><span class="nv">Applications</span><span class="w"> </span><span class="nv">we</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="nv">install</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span>`<span class="nv">brew</span><span class="w"> </span><span class="nv">cask</span><span class="w"> </span><span class="nv">install</span>`
+##<span class="w"> </span><span class="nv">additional</span><span class="w"> </span><span class="nv">applications</span><span class="w"> </span><span class="nv">can</span><span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="nv">added</span><span class="w"> </span><span class="nv">here</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">wish</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">install</span><span class="w"> </span><span class="nv">them</span>
+<span class="nv">declare</span><span class="w"> </span><span class="o">-</span><span class="nv">a</span><span class="w"> </span><span class="nv">applications</span><span class="o">=</span><span class="ss">(</span><span class="w"> </span><span class="s2">&quot;Skype&quot;</span><span class="w"> </span><span class="nv">Spotify</span><span class="w"> </span><span class="nv">Sourcetree</span><span class="w"> </span><span class="nv">Slack</span><span class="w"> </span><span class="nv">Docker</span><span class="w"> </span><span class="nv">iTerm</span><span class="w"> </span><span class="s2">&quot;IntelliJ Idea&quot;</span><span class="w"> </span><span class="s2">&quot;Google Chrome&quot;</span><span class="w"> </span><span class="ss">)</span>
 </code></pre></div>
 
 <p>Skype is capitalized because it would be saved to your /Applciations folder as Skype.app (the script will use this to make sure the application isn't already installed).</p>
@@ -288,9 +230,9 @@ node --version
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="https://www.devlo.io/tag/automation.html">automation</a>
-      <a href="https://www.devlo.io/tag/mac.html">mac</a>
-      <a href="https://www.devlo.io/tag/dev.html">dev</a>
+      <a href="http://www.devlo.io/tag/automation.html">automation</a>
+      <a href="http://www.devlo.io/tag/mac.html">mac</a>
+      <a href="http://www.devlo.io/tag/dev.html">dev</a>
     </p>
   </div>
 
@@ -298,31 +240,27 @@ node --version
 
 
 
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <ins class="adsbygoogle ads-responsive"
-         data-ad-client="ca-pub-2119138261035978"
-         data-ad-slot="1234566"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
 </article>
 
-<footer>
+    <footer>
 <p>&copy;  </p>
-<p>
-Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
-</p></footer>  </main>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "https://www.devlo.io",
+  "url" : "http://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
+
 </body>
 </html>
