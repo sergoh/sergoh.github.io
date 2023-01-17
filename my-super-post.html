@@ -6,24 +6,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow" />
 
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
-
-    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
-
-    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
 
 
-    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
 
-<!-- Google Analytics -->
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,30 +40,44 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-<!-- End Google Analytics -->
+
+
+
+
+
+
+ 
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="SaltStack 101, Set up your first Salt-Master and Salt-Minion" />
 <meta name="keywords" content="saltstack, aws, cloud">
 
-<meta property="og:site_name" content="DevLo Software Blog"/>
-<meta property="og:title" content="Introduction to SaltStack"/>
-<meta property="og:description" content="SaltStack 101, Set up your first Salt-Master and Salt-Minion"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io/my-super-post.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2018-03-22 00:00:00-07:00"/>
-<meta property="article:modified_time" content="2018-04-16 00:00:00-07:00"/>
-<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
-<meta property="article:section" content="automation"/>
-<meta property="article:tag" content="saltstack"/>
-<meta property="article:tag" content="aws"/>
-<meta property="article:tag" content="cloud"/>
-<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Introduction to SaltStack"/>
+  <meta property="og:description" content="SaltStack 101, Set up your first Salt-Master and Salt-Minion"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/my-super-post.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2018-03-22 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2018-04-16 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="automation"/>
+  <meta property="article:tag" content="saltstack"/>
+  <meta property="article:tag" content="aws"/>
+  <meta property="article:tag" content="cloud"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Introduction to SaltStack</title>
 
-<!-- Google Tag Manager -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -67,79 +88,116 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-<!-- End Google Tag Manager --></head>
-<body>
-<!-- Google Tag Manager -->
+</head>
+<body class="light-theme">
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager -->  <aside>
-    <div>
-      <a href="http://www.devlo.io">
-        <img src="/images/Devlo-Logo.png" alt="" title="">
-      </a>
-      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<p>Lopez Brothers Blog</p>
-      <div class="authors-profiles">
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-            <figcaption>Miguel</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-            <figcaption>Sergio</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
 
-      <nav>
-        <ul class="list">
-          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
 
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
         </ul>
-      </nav>
-
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
-  </aside>
-  <main>
 
     <nav>
-      <a href="http://www.devlo.io">    Home
-</a>
+      <ul class="list">
 
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
 
-      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
-</a>
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
 
+      </ul>
     </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234561"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
 
 <article class="single">
   <header>
       
     <h1 id="my-super-post">Introduction to SaltStack</h1>
     <p>
-          Posted on Thu 22 March 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
-
-
-          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
-
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Thu 22 March 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
 
     </p>
   </header>
@@ -170,22 +228,22 @@
 <ol>
 <li>Launch EC2 Linux AMI and SSH inside</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="n">ssh</span><span class="w"> </span><span class="n">ec2</span><span class="o">-</span><span class="n">user</span><span class="mf">@10.0.2.254</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">privatekey</span><span class="p">.</span><span class="n">pem</span>
+<div class="highlight"><pre><span></span><code><span class="n">ssh</span><span class="w"> </span><span class="n">ec2</span><span class="o">-</span><span class="n">user</span><span class="mf">@10.0.2.254</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="n">privatekey</span><span class="p">.</span><span class="n">pem</span><span class="w"></span>
 </code></pre></div>
 
 <ol>
 <li>Use Salt bootstrap script to install the Salt-Master agent</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ec2</span><span class="o">-</span><span class="k">user</span>
-<span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">bootstrap</span><span class="o">-</span><span class="n">salt</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">bootstrap</span><span class="p">.</span><span class="n">saltstack</span><span class="p">.</span><span class="n">com</span>
-<span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="n">#sudo</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="n">bootstrap</span><span class="o">-</span><span class="n">salt</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">M</span><span class="w"> </span><span class="o">-</span><span class="n">N</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ec2</span><span class="o">-</span><span class="k">user</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="n">bootstrap</span><span class="o">-</span><span class="n">salt</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">bootstrap</span><span class="p">.</span><span class="n">saltstack</span><span class="p">.</span><span class="n">com</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="n">#sudo</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="n">bootstrap</span><span class="o">-</span><span class="n">salt</span><span class="p">.</span><span class="n">sh</span><span class="w"> </span><span class="o">-</span><span class="n">M</span><span class="w"> </span><span class="o">-</span><span class="n">N</span><span class="w"></span>
 </code></pre></div>
 
 <ol>
 <li>Verify Salt-Master exists</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
-<span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="mf">2018.3.0</span><span class="w"> </span><span class="p">(</span><span class="n">Oxygen</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="o">--</span><span class="n">version</span><span class="w"></span>
+<span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="mf">2018.3.0</span><span class="w"> </span><span class="p">(</span><span class="n">Oxygen</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <h2><strong>Installing Salt-Minions</strong></h2>
@@ -200,9 +258,9 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <ol>
 <li>Use Salt bootstrap script to install the Salt-Minion agent</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="nt">cd</span><span class="w"> </span><span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">ec2-user</span><span class="o">;</span>
-<span class="nt">curl</span><span class="w"> </span><span class="nt">-o</span><span class="w"> </span><span class="o">/</span><span class="nt">tmp</span><span class="o">/</span><span class="nt">bootstrap-salt</span><span class="p">.</span><span class="nc">sh</span><span class="w"> </span><span class="nt">-L</span><span class="w"> </span><span class="nt">https</span><span class="o">://</span><span class="nt">bootstrap</span><span class="p">.</span><span class="nc">saltstack</span><span class="p">.</span><span class="nc">com</span><span class="o">;</span>
-<span class="nt">sh</span><span class="w"> </span><span class="o">/</span><span class="nt">tmp</span><span class="o">/</span><span class="nt">bootstrap-salt</span><span class="p">.</span><span class="nc">sh</span><span class="w"> </span><span class="nt">-i</span><span class="w"> </span><span class="nt">dev-minion-01</span><span class="w"> </span><span class="nt">-A</span><span class="w"> </span><span class="nt">10</span><span class="p">.</span><span class="nc">0</span><span class="p">.</span><span class="nc">2</span><span class="p">.</span><span class="nc">254</span><span class="o">;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">cd</span> <span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">ec2-user</span><span class="o">;</span>
+<span class="nt">curl</span> <span class="nt">-o</span> <span class="o">/</span><span class="nt">tmp</span><span class="o">/</span><span class="nt">bootstrap-salt</span><span class="p">.</span><span class="nc">sh</span> <span class="nt">-L</span> <span class="nt">https</span><span class="o">://</span><span class="nt">bootstrap</span><span class="p">.</span><span class="nc">saltstack</span><span class="p">.</span><span class="nc">com</span><span class="o">;</span>
+<span class="nt">sh</span> <span class="o">/</span><span class="nt">tmp</span><span class="o">/</span><span class="nt">bootstrap-salt</span><span class="p">.</span><span class="nc">sh</span> <span class="nt">-i</span> <span class="nt">dev-minion-01</span> <span class="nt">-A</span> <span class="nt">10</span><span class="p">.</span><span class="nc">0</span><span class="p">.</span><span class="nc">2</span><span class="p">.</span><span class="nc">254</span><span class="o">;</span>
 </code></pre></div>
 
 <ul>
@@ -214,70 +272,70 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <p>Verify the Salt-Minion exists</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">ec2-user@ip-10-0-1-31 ~</span><span class="o">]</span><span class="err">$</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
-<span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="w"> </span><span class="mf">2018.3.0</span><span class="w"> </span><span class="p">(</span><span class="n">Oxygen</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">ec2-user@ip-10-0-1-31 ~</span><span class="o">]</span><span class="err">$</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="w"> </span><span class="o">--</span><span class="n">version</span><span class="w"></span>
+<span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="w"> </span><span class="mf">2018.3.0</span><span class="w"> </span><span class="p">(</span><span class="n">Oxygen</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <h2><strong>Accept Salt-Minion</strong></h2>
 <ol>
 <li>Head back over to the Salt-Master and check if the key is listed.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="k">key</span><span class="w"> </span><span class="o">-</span><span class="n">L</span>
-<span class="n">Accepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
-<span class="n">Denied</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
-<span class="n">Unaccepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
-<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span>
-<span class="n">Rejected</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="k">key</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"></span>
+<span class="n">Accepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
+<span class="n">Denied</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
+<span class="n">Unaccepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
+<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="w"></span>
+<span class="n">Rejected</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
 </code></pre></div>
 
 <ol>
 <li>By this point you should see your minion key. Accept the key to put it under the Salt-Master's control.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="k">key</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span>
-<span class="n">The</span><span class="w"> </span><span class="n">following</span><span class="w"> </span><span class="n">keys</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">going</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="nl">accepted</span><span class="p">:</span>
-<span class="n">Unaccepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
-<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span>
-<span class="n">Proceed</span><span class="vm">?</span><span class="w"> </span><span class="o">[</span><span class="n">n/Y</span><span class="o">]</span><span class="w"> </span><span class="n">y</span>
-<span class="k">Key</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">minion</span><span class="w"> </span><span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="n">accepted</span><span class="p">.</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="k">key</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="w"></span>
+<span class="n">The</span><span class="w"> </span><span class="n">following</span><span class="w"> </span><span class="n">keys</span><span class="w"> </span><span class="k">are</span><span class="w"> </span><span class="n">going</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="nl">accepted</span><span class="p">:</span><span class="w"></span>
+<span class="n">Unaccepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
+<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="w"></span>
+<span class="n">Proceed</span><span class="vm">?</span><span class="w"> </span><span class="o">[</span><span class="n">n/Y</span><span class="o">]</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
+<span class="k">Key</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">minion</span><span class="w"> </span><span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="w"> </span><span class="n">accepted</span><span class="p">.</span><span class="w"></span>
 
-<span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="k">key</span><span class="w"> </span><span class="o">-</span><span class="n">L</span>
-<span class="n">Accepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
-<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span>
-<span class="n">Denied</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
-<span class="n">Unaccepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
-<span class="n">Rejected</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span>
+<span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="k">key</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"></span>
+<span class="n">Accepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
+<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="w"></span>
+<span class="n">Denied</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
+<span class="n">Unaccepted</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
+<span class="n">Rejected</span><span class="w"> </span><span class="nl">Keys</span><span class="p">:</span><span class="w"></span>
 </code></pre></div>
 
 <p>At this point, your salt-master should be able to communicate to your salt-minion and vice-versa. </p>
 <p><em>If you do not see the salt-minion key appear after a minute, head back over to your salt-minion box and run <code>salt-minion debug</code></em></p>
-<div class="highlight"><pre><span></span><code>[<span class="nv">ERROR</span><span class="w">   </span>]<span class="w"> </span><span class="nv">The</span><span class="w"> </span><span class="nv">Salt</span><span class="w"> </span><span class="nv">Master</span><span class="w"> </span><span class="nv">has</span><span class="w"> </span><span class="nv">cached</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">public</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">node</span>,<span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">salt</span><span class="w"> </span><span class="nv">minion</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="k">wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="nv">seconds</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">attempting</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">re</span><span class="o">-</span><span class="nv">authenticate</span>
-[<span class="nv">ERROR</span><span class="w">   </span>]<span class="w"> </span><span class="nv">The</span><span class="w"> </span><span class="nv">Salt</span><span class="w"> </span><span class="nv">Master</span><span class="w"> </span><span class="nv">has</span><span class="w"> </span><span class="nv">cached</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">public</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">node</span>,<span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">salt</span><span class="w"> </span><span class="nv">minion</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="k">wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="nv">seconds</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">attempting</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">re</span><span class="o">-</span><span class="nv">authenticate</span>
-[<span class="nv">ERROR</span><span class="w">   </span>]<span class="w"> </span><span class="nv">The</span><span class="w"> </span><span class="nv">Salt</span><span class="w"> </span><span class="nv">Master</span><span class="w"> </span><span class="nv">has</span><span class="w"> </span><span class="nv">cached</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">public</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">node</span>,<span class="w"> </span><span class="nv">this</span><span class="w"> </span><span class="nv">salt</span><span class="w"> </span><span class="nv">minion</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="k">wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="nv">seconds</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="nv">attempting</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">re</span><span class="o">-</span><span class="nv">authenticate</span>
+<div class="highlight"><pre><span></span><code>[<span class="nv">ERROR</span>   ] <span class="nv">The</span> <span class="nv">Salt</span> <span class="nv">Master</span> <span class="nv">has</span> <span class="nv">cached</span> <span class="nv">the</span> <span class="nv">public</span> <span class="nv">key</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">node</span>, <span class="nv">this</span> <span class="nv">salt</span> <span class="nv">minion</span> <span class="nv">will</span> <span class="k">wait</span> <span class="k">for</span> <span class="mi">10</span> <span class="nv">seconds</span> <span class="nv">before</span> <span class="nv">attempting</span> <span class="nv">to</span> <span class="nv">re</span><span class="o">-</span><span class="nv">authenticate</span>
+[<span class="nv">ERROR</span>   ] <span class="nv">The</span> <span class="nv">Salt</span> <span class="nv">Master</span> <span class="nv">has</span> <span class="nv">cached</span> <span class="nv">the</span> <span class="nv">public</span> <span class="nv">key</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">node</span>, <span class="nv">this</span> <span class="nv">salt</span> <span class="nv">minion</span> <span class="nv">will</span> <span class="k">wait</span> <span class="k">for</span> <span class="mi">10</span> <span class="nv">seconds</span> <span class="nv">before</span> <span class="nv">attempting</span> <span class="nv">to</span> <span class="nv">re</span><span class="o">-</span><span class="nv">authenticate</span>
+[<span class="nv">ERROR</span>   ] <span class="nv">The</span> <span class="nv">Salt</span> <span class="nv">Master</span> <span class="nv">has</span> <span class="nv">cached</span> <span class="nv">the</span> <span class="nv">public</span> <span class="nv">key</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">node</span>, <span class="nv">this</span> <span class="nv">salt</span> <span class="nv">minion</span> <span class="nv">will</span> <span class="k">wait</span> <span class="k">for</span> <span class="mi">10</span> <span class="nv">seconds</span> <span class="nv">before</span> <span class="nv">attempting</span> <span class="nv">to</span> <span class="nv">re</span><span class="o">-</span><span class="nv">authenticate</span>
 </code></pre></div>
 
 <p>If you see the following error, it means your salt-master and salt-minion might not be able to communicate. Ensure that port 4505-4506 are open between the two instances. </p>
 <p><em>Here is how I configured my SG in Terraform</em></p>
-<div class="highlight"><pre><span></span><code>resource<span class="w"> </span>&quot;aws_security_group&quot;<span class="w"> </span>&quot;sg_salt_stack&quot;<span class="w"> </span>{
-<span class="w">  </span>name<span class="w"> </span>=<span class="w"> </span>&quot;sg_salt_stack&quot;
-<span class="w">  </span>vpc_id<span class="w"> </span>=<span class="w"> </span>&quot;<span class="cp">${</span><span class="n">aws_vpc</span><span class="o">.</span><span class="n">sample</span><span class="o">-</span><span class="n">cloud</span><span class="o">-</span><span class="n">vpc</span><span class="o">.</span><span class="n">id</span><span class="cp">}</span>&quot;
+<div class="highlight"><pre><span></span><code>resource &quot;aws_security_group&quot; &quot;sg_salt_stack&quot; {
+  name = &quot;sg_salt_stack&quot;
+  vpc_id = &quot;<span class="cp">${</span><span class="n">aws_vpc</span><span class="o">.</span><span class="n">sample</span><span class="o">-</span><span class="n">cloud</span><span class="o">-</span><span class="n">vpc</span><span class="o">.</span><span class="n">id</span><span class="cp">}</span>&quot;
 
-<span class="w">  </span>ingress<span class="w"> </span>{
-<span class="w">    </span>from_port<span class="w"> </span>=<span class="w"> </span>&quot;4505&quot;
-<span class="w">    </span>to_port<span class="w"> </span>=<span class="w"> </span>&quot;4506&quot;
-<span class="w">    </span>protocol<span class="w"> </span>=<span class="w"> </span>&quot;tcp&quot;
-<span class="w">    </span>self<span class="w"> </span>=<span class="w"> </span>true
-<span class="w">  </span>}
+  ingress {
+    from_port = &quot;4505&quot;
+    to_port = &quot;4506&quot;
+    protocol = &quot;tcp&quot;
+    self = true
+  }
 
-<span class="w">  </span>egress<span class="w"> </span>{
-<span class="w">    </span>from_port<span class="w"> </span>=<span class="w"> </span>0
-<span class="w">    </span>to_port<span class="w"> </span>=<span class="w"> </span>0
-<span class="w">    </span>protocol<span class="w"> </span>=<span class="w"> </span>&quot;-1&quot;
-<span class="w">    </span>cidr_blocks<span class="w"> </span>=<span class="w"> </span>[&quot;0.0.0.0/0&quot;]
-<span class="w">  </span>}
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = &quot;-1&quot;
+    cidr_blocks = [&quot;0.0.0.0/0&quot;]
+  }
 
-<span class="w">  </span>tags<span class="w"> </span>{
-<span class="w">    </span>Name<span class="w"> </span>=<span class="w"> </span>&quot;sg_salt_stack&quot;
-<span class="w">  </span>}
+  tags {
+    Name = &quot;sg_salt_stack&quot;
+  }
 }
 </code></pre></div>
 
@@ -286,66 +344,66 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <ol>
 <li>Archive the premade configuration file located at <code>/etc/salt/master</code>. This file is full of instructions and definitions. It's useful to read but hard to maintain, therefore we will keep it around but create our own. </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mv</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">master</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">master</span><span class="p">.</span><span class="n">orig</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mv</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">master</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">master</span><span class="p">.</span><span class="n">orig</span><span class="w"></span>
 </code></pre></div>
 
 <ol>
 <li>Create your own <code>/etc/salt/master</code> and define the bare minimum.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="n">timeout</span><span class="o">:</span><span class="w"> </span><span class="mi">60</span>
-<span class="n">worker_threads</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span>
-<span class="n">ipv6</span><span class="o">:</span><span class="w"> </span><span class="n">False</span>
-<span class="n">log_level_logfile</span><span class="o">:</span><span class="w"> </span><span class="n">debug</span>
-<span class="n">presence_events</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<div class="highlight"><pre><span></span><code><span class="n">timeout</span><span class="o">:</span> <span class="mi">60</span>
+<span class="n">worker_threads</span><span class="o">:</span> <span class="mi">10</span>
+<span class="n">ipv6</span><span class="o">:</span> <span class="n">False</span>
+<span class="n">log_level_logfile</span><span class="o">:</span> <span class="n">debug</span>
+<span class="n">presence_events</span><span class="o">:</span> <span class="kc">true</span>
 
-<span class="err">#</span><span class="w"> </span><span class="n">Master</span><span class="w"> </span><span class="n">file_roots</span><span class="w"> </span><span class="n">configuration</span><span class="o">:</span>
+<span class="err">#</span> <span class="n">Master</span> <span class="n">file_roots</span> <span class="n">configuration</span><span class="o">:</span>
 <span class="n">file_roots</span><span class="o">:</span>
-<span class="w">  </span><span class="n">base</span><span class="o">:</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="sr">/srv/salt/</span><span class="n">base</span>
+  <span class="n">base</span><span class="o">:</span>
+    <span class="o">-</span> <span class="sr">/srv/salt/</span><span class="n">base</span>
 
-<span class="n">default_include</span><span class="o">:</span><span class="w"> </span><span class="n">master</span><span class="o">.</span><span class="na">d</span><span class="o">/*.</span><span class="n">conf</span>
+<span class="n">default_include</span><span class="o">:</span> <span class="n">master</span><span class="o">.</span><span class="na">d</span><span class="o">/*.</span><span class="n">conf</span>
 
 <span class="n">pillar_roots</span><span class="o">:</span>
-<span class="w">  </span><span class="n">base</span><span class="o">:</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="sr">/srv/</span><span class="n">pillar</span>
+  <span class="n">base</span><span class="o">:</span>
+    <span class="o">-</span> <span class="sr">/srv/</span><span class="n">pillar</span>
 
 <span class="n">module_dirs</span><span class="o">:</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="sr">/srv/salt/</span><span class="n">_modules</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="sr">/srv/salt/</span><span class="n">extmods</span>
+  <span class="o">-</span> <span class="sr">/srv/salt/</span><span class="n">_modules</span>
+  <span class="o">-</span> <span class="sr">/srv/salt/</span><span class="n">extmods</span>
 </code></pre></div>
 
 <p>For the sake of this tutorial, we will only be covering a state that lives in our <code>/srv/salt/base</code> file root. I will not be going <code>modules</code>, <code>pillars</code>, or <code>node_groups</code> just quite yet and will leave those for another post. </p>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="n">restart</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="n">restart</span><span class="w"></span>
 </code></pre></div>
 
 <p>Quickly restart the salt-master to load the new configurations. </p>
 <ol>
 <li>Our first state will live in our <code>base</code> environment. Go ahead and create a folder in the <code>/srv/salt/base</code> location. </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">srv</span><span class="o">/</span>
-<span class="o">[</span><span class="n">root@salt-master srv</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">salt</span>
-<span class="o">[</span><span class="n">root@salt-master srv</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">salt</span><span class="o">/</span>
-<span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">base</span>
-<span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">base</span>
-<span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">pwd</span>
-<span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">base</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master srv</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">salt</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master srv</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">salt</span><span class="o">/</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">base</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master salt</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">base</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">pwd</span><span class="w"></span>
+<span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">base</span><span class="w"></span>
 </code></pre></div>
 
 <p>This will be known as our <code>base</code> enviornment. <code>Base</code> environments are typically states that are applied across your each <code>dev</code>/<code>test</code>/<code>stage</code>/<code>prod</code> environment. I'll also cover how to create environment specific states in a future post. </p>
 <ol>
 <li>Create a <code>/srv/salt/base/touch-file</code> folder. </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">touch</span><span class="o">-</span><span class="k">file</span>
-<span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">vi</span><span class="w"> </span><span class="n">init</span><span class="p">.</span><span class="n">sls</span>
-<span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">pwd</span>
-<span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">base</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">mkdir</span><span class="w"> </span><span class="n">touch</span><span class="o">-</span><span class="k">file</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">vi</span><span class="w"> </span><span class="n">init</span><span class="p">.</span><span class="n">sls</span><span class="w"></span>
+<span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">pwd</span><span class="w"></span>
+<span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">base</span><span class="w"></span>
 </code></pre></div>
 
 <p>This folder will contain our first state that will create a "Hello World" text file on our minion. </p>
 <ol>
 <li>Inside the <code>touch-file</code> folder, create an <code>init.sls</code> file. Every folder must have an <code>init.sls</code> file. This file will contain the instructions for your state.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">vi</span><span class="w"> </span><span class="n">init</span><span class="p">.</span><span class="n">sls</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">vi</span><span class="w"> </span><span class="n">init</span><span class="p">.</span><span class="n">sls</span><span class="w"></span>
 </code></pre></div>
 
 <ol>
@@ -362,14 +420,14 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <ol>
 <li>Create the <code>hello-world.txt</code> file at <code>/srv/salt/base/touch-file</code></li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="ss">&quot;hello world&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="ss">&quot;hello world&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span><span class="w"></span>
 </code></pre></div>
 
 <p>This satisfies the <code>source</code> requirement defined our in <code>init.sls</code> file. </p>
 <ol>
 <li>The last thing we need to do is create the <code>top.sls</code> file. We will need to <code>cd</code> back to our <code>/srv/salt/base</code>. And create it there. </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">vi</span><span class="w"> </span><span class="k">top</span><span class="p">.</span><span class="n">sls</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">vi</span><span class="w"> </span><span class="k">top</span><span class="p">.</span><span class="n">sls</span><span class="w"></span>
 </code></pre></div>
 
 <p>Paste the following text inside. </p>
@@ -384,48 +442,48 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <ol>
 <li>We are now ready to run our first state. Run the following <code>state.show_top</code> command to see which states will be applied.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="w"> </span><span class="k">state</span><span class="p">.</span><span class="n">show_top</span>
-<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="err">:</span>
-<span class="w">    </span><span class="o">----------</span>
-<span class="w">    </span><span class="nl">base</span><span class="p">:</span>
-<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">touch</span><span class="o">-</span><span class="k">file</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="w"> </span><span class="k">state</span><span class="p">.</span><span class="n">show_top</span><span class="w"></span>
+<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="o">----------</span><span class="w"></span>
+<span class="w">    </span><span class="nl">base</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">touch</span><span class="o">-</span><span class="k">file</span><span class="w"></span>
 </code></pre></div>
 
 <p><em>I always run <code>state.show_top</code> before running a <code>state.apply</code> to double check my salt-master is doing what I want. I can't stress this enough. It has saved me so many times.</em></p>
 <ol>
 <li>If everything looks good, run the <code>state.apply</code> command to push the state down to the salt-minion.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="w"> </span><span class="k">state</span><span class="p">.</span><span class="n">apply</span>
-<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="err">:</span>
-<span class="o">----------</span>
-<span class="w">          </span><span class="nl">ID</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span>
-<span class="w">    </span><span class="k">Function</span><span class="err">:</span><span class="w"> </span><span class="k">file</span><span class="p">.</span><span class="n">managed</span>
-<span class="w">      </span><span class="k">Result</span><span class="err">:</span><span class="w"> </span><span class="k">True</span>
-<span class="w">     </span><span class="nl">Comment</span><span class="p">:</span><span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span><span class="w"> </span><span class="n">updated</span>
-<span class="w">     </span><span class="nl">Started</span><span class="p">:</span><span class="w"> </span><span class="mi">06</span><span class="err">:</span><span class="mi">17</span><span class="err">:</span><span class="mf">46.887924</span>
-<span class="w">    </span><span class="nl">Duration</span><span class="p">:</span><span class="w"> </span><span class="mf">70.182</span><span class="w"> </span><span class="n">ms</span>
-<span class="w">     </span><span class="nl">Changes</span><span class="p">:</span>
-<span class="w">              </span><span class="o">----------</span>
-<span class="w">              </span><span class="nl">diff</span><span class="p">:</span>
-<span class="w">                  </span><span class="k">New</span><span class="w"> </span><span class="k">file</span>
-<span class="w">              </span><span class="nl">mode</span><span class="p">:</span>
-<span class="w">                  </span><span class="mi">0644</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="w"> </span><span class="k">state</span><span class="p">.</span><span class="n">apply</span><span class="w"></span>
+<span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="err">:</span><span class="w"></span>
+<span class="o">----------</span><span class="w"></span>
+<span class="w">          </span><span class="nl">ID</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span><span class="w"></span>
+<span class="w">    </span><span class="k">Function</span><span class="err">:</span><span class="w"> </span><span class="k">file</span><span class="p">.</span><span class="n">managed</span><span class="w"></span>
+<span class="w">      </span><span class="k">Result</span><span class="err">:</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
+<span class="w">     </span><span class="nl">Comment</span><span class="p">:</span><span class="w"> </span><span class="k">File</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span><span class="w"> </span><span class="n">updated</span><span class="w"></span>
+<span class="w">     </span><span class="nl">Started</span><span class="p">:</span><span class="w"> </span><span class="mi">06</span><span class="err">:</span><span class="mi">17</span><span class="err">:</span><span class="mf">46.887924</span><span class="w"></span>
+<span class="w">    </span><span class="nl">Duration</span><span class="p">:</span><span class="w"> </span><span class="mf">70.182</span><span class="w"> </span><span class="n">ms</span><span class="w"></span>
+<span class="w">     </span><span class="nl">Changes</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="o">----------</span><span class="w"></span>
+<span class="w">              </span><span class="nl">diff</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="k">New</span><span class="w"> </span><span class="k">file</span><span class="w"></span>
+<span class="w">              </span><span class="nl">mode</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="mi">0644</span><span class="w"></span>
 
-<span class="n">Summary</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span>
-<span class="o">------------</span>
-<span class="nl">Succeeded</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">changed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="nl">Failed</span><span class="p">:</span><span class="w">    </span><span class="mi">0</span>
-<span class="o">------------</span>
-<span class="n">Total</span><span class="w"> </span><span class="n">states</span><span class="w"> </span><span class="nl">run</span><span class="p">:</span><span class="w">     </span><span class="mi">1</span>
-<span class="n">Total</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="nc">time</span><span class="err">:</span><span class="w">  </span><span class="mf">70.182</span><span class="w"> </span><span class="n">ms</span>
+<span class="n">Summary</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="w"></span>
+<span class="o">------------</span><span class="w"></span>
+<span class="nl">Succeeded</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">changed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nl">Failed</span><span class="p">:</span><span class="w">    </span><span class="mi">0</span><span class="w"></span>
+<span class="o">------------</span><span class="w"></span>
+<span class="n">Total</span><span class="w"> </span><span class="n">states</span><span class="w"> </span><span class="nl">run</span><span class="p">:</span><span class="w">     </span><span class="mi">1</span><span class="w"></span>
+<span class="n">Total</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="nc">time</span><span class="err">:</span><span class="w">  </span><span class="mf">70.182</span><span class="w"> </span><span class="n">ms</span><span class="w"></span>
 </code></pre></div>
 
 <p>If everything went well, you should see <code>Succeeded: 1 (changed=1)</code>. This means that your state was successfully applied. You should now head back over to your salt-minion and verify that the state was successfully pushed. </p>
 <ol>
 <li>Verify <code>/tmp/hello-world.txt</code> exists on the salt-minion exists. </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@ip-10-0-1-97 ec2-user</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">hello</span><span class="w"> </span><span class="n">world</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@ip-10-0-1-97 ec2-user</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span><span class="w"></span>
+<span class="n">hello</span><span class="w"> </span><span class="n">world</span><span class="w"></span>
 </code></pre></div>
 
 <p>There you have it, your first salt state!</p>
@@ -446,9 +504,9 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="http://www.devlo.io/tag/saltstack.html">saltstack</a>
-      <a href="http://www.devlo.io/tag/aws.html">aws</a>
-      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/saltstack.html">saltstack</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
     </p>
   </div>
 
@@ -456,27 +514,31 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 
 
 
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234566"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 </article>
 
-    <footer>
+<footer>
 <p>&copy;  </p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
-</p>    </footer>
-  </main>
-
-
-
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "http://www.devlo.io",
+  "url" : "https://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
-
 </body>
 </html>

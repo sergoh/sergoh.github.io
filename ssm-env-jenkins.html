@@ -6,24 +6,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow" />
 
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
-
-    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
-
-    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
 
 
-    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
 
-<!-- Google Analytics -->
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,33 +40,47 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-<!-- End Google Analytics -->
+
+
+
+
+
+
+ 
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline" />
 <meta name="keywords" content="jenkins, aws, cloud, groovy, automation, ssm">
 
-<meta property="og:site_name" content="DevLo Software Blog"/>
-<meta property="og:title" content="Jenkins Pipeline Env Variables w/ AWS SSM"/>
-<meta property="og:description" content="Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io/ssm-env-jenkins.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2018-04-12 00:00:00-07:00"/>
-<meta property="article:modified_time" content="2018-04-12 00:00:00-07:00"/>
-<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
-<meta property="article:section" content="automation"/>
-<meta property="article:tag" content="jenkins"/>
-<meta property="article:tag" content="aws"/>
-<meta property="article:tag" content="cloud"/>
-<meta property="article:tag" content="groovy"/>
-<meta property="article:tag" content="automation"/>
-<meta property="article:tag" content="ssm"/>
-<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Jenkins Pipeline Env Variables w/ AWS SSM"/>
+  <meta property="og:description" content="Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/ssm-env-jenkins.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2018-04-12 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2018-04-12 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="automation"/>
+  <meta property="article:tag" content="jenkins"/>
+  <meta property="article:tag" content="aws"/>
+  <meta property="article:tag" content="cloud"/>
+  <meta property="article:tag" content="groovy"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="ssm"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Jenkins Pipeline Env Variables w/ AWS SSM</title>
 
-<!-- Google Tag Manager -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -70,79 +91,116 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-<!-- End Google Tag Manager --></head>
-<body>
-<!-- Google Tag Manager -->
+</head>
+<body class="light-theme">
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager -->  <aside>
-    <div>
-      <a href="http://www.devlo.io">
-        <img src="/images/Devlo-Logo.png" alt="" title="">
-      </a>
-      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<p>Lopez Brothers Blog</p>
-      <div class="authors-profiles">
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-            <figcaption>Miguel</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-            <figcaption>Sergio</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
 
-      <nav>
-        <ul class="list">
-          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
 
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
         </ul>
-      </nav>
-
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
-  </aside>
-  <main>
 
     <nav>
-      <a href="http://www.devlo.io">    Home
-</a>
+      <ul class="list">
 
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
 
-      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
-</a>
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
 
+      </ul>
     </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234561"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
 
 <article class="single">
   <header>
       
     <h1 id="ssm-env-jenkins">Jenkins Pipeline Env Variables w/ AWS SSM</h1>
     <p>
-          Posted on Thu 12 April 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
-
-
-          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
-
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Thu 12 April 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
 
     </p>
   </header>
@@ -187,24 +245,24 @@
 <li>AWS CLI installed on the box</li>
 </ul>
 <p>Here's how SSM looks in enviornment variables: </p>
-<div class="highlight"><pre><span></span><code><span class="n">environment</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">SECRET_ACCESS_KEY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">&#39;</span><span class="err">$</span><span class="p">(</span><span class="n">aws</span><span class="w"> </span><span class="n">ssm</span><span class="w"> </span><span class="n">get</span><span class="o">-</span><span class="n">parameters</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">$REGION</span><span class="w"> </span><span class="o">--</span><span class="n">names</span><span class="w"> </span><span class="o">/</span><span class="n">jenkins</span><span class="o">/</span><span class="n">nonprod</span><span class="o">/</span><span class="n">iam</span><span class="o">-</span><span class="n">role</span><span class="o">-</span><span class="n">secret</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="n">Parameters</span><span class="p">[</span><span class="mh">0</span><span class="p">].</span><span class="n">Value</span><span class="w"> </span><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">decryption</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sed</span><span class="w"> </span><span class="n">\&#39;s/&quot;//g\&#39;)&#39;</span>
-<span class="w">        </span><span class="n">ACCESS_KEY_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">&#39;</span><span class="err">$</span><span class="p">(</span><span class="n">aws</span><span class="w"> </span><span class="n">ssm</span><span class="w"> </span><span class="n">get</span><span class="o">-</span><span class="n">parameters</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">$REGION</span><span class="w"> </span><span class="o">--</span><span class="n">names</span><span class="w"> </span><span class="o">/</span><span class="n">jenkins</span><span class="o">/</span><span class="n">nonprod</span><span class="o">/</span><span class="n">iam</span><span class="o">-</span><span class="n">role</span><span class="o">-</span><span class="n">key</span><span class="w"> </span><span class="o">--</span><span class="n">query</span><span class="w"> </span><span class="n">Parameters</span><span class="p">[</span><span class="mh">0</span><span class="p">].</span><span class="n">Value</span><span class="w"> </span><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">decryption</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sed</span><span class="w"> </span><span class="n">\&#39;s/&quot;//g\&#39;)&#39;</span>
-<span class="w">    </span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="n">environment</span> <span class="p">{</span>
+        <span class="n">SECRET_ACCESS_KEY</span> <span class="o">=</span> <span class="p">&#39;</span><span class="err">$</span><span class="p">(</span><span class="n">aws</span> <span class="n">ssm</span> <span class="n">get</span><span class="o">-</span><span class="n">parameters</span> <span class="o">--</span><span class="n">region</span> <span class="n">$REGION</span> <span class="o">--</span><span class="n">names</span> <span class="o">/</span><span class="n">jenkins</span><span class="o">/</span><span class="n">nonprod</span><span class="o">/</span><span class="n">iam</span><span class="o">-</span><span class="n">role</span><span class="o">-</span><span class="n">secret</span> <span class="o">--</span><span class="n">query</span> <span class="n">Parameters</span><span class="p">[</span><span class="mh">0</span><span class="p">].</span><span class="n">Value</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">decryption</span> <span class="o">|</span> <span class="n">sed</span> <span class="n">\&#39;s/&quot;//g\&#39;)&#39;</span>
+        <span class="n">ACCESS_KEY_ID</span> <span class="o">=</span> <span class="p">&#39;</span><span class="err">$</span><span class="p">(</span><span class="n">aws</span> <span class="n">ssm</span> <span class="n">get</span><span class="o">-</span><span class="n">parameters</span> <span class="o">--</span><span class="n">region</span> <span class="n">$REGION</span> <span class="o">--</span><span class="n">names</span> <span class="o">/</span><span class="n">jenkins</span><span class="o">/</span><span class="n">nonprod</span><span class="o">/</span><span class="n">iam</span><span class="o">-</span><span class="n">role</span><span class="o">-</span><span class="n">key</span> <span class="o">--</span><span class="n">query</span> <span class="n">Parameters</span><span class="p">[</span><span class="mh">0</span><span class="p">].</span><span class="n">Value</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">decryption</span> <span class="o">|</span> <span class="n">sed</span> <span class="n">\&#39;s/&quot;//g\&#39;)&#39;</span>
+    <span class="p">}</span>
 </code></pre></div>
 
 <p>Pretty simple right? Here you can see that the CLI commands are being loaded into <code>SECRET_ACCESS_KEY</code> and <code>ACCESS_KEY_ID</code>. It's important to note that the CLI commands will not be executed until they are run in a <code>sh</code> command in the <code>stages</code> section of your pipeline. </p>
 <p>Including the enviornment variables throughout your pipeline is easy. </p>
-<div class="highlight"><pre><span></span><code>stages<span class="w"> </span>{
-<span class="w">        </span>stage<span class="w"> </span>(&#39;Initialize<span class="w"> </span>VPC&#39;)<span class="w"> </span>{
-<span class="w">            </span>steps<span class="w"> </span>{
-<span class="w">                </span>dir(&#39;terraform&#39;){
-<span class="w">                    </span>sh<span class="w"> </span>&quot;&quot;&quot;
-<span class="w">                    </span>serverless<span class="w"> </span>config<span class="w"> </span>credentials<span class="w"> </span>--provider<span class="w"> </span>provider<span class="w"> </span>--key<span class="w"> </span><span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">ACCESS_KEY_ID</span><span class="cp">}</span><span class="w"> </span>--secret<span class="w"> </span><span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">SECRET_ACCESS_KEY</span><span class="cp">}</span>
-<span class="w">                    </span>&quot;&quot;&quot;
-<span class="w">                </span>}
-<span class="w">            </span>}
-<span class="w">        </span>}
+<div class="highlight"><pre><span></span><code>stages {
+        stage (&#39;Initialize VPC&#39;) {
+            steps {
+                dir(&#39;terraform&#39;){
+                    sh &quot;&quot;&quot;
+                    serverless config credentials --provider provider --key <span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">ACCESS_KEY_ID</span><span class="cp">}</span> --secret <span class="cp">${</span><span class="n">env</span><span class="o">.</span><span class="n">SECRET_ACCESS_KEY</span><span class="cp">}</span>
+                    &quot;&quot;&quot;
+                }
+            }
+        }
 </code></pre></div>
 
 <p>There are two important things to note here. </p>
@@ -219,12 +277,12 @@
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="http://www.devlo.io/tag/jenkins.html">jenkins</a>
-      <a href="http://www.devlo.io/tag/aws.html">aws</a>
-      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
-      <a href="http://www.devlo.io/tag/groovy.html">groovy</a>
-      <a href="http://www.devlo.io/tag/automation.html">automation</a>
-      <a href="http://www.devlo.io/tag/ssm.html">ssm</a>
+      <a href="https://www.devlo.io/tag/jenkins.html">jenkins</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/groovy.html">groovy</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/ssm.html">ssm</a>
     </p>
   </div>
 
@@ -232,27 +290,31 @@
 
 
 
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234566"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 </article>
 
-    <footer>
+<footer>
 <p>&copy;  </p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
-</p>    </footer>
-  </main>
-
-
-
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "http://www.devlo.io",
+  "url" : "https://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
-
 </body>
 </html>

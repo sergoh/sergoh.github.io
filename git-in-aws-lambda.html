@@ -6,24 +6,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow" />
 
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
-
-    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
-
-    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
 
 
-    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
 
-<!-- Google Analytics -->
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,33 +40,47 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-<!-- End Google Analytics -->
+
+
+
+
+
+
+ 
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Use GitPython w/ a Git Executable in AWS Lambda" />
 <meta name="keywords" content="serverless, lambda, aws, python, cloud, layers">
 
-<meta property="og:site_name" content="DevLo Software Blog"/>
-<meta property="og:title" content="Running Git in AWS Lambda Functions"/>
-<meta property="og:description" content="Use GitPython w/ a Git Executable in AWS Lambda"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io/git-in-aws-lambda.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2019-03-07 00:00:00-07:00"/>
-<meta property="article:modified_time" content="2019-03-07 00:00:00-07:00"/>
-<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
-<meta property="article:section" content="tutorials"/>
-<meta property="article:tag" content="serverless"/>
-<meta property="article:tag" content="lambda"/>
-<meta property="article:tag" content="aws"/>
-<meta property="article:tag" content="python"/>
-<meta property="article:tag" content="cloud"/>
-<meta property="article:tag" content="layers"/>
-<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Running Git in AWS Lambda Functions"/>
+  <meta property="og:description" content="Use GitPython w/ a Git Executable in AWS Lambda"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/git-in-aws-lambda.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2019-03-07 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2019-03-07 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="tutorials"/>
+  <meta property="article:tag" content="serverless"/>
+  <meta property="article:tag" content="lambda"/>
+  <meta property="article:tag" content="aws"/>
+  <meta property="article:tag" content="python"/>
+  <meta property="article:tag" content="cloud"/>
+  <meta property="article:tag" content="layers"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Running Git in AWS Lambda Functions</title>
 
-<!-- Google Tag Manager -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -70,79 +91,116 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-<!-- End Google Tag Manager --></head>
-<body>
-<!-- Google Tag Manager -->
+</head>
+<body class="light-theme">
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager -->  <aside>
-    <div>
-      <a href="http://www.devlo.io">
-        <img src="/images/Devlo-Logo.png" alt="" title="">
-      </a>
-      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<p>Lopez Brothers Blog</p>
-      <div class="authors-profiles">
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-            <figcaption>Miguel</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-            <figcaption>Sergio</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
 
-      <nav>
-        <ul class="list">
-          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
 
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
         </ul>
-      </nav>
-
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
-  </aside>
-  <main>
 
     <nav>
-      <a href="http://www.devlo.io">    Home
-</a>
+      <ul class="list">
 
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
 
-      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
-</a>
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
 
+      </ul>
     </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234561"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
 
 <article class="single">
   <header>
       
     <h1 id="git-in-aws-lambda">Running Git in AWS Lambda Functions</h1>
     <p>
-          Posted on Thu 07 March 2019 in <a href="http://www.devlo.io/category/tutorials.html">tutorials</a>
-
-
-          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
-
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Thu 07 March 2019 in <a href="https://www.devlo.io/category/tutorials.html">tutorials</a>
 
     </p>
   </header>
@@ -177,12 +235,12 @@ running <strong>Terraform</strong>, <strong>Terragrunt</strong> and <strong>git<
 
 <h2><strong>First Issues</strong></h2>
 <p>Here was my initial lambda function as defined in my <code>serverless.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="w">  </span>run-git:
-<span class="w">    </span>handler:<span class="w"> </span>src/handler/run_git.lambda_handler
-<span class="w">    </span>name:<span class="w"> </span><span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">provider</span><span class="o">.</span><span class="n">stage</span><span class="cp">}</span>-<span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">service</span><span class="cp">}</span>-git
-<span class="w">    </span>description:<span class="w"> </span>run<span class="w"> </span>git<span class="w"> </span>commands<span class="w"> </span>from<span class="w"> </span>lambda
-<span class="w">    </span>memorySize:<span class="w"> </span>256
-<span class="w">    </span>timeout:<span class="w"> </span>30
+<div class="highlight"><pre><span></span><code>  run-git:
+    handler: src/handler/run_git.lambda_handler
+    name: <span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">provider</span><span class="o">.</span><span class="n">stage</span><span class="cp">}</span>-<span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">service</span><span class="cp">}</span>-git
+    description: run git commands from lambda
+    memorySize: 256
+    timeout: 30
 </code></pre></div>
 
 <p>The lambda handle at <code>run_git.lambda_handler</code> ran the following python code:</p>
@@ -219,24 +277,24 @@ running <strong>Terraform</strong>, <strong>Terragrunt</strong> and <strong>git<
 
 <p>Looking for a quick solution; I immediately put <code>GIT_PYTHON_REFRESH=quiet</code> in to the <code>ENVIRONMENT</code> variables section of my Lambda function. </p>
 <p>That resulted in:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Cmd</span><span class="p">(</span><span class="s1">&#39;git&#39;</span><span class="p">)</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="p">:</span><span class="w"> </span><span class="n">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;[Errno 2] No such file or directory: &#39;</span><span class="n">git</span><span class="s1">&#39;: &#39;</span><span class="n">git</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="w">  </span><span class="n">cmdline</span><span class="p">:</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hearsaycorp</span><span class="o">/</span><span class="n">hearsay</span><span class="o">-</span><span class="n">messages</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hearsay</span><span class="o">-</span><span class="n">messages</span><span class="p">:</span><span class="w"> </span><span class="n">GitCommandNotFound</span>
-<span class="n">Traceback</span><span class="w"> </span><span class="p">(</span><span class="n">most</span><span class="w"> </span><span class="n">recent</span><span class="w"> </span><span class="n">call</span><span class="w"> </span><span class="n">last</span><span class="p">):</span>
-<span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="s2">&quot;/var/task/src/handler/run_terraform.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">lambda_handler</span>
-<span class="w">    </span><span class="n">download_hearsay_repo</span><span class="p">(</span><span class="n">repo_name</span><span class="p">,</span><span class="w"> </span><span class="n">git_hash</span><span class="p">)</span>
-<span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="s2">&quot;/var/task/src/utils/github_utils.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">download_hearsay_repo</span>
-<span class="w">    </span><span class="n">repo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Repo</span><span class="o">.</span><span class="n">clone_from</span><span class="p">(</span><span class="n">git_url</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;/tmp/</span><span class="si">%s</span><span class="s1">&#39;</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">project_name</span><span class="p">)</span>
-<span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="s2">&quot;/var/task/git/repo/base.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">988</span><span class="p">,</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">clone_from</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">cls</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="n">git</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">to_path</span><span class="p">,</span><span class="w"> </span><span class="n">GitCmdObjectDB</span><span class="p">,</span><span class="w"> </span><span class="n">progress</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="s2">&quot;/var/task/git/repo/base.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">933</span><span class="p">,</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_clone</span>
-<span class="w">    </span><span class="n">v</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"> </span><span class="n">universal_newlines</span><span class="o">=</span><span class="n">True</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">add_progress</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span><span class="w"> </span><span class="n">git</span><span class="p">,</span><span class="w"> </span><span class="n">progress</span><span class="p">))</span>
-<span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">548</span><span class="p">,</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="o">&lt;</span><span class="n">lambda</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_call_process</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">1014</span><span class="p">,</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_call_process</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">call</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">exec_kwargs</span><span class="p">)</span>
-<span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">738</span><span class="p">,</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">execute</span>
-<span class="w">    </span><span class="n">raise</span><span class="w"> </span><span class="n">GitCommandNotFound</span><span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">)</span>
-<span class="n">git</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">GitCommandNotFound</span><span class="p">:</span><span class="w"> </span><span class="n">Cmd</span><span class="p">(</span><span class="s1">&#39;git&#39;</span><span class="p">)</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="n">due</span><span class="w"> </span><span class="n">to</span><span class="p">:</span><span class="w"> </span><span class="n">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;[Errno 2] No such file or directory: &#39;</span><span class="n">git</span><span class="s1">&#39;: &#39;</span><span class="n">git</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">Cmd</span><span class="p">(</span><span class="s1">&#39;git&#39;</span><span class="p">)</span> <span class="ow">not</span> <span class="n">found</span> <span class="n">due</span> <span class="n">to</span><span class="p">:</span> <span class="n">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;[Errno 2] No such file or directory: &#39;</span><span class="n">git</span><span class="s1">&#39;: &#39;</span><span class="n">git</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+  <span class="n">cmdline</span><span class="p">:</span> <span class="n">git</span> <span class="n">clone</span> <span class="o">-</span><span class="n">v</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hearsaycorp</span><span class="o">/</span><span class="n">hearsay</span><span class="o">-</span><span class="n">messages</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hearsay</span><span class="o">-</span><span class="n">messages</span><span class="p">:</span> <span class="n">GitCommandNotFound</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/src/handler/run_terraform.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">13</span><span class="p">,</span> <span class="ow">in</span> <span class="n">lambda_handler</span>
+    <span class="n">download_hearsay_repo</span><span class="p">(</span><span class="n">repo_name</span><span class="p">,</span> <span class="n">git_hash</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/src/utils/github_utils.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">16</span><span class="p">,</span> <span class="ow">in</span> <span class="n">download_hearsay_repo</span>
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="o">.</span><span class="n">clone_from</span><span class="p">(</span><span class="n">git_url</span><span class="p">,</span> <span class="s1">&#39;/tmp/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">project_name</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/repo/base.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">988</span><span class="p">,</span> <span class="ow">in</span> <span class="n">clone_from</span>
+    <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_clone</span><span class="p">(</span><span class="n">git</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">to_path</span><span class="p">,</span> <span class="n">GitCmdObjectDB</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/repo/base.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">933</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_clone</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="n">True</span><span class="p">,</span> <span class="o">**</span><span class="n">add_progress</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">git</span><span class="p">,</span> <span class="n">progress</span><span class="p">))</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">548</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">lambda</span><span class="o">&gt;</span>
+    <span class="k">return</span> <span class="n">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_process</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1014</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_call_process</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="o">**</span><span class="n">exec_kwargs</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;/var/task/git/cmd.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">738</span><span class="p">,</span> <span class="ow">in</span> <span class="n">execute</span>
+    <span class="n">raise</span> <span class="n">GitCommandNotFound</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+<span class="n">git</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">GitCommandNotFound</span><span class="p">:</span> <span class="n">Cmd</span><span class="p">(</span><span class="s1">&#39;git&#39;</span><span class="p">)</span> <span class="ow">not</span> <span class="n">found</span> <span class="n">due</span> <span class="n">to</span><span class="p">:</span> <span class="n">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;[Errno 2] No such file or directory: &#39;</span><span class="n">git</span><span class="s1">&#39;: &#39;</span><span class="n">git</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>That error made it clear to me. AWS Lambda functions did not come bundled with <code>git</code> executables in the runtime container. Therefore, <strong>GitPython</strong> 
@@ -258,14 +316,14 @@ At first glance, it seemed way too complicated. However, the more I read it, the
 <p>(Read about Lambda Layers <a href="https://aws.amazon.com/blogs/aws/new-for-aws-lambda-use-any-programming-language-and-share-common-components/">here</a>)</p>
 <p>Seemed too simple. I had searched the internet for hours on a solution for installing git on AWS Lambda Functions. </p>
 <p>I included the layer in my <code>serverless.yml</code> file like so:</p>
-<div class="highlight"><pre><span></span><code><span class="w">  </span>run-git:
-<span class="w">    </span>handler:<span class="w"> </span>src/handler/run_git.lambda_handler
-<span class="w">    </span>name:<span class="w"> </span><span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">provider</span><span class="o">.</span><span class="n">stage</span><span class="cp">}</span>-<span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">service</span><span class="cp">}</span>-git
-<span class="w">    </span>description:<span class="w"> </span>run<span class="w"> </span>git<span class="w"> </span>commands<span class="w"> </span>from<span class="w"> </span>lambda
-<span class="w">    </span>memorySize:<span class="w"> </span>256
-<span class="w">    </span>timeout:<span class="w"> </span>30
-<span class="w">    </span>layers:
-<span class="w">      </span>-<span class="w"> </span>arn:aws:lambda:us-west-2:553035198032:layer:git:5
+<div class="highlight"><pre><span></span><code>  run-git:
+    handler: src/handler/run_git.lambda_handler
+    name: <span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">provider</span><span class="o">.</span><span class="n">stage</span><span class="cp">}</span>-<span class="cp">${</span><span class="bp">self</span><span class="p">:</span><span class="n">service</span><span class="cp">}</span>-git
+    description: run git commands from lambda
+    memorySize: 256
+    timeout: 30
+    layers:
+      - arn:aws:lambda:us-west-2:553035198032:layer:git:5
 </code></pre></div>
 
 <p>I deployed my function and BOOM! It worked. Just like that. My lambda function now included a ~layer~ that would allow me to use the <code>git</code> binary. So simple. Now I could play
@@ -277,12 +335,12 @@ around with <code>git</code> in my lambda functions.</p>
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="http://www.devlo.io/tag/serverless.html">serverless</a>
-      <a href="http://www.devlo.io/tag/lambda.html">lambda</a>
-      <a href="http://www.devlo.io/tag/aws.html">aws</a>
-      <a href="http://www.devlo.io/tag/python.html">python</a>
-      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
-      <a href="http://www.devlo.io/tag/layers.html">layers</a>
+      <a href="https://www.devlo.io/tag/serverless.html">serverless</a>
+      <a href="https://www.devlo.io/tag/lambda.html">lambda</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/python.html">python</a>
+      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/layers.html">layers</a>
     </p>
   </div>
 
@@ -290,27 +348,31 @@ around with <code>git</code> in my lambda functions.</p>
 
 
 
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234566"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 </article>
 
-    <footer>
+<footer>
 <p>&copy;  </p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
-</p>    </footer>
-  </main>
-
-
-
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "http://www.devlo.io",
+  "url" : "https://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
-
 </body>
 </html>

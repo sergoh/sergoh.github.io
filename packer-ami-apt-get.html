@@ -6,24 +6,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow" />
 
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
-
-    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
-
-    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
 
 
-    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
 
-<!-- Google Analytics -->
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,35 +40,49 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-<!-- End Google Analytics -->
+
+
+
+
+
+
+ 
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="How to avoid Could not get lock /var/lib/dpkg/lock while using Packer" />
 <meta name="keywords" content="aws, cloud, EC2, automation, packer, apt, apt-get, ub ubutnu">
 
-<meta property="og:site_name" content="DevLo Software Blog"/>
-<meta property="og:title" content="Building Robust Packer AMIs"/>
-<meta property="og:description" content="How to avoid Could not get lock /var/lib/dpkg/lock while using Packer"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io/packer-ami-apt-get.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2018-11-16 00:00:00-07:00"/>
-<meta property="article:modified_time" content="2018-11-16 00:00:00-07:00"/>
-<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
-<meta property="article:section" content="automation"/>
-<meta property="article:tag" content="aws"/>
-<meta property="article:tag" content="cloud"/>
-<meta property="article:tag" content="EC2"/>
-<meta property="article:tag" content="automation"/>
-<meta property="article:tag" content="packer"/>
-<meta property="article:tag" content="apt"/>
-<meta property="article:tag" content="apt-get"/>
-<meta property="article:tag" content="ub ubutnu"/>
-<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Building Robust Packer AMIs"/>
+  <meta property="og:description" content="How to avoid Could not get lock /var/lib/dpkg/lock while using Packer"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/packer-ami-apt-get.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2018-11-16 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2018-11-16 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="automation"/>
+  <meta property="article:tag" content="aws"/>
+  <meta property="article:tag" content="cloud"/>
+  <meta property="article:tag" content="EC2"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="packer"/>
+  <meta property="article:tag" content="apt"/>
+  <meta property="article:tag" content="apt-get"/>
+  <meta property="article:tag" content="ub ubutnu"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Building Robust Packer AMIs</title>
 
-<!-- Google Tag Manager -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -72,79 +93,116 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-<!-- End Google Tag Manager --></head>
-<body>
-<!-- Google Tag Manager -->
+</head>
+<body class="light-theme">
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager -->  <aside>
-    <div>
-      <a href="http://www.devlo.io">
-        <img src="/images/Devlo-Logo.png" alt="" title="">
-      </a>
-      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<p>Lopez Brothers Blog</p>
-      <div class="authors-profiles">
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-            <figcaption>Miguel</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-            <figcaption>Sergio</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
 
-      <nav>
-        <ul class="list">
-          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
 
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
         </ul>
-      </nav>
-
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
-  </aside>
-  <main>
 
     <nav>
-      <a href="http://www.devlo.io">    Home
-</a>
+      <ul class="list">
 
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
 
-      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
-</a>
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
 
+      </ul>
     </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234561"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
 
 <article class="single">
   <header>
       
     <h1 id="packer-ami-apt-get">Building Robust Packer AMIs</h1>
     <p>
-          Posted on Fri 16 November 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
-
-
-          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
-
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Fri 16 November 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
 
     </p>
   </header>
@@ -159,37 +217,37 @@ Read: 10 minutes </p>
 <p>For those of you who don't know, <a href="">Packer</a> is an automation tool you can use to prepack AMIs with custom libraries or dependency your code may need upon launching. You can choose to run multiple provisioners (scripts, chef, ansible, etc) against an a base AMI in order to create your image. </p>
 <h2><strong>Race conditions w/ apt-get update</strong></h2>
 <p>The first issue I encountered while using Packer was while I ran <code>sudo apt-get update</code>. No matter how many times I ran it, I would consistently get:</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>Reading<span class="w"> </span>package<span class="w"> </span>lists...
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>Packages<span class="w"> </span><span class="o">(</span>main/binary-amd64/Packages<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>Packages<span class="w"> </span><span class="o">(</span>main/binary-all/Packages<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>Translations<span class="w"> </span><span class="o">(</span>main/i18n/Translation-en<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>CNF<span class="w"> </span><span class="o">(</span>main/cnf/Commands-amd64<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>CNF<span class="w"> </span><span class="o">(</span>main/cnf/Commands-all<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>Installing<span class="w"> </span>unzip.....
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>Packages<span class="w"> </span><span class="o">(</span>main/binary-amd64/Packages<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>Packages<span class="w"> </span><span class="o">(</span>main/binary-all/Packages<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>Translations<span class="w"> </span><span class="o">(</span>main/i18n/Translation-en<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>CNF<span class="w"> </span><span class="o">(</span>main/cnf/Commands-amd64<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>W:<span class="w"> </span>Target<span class="w"> </span>CNF<span class="w"> </span><span class="o">(</span>main/cnf/Commands-all<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>configured<span class="w"> </span>multiple<span class="w"> </span><span class="nb">times</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/apt/sources.list.d/microsoft-prod.list:1<span class="w"> </span>and<span class="w"> </span>/etc/apt/sources.list.d/microsoft.list:1
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>/tmp/script_4426.sh:<span class="w"> </span><span class="m">6</span>:<span class="w"> </span>/tmp/script_4426.sh:<span class="w"> </span><span class="o">[[</span>:<span class="w"> </span>not<span class="w"> </span>found
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>E:<span class="w"> </span>Could<span class="w"> </span>not<span class="w"> </span>get<span class="w"> </span>lock<span class="w"> </span>/var/lib/dpkg/lock<span class="w"> </span>-<span class="w"> </span>open<span class="w"> </span><span class="o">(</span><span class="m">11</span>:<span class="w"> </span>Resource<span class="w"> </span>temporarily<span class="w"> </span>unavailable<span class="o">)</span>
-<span class="w">    </span>AWS<span class="w"> </span>AMI<span class="w"> </span>Builder<span class="w"> </span>-<span class="w"> </span>CIS:<span class="w"> </span>E:<span class="w"> </span>Unable<span class="w"> </span>to<span class="w"> </span>lock<span class="w"> </span>the<span class="w"> </span>administration<span class="w"> </span>directory<span class="w"> </span><span class="o">(</span>/var/lib/dpkg/<span class="o">)</span>,<span class="w"> </span>is<span class="w"> </span>another<span class="w"> </span>process<span class="w"> </span>using<span class="w"> </span>it?
+<div class="highlight"><pre><span></span><code>    AWS AMI Builder - CIS: Reading package lists...
+    AWS AMI Builder - CIS: W: Target Packages <span class="o">(</span>main/binary-amd64/Packages<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target Packages <span class="o">(</span>main/binary-all/Packages<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target Translations <span class="o">(</span>main/i18n/Translation-en<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target CNF <span class="o">(</span>main/cnf/Commands-amd64<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target CNF <span class="o">(</span>main/cnf/Commands-all<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: Installing unzip.....
+    AWS AMI Builder - CIS: W: Target Packages <span class="o">(</span>main/binary-amd64/Packages<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target Packages <span class="o">(</span>main/binary-all/Packages<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target Translations <span class="o">(</span>main/i18n/Translation-en<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target CNF <span class="o">(</span>main/cnf/Commands-amd64<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: W: Target CNF <span class="o">(</span>main/cnf/Commands-all<span class="o">)</span> is configured multiple <span class="nb">times</span> <span class="k">in</span> /etc/apt/sources.list.d/microsoft-prod.list:1 and /etc/apt/sources.list.d/microsoft.list:1
+    AWS AMI Builder - CIS: /tmp/script_4426.sh: <span class="m">6</span>: /tmp/script_4426.sh: <span class="o">[[</span>: not found
+    AWS AMI Builder - CIS: E: Could not get lock /var/lib/dpkg/lock - open <span class="o">(</span><span class="m">11</span>: Resource temporarily unavailable<span class="o">)</span>
+    AWS AMI Builder - CIS: E: Unable to lock the administration directory <span class="o">(</span>/var/lib/dpkg/<span class="o">)</span>, is another process using it?
 </code></pre></div>
 
 <p>I did not understand why my simple script was causing <code>CIS: E: Could not get lock /var/lib/dpkg/lock</code> to occur. </p>
 <p>Here was my provisioner: </p>
-<div class="highlight"><pre><span></span><code><span class="s2">&quot;provisioners&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;shell&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;inline&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">        </span><span class="s2">&quot;sudo apt-get update -y&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;echo \&quot;Installing unzip.....\&quot;&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;sudo apt-get --assume-yes install unzip&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;echo \&quot;Installing python.....\&quot;&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;sudo apt-get --assume-yes install python&quot;</span>,
-<span class="w">      </span><span class="o">]</span>
-<span class="w">    </span><span class="o">}</span>
-<span class="w">  </span><span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;provisioners&quot;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;shell&quot;</span>,
+      <span class="s2">&quot;inline&quot;</span>: <span class="o">[</span>
+        <span class="s2">&quot;sudo apt-get update -y&quot;</span>,
+        <span class="s2">&quot;echo \&quot;Installing unzip.....\&quot;&quot;</span>,
+        <span class="s2">&quot;sudo apt-get --assume-yes install unzip&quot;</span>,
+        <span class="s2">&quot;echo \&quot;Installing python.....\&quot;&quot;</span>,
+        <span class="s2">&quot;sudo apt-get --assume-yes install python&quot;</span>,
+      <span class="o">]</span>
+    <span class="o">}</span>
+  <span class="o">]</span>
 </code></pre></div>
 
 <p>It seemed like every other run would fail with a <code>CIS: E: Could not get lock /var/lib/dpkg/lock</code> error and I couldn't find a good solution. Further research proved that this error occurs whenever another process had a lock on the following file. It could be <em>any</em> process using <code>apt</code>. </p>
@@ -198,43 +256,43 @@ Read: 10 minutes </p>
 <h2><strong>My Solution</strong></h2>
 <p>I wanted to be a solution that would listen to the processes and would not continue until the process using <code>apt</code> finishes. Whatever was using <code>apt</code> is probably doing it in a meaninful way so it's best to let it finish before moving on. </p>
 <p>My solution was simple. By using <code>ps aux</code> and some pipeing, we could listen to processes and only continue whenever apt was not being used by any other process.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">wait_apt</span><span class="o">=</span>$<span class="ss">(</span><span class="nv">ps</span><span class="w"> </span><span class="nv">aux</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nv">grep</span><span class="w"> </span><span class="nv">apt</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nv">wc</span><span class="w"> </span><span class="o">-</span><span class="nv">l</span><span class="ss">)</span>
-<span class="k">while</span><span class="w"> </span>[<span class="w"> </span><span class="s2">&quot;$wait_apt&quot;</span><span class="w"> </span><span class="o">-</span><span class="nv">gt</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"> </span>]<span class="c1">; do echo &quot;waiting for apt-update....&quot;; wait_apt=$(ps aux | grep apt | wc -l); sleep 5; done</span>
+<div class="highlight"><pre><span></span><code><span class="nv">wait_apt</span><span class="o">=</span>$<span class="ss">(</span><span class="nv">ps</span> <span class="nv">aux</span> <span class="o">|</span> <span class="nv">grep</span> <span class="nv">apt</span> <span class="o">|</span> <span class="nv">wc</span> <span class="o">-</span><span class="nv">l</span><span class="ss">)</span>
+<span class="k">while</span> [ <span class="s2">&quot;</span><span class="s">$wait_apt</span><span class="s2">&quot;</span> <span class="o">-</span><span class="nv">gt</span> <span class="s2">&quot;</span><span class="s">1</span><span class="s2">&quot;</span> ]<span class="c1">; do echo &quot;waiting for apt-update....&quot;; wait_apt=$(ps aux | grep apt | wc -l); sleep 5; done</span>
 </code></pre></div>
 
 <p>To break this down... <code>ps aux</code> shows you a list of active processes, <code>grep apt</code> filters all processes to only include <code>apt</code> related ones and <code>wc -l</code> gives you a line count on your results. So effectively, this little command will show you a <code>2</code> or more whenever a process is using apt and a <code>1</code> if apt is unused. </p>
 <p>Combine that with a while loop and you have a pretty robust way of checking for an idle apt. </p>
 <p>Here was my complete provisioner afterwards:</p>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="s2">&quot;provisioners&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">    </span><span class="o">{</span>
-<span class="w">      </span><span class="s2">&quot;type&quot;</span>:<span class="w"> </span><span class="s2">&quot;shell&quot;</span>,
-<span class="w">      </span><span class="s2">&quot;inline&quot;</span>:<span class="w"> </span><span class="o">[</span>
-<span class="w">        </span><span class="s2">&quot;while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo &#39;Waiting for cloud-init...&#39;; sleep 1; done&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;wait_apt=</span><span class="k">$(</span>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>apt<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2">&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;while [ \&quot;</span><span class="nv">$wait_apt</span><span class="s2">\&quot; -gt \&quot;1\&quot; ]; do echo \&quot;waiting for apt to be ready....\&quot;; wait_apt=</span><span class="k">$(</span>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>apt<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2">; sleep 5; done&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;sudo apt-get update -y&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;wait_apt=</span><span class="k">$(</span>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>apt<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2">&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;while [ \&quot;</span><span class="nv">$wait_apt</span><span class="s2">\&quot; -gt \&quot;1\&quot; ]; do echo \&quot;waiting for apt-update....\&quot;; wait_apt=</span><span class="k">$(</span>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>apt<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span><span class="s2">; sleep 5; done&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;echo \&quot;Installing unzip.....\&quot;&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;sudo apt-get --assume-yes install unzip&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;echo \&quot;Installing python.....\&quot;&quot;</span>,
-<span class="w">        </span><span class="s2">&quot;sudo apt-get --assume-yes install python&quot;</span>,
-<span class="w">      </span><span class="o">]</span>
-<span class="w">    </span><span class="o">}</span>
+<div class="highlight"><pre><span></span><code>  <span class="s2">&quot;provisioners&quot;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;shell&quot;</span>,
+      <span class="s2">&quot;inline&quot;</span>: <span class="o">[</span>
+        <span class="s2">&quot;while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo &#39;Waiting for cloud-init...&#39;; sleep 1; done&quot;</span>,
+        <span class="s2">&quot;wait_apt=</span><span class="k">$(</span>ps aux <span class="p">|</span> grep apt <span class="p">|</span> wc -l<span class="k">)</span><span class="s2">&quot;</span>,
+        <span class="s2">&quot;while [ \&quot;</span><span class="nv">$wait_apt</span><span class="s2">\&quot; -gt \&quot;1\&quot; ]; do echo \&quot;waiting for apt to be ready....\&quot;; wait_apt=</span><span class="k">$(</span>ps aux <span class="p">|</span> grep apt <span class="p">|</span> wc -l<span class="k">)</span><span class="s2">; sleep 5; done&quot;</span>,
+        <span class="s2">&quot;sudo apt-get update -y&quot;</span>,
+        <span class="s2">&quot;wait_apt=</span><span class="k">$(</span>ps aux <span class="p">|</span> grep apt <span class="p">|</span> wc -l<span class="k">)</span><span class="s2">&quot;</span>,
+        <span class="s2">&quot;while [ \&quot;</span><span class="nv">$wait_apt</span><span class="s2">\&quot; -gt \&quot;1\&quot; ]; do echo \&quot;waiting for apt-update....\&quot;; wait_apt=</span><span class="k">$(</span>ps aux <span class="p">|</span> grep apt <span class="p">|</span> wc -l<span class="k">)</span><span class="s2">; sleep 5; done&quot;</span>,
+        <span class="s2">&quot;echo \&quot;Installing unzip.....\&quot;&quot;</span>,
+        <span class="s2">&quot;sudo apt-get --assume-yes install unzip&quot;</span>,
+        <span class="s2">&quot;echo \&quot;Installing python.....\&quot;&quot;</span>,
+        <span class="s2">&quot;sudo apt-get --assume-yes install python&quot;</span>,
+      <span class="o">]</span>
+    <span class="o">}</span>
 </code></pre></div>
 
 <p>Finding this solution was important to me because I wanted to Packer to work 100% of the time. I didn't want to randomly encounter <code>CIS: E: Could not get lock /var/lib/dpkg/lock</code> errors. </p>
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="http://www.devlo.io/tag/aws.html">aws</a>
-      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
-      <a href="http://www.devlo.io/tag/ec2.html">EC2</a>
-      <a href="http://www.devlo.io/tag/automation.html">automation</a>
-      <a href="http://www.devlo.io/tag/packer.html">packer</a>
-      <a href="http://www.devlo.io/tag/apt.html">apt</a>
-      <a href="http://www.devlo.io/tag/apt-get.html">apt-get</a>
-      <a href="http://www.devlo.io/tag/ub-ubutnu.html">ub ubutnu</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/ec2.html">EC2</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/packer.html">packer</a>
+      <a href="https://www.devlo.io/tag/apt.html">apt</a>
+      <a href="https://www.devlo.io/tag/apt-get.html">apt-get</a>
+      <a href="https://www.devlo.io/tag/ub-ubutnu.html">ub ubutnu</a>
     </p>
   </div>
 
@@ -242,27 +300,31 @@ Read: 10 minutes </p>
 
 
 
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234566"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 </article>
 
-    <footer>
+<footer>
 <p>&copy;  </p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
-</p>    </footer>
-  </main>
-
-
-
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "http://www.devlo.io",
+  "url" : "https://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
-
 </body>
 </html>

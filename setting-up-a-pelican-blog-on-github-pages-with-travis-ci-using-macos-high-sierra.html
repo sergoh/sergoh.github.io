@@ -6,24 +6,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow" />
 
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
-
-    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
-
-    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
 
 
-    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
 
-<!-- Google Analytics -->
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,34 +40,48 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-<!-- End Google Analytics -->
+
+
+
+
+
+
+ 
 
 <meta name="author" content="Sergio Lopez" />
 <meta name="description" content="The step-by-step instructions to get this blog up and running." />
 <meta name="keywords" content="pelican, mac, python, blog, setup, travis-ci, github pages">
 
-<meta property="og:site_name" content="DevLo Software Blog"/>
-<meta property="og:title" content="Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra"/>
-<meta property="og:description" content="The step-by-step instructions to get this blog up and running."/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2018-03-22 00:00:00-07:00"/>
-<meta property="article:modified_time" content="2018-04-04 00:00:00-07:00"/>
-<meta property="article:author" content="http://www.devlo.io/author/sergio-lopez.html">
-<meta property="article:section" content="tutorials"/>
-<meta property="article:tag" content="pelican"/>
-<meta property="article:tag" content="mac"/>
-<meta property="article:tag" content="python"/>
-<meta property="article:tag" content="blog"/>
-<meta property="article:tag" content="setup"/>
-<meta property="article:tag" content="travis-ci"/>
-<meta property="article:tag" content="github pages"/>
-<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra"/>
+  <meta property="og:description" content="The step-by-step instructions to get this blog up and running."/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2018-03-22 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2018-04-04 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/sergio-lopez.html">
+  <meta property="article:section" content="tutorials"/>
+  <meta property="article:tag" content="pelican"/>
+  <meta property="article:tag" content="mac"/>
+  <meta property="article:tag" content="python"/>
+  <meta property="article:tag" content="blog"/>
+  <meta property="article:tag" content="setup"/>
+  <meta property="article:tag" content="travis-ci"/>
+  <meta property="article:tag" content="github pages"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title>
 
-<!-- Google Tag Manager -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -71,79 +92,116 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-<!-- End Google Tag Manager --></head>
-<body>
-<!-- Google Tag Manager -->
+</head>
+<body class="light-theme">
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager -->  <aside>
-    <div>
-      <a href="http://www.devlo.io">
-        <img src="/images/Devlo-Logo.png" alt="" title="">
-      </a>
-      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<p>Lopez Brothers Blog</p>
-      <div class="authors-profiles">
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-            <figcaption>Miguel</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-            <figcaption>Sergio</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
 
-      <nav>
-        <ul class="list">
-          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
 
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
         </ul>
-      </nav>
-
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
-  </aside>
-  <main>
 
     <nav>
-      <a href="http://www.devlo.io">    Home
-</a>
+      <ul class="list">
 
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
 
-      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
-</a>
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
 
+      </ul>
     </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234561"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
 
 <article class="single">
   <header>
       
     <h1 id="setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra">Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</h1>
     <p>
-          Posted on Thu 22 March 2018 in <a href="http://www.devlo.io/category/tutorials.html">tutorials</a>
-
-
-          by <a href="http://www.devlo.io/author/sergio-lopez.html">Sergio Lopez</a>
-
+      Posted by <a href="https://www.devlo.io/author/sergio-lopez.html">Sergio Lopez</a> on Thu 22 March 2018 in <a href="https://www.devlo.io/category/tutorials.html">tutorials</a>
 
     </p>
   </header>
@@ -158,43 +216,43 @@ so that anyone wanting to setup something similar can do so!</p>
 <h4>Bash profile setup</h4>
 <p>First thing is to make sure that we update the PATH to ensure that any Homebrew installations take precedence over stock macOS binaries.</p>
 <p>Open your <code>.bash_profile</code> using:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>vim<span class="w"> </span>~/.bash_profile
+<div class="highlight"><pre><span></span><code>$ vim ~/.bash_profile
 </code></pre></div>
 
 <p>then add:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Ensure user-installed binaries take precedence</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/share/python:<span class="nv">$PATH</span>
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/share/python:<span class="nv">$PATH</span>
 <span class="c1"># Load .bashrc if it exists</span>
-<span class="nb">test</span><span class="w"> </span>-f<span class="w"> </span>~/.bashrc<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
+<span class="nb">test</span> -f ~/.bashrc <span class="o">&amp;&amp;</span> <span class="nb">source</span> ~/.bashrc
 </code></pre></div>
 
 <p>Type <code>:wq</code> to write and save the <code>.bash_profile</code></p>
 <p>To have the directives take effect in the current session, without a restart needed. Type the following</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bash_profile
+<div class="highlight"><pre><span></span><code>$ <span class="nb">source</span> ~/.bash_profile
 </code></pre></div>
 
 <h4>Homebrew Install</h4>
 <p>Homebrew allows you to install stuff you need, quick and easy, that Apple didn't.</p>
 <p>To install paste the following in the terminal: </p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>/usr/bin/ruby<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://raw.githubusercontent.com/Homebrew/install/master/install<span class="k">)</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code>$ /usr/bin/ruby -e <span class="s2">&quot;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="k">)</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 <p>Run the following:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>brew<span class="w"> </span>doctor
+<div class="highlight"><pre><span></span><code>$ brew doctor
 </code></pre></div>
 
 <p>To ensure that it installed correctly and see if anything needs to be addressed</p>
 <h4>Python Install</h4>
 <p>Now that Homebrew is installed, we can use it to install Python 2.7</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>brew<span class="w"> </span>install<span class="w"> </span>python@2
+<div class="highlight"><pre><span></span><code>$ brew install python@2
 </code></pre></div>
 
 <p>Now, check what pythons are found on your OSX by typing:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>which<span class="w"> </span>-a<span class="w"> </span>python
+<div class="highlight"><pre><span></span><code>$ which -a python
 </code></pre></div>
 
 <p>There should be one python found at <code>/usr/bin/</code> (the Apple python) and one at <code>/usr/local/bin/</code> which is the Homebrew python.</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>which<span class="w"> </span>python
+<div class="highlight"><pre><span></span><code>$ which python
 </code></pre></div>
 
 <p>will show you, which python is found first in your <code>$PATH</code> and will be executed when you invoke python.</p>
@@ -202,44 +260,44 @@ so that anyone wanting to setup something similar can do so!</p>
 <p>When you're working on python projects, you might run into the scenario where one project requires a specific version of a package
 and another project could require a newer version of that package. Now this could cause an issue if they were all installed 
 globally, in order to get around that I recommend we install Virtualenv</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>pip2<span class="w"> </span>install<span class="w"> </span>virtualenv
+<div class="highlight"><pre><span></span><code>$ pip2 install virtualenv
 </code></pre></div>
 
 <p>Once that is installed, we should create a directory to store our virtual environments. </p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/Virtualenvs
+<div class="highlight"><pre><span></span><code>$ mkdir -p ~/Virtualenvs
 </code></pre></div>
 
 <h4>Restricting Pip to Virtual Environments</h4>
 <p>To ensure that pip will not install a package in global but only if a virtual environment is active, we need to create/update
 the pip configuration file.</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/Library/Application<span class="se">\ </span>Support/pip
+<div class="highlight"><pre><span></span><code>$ mkdir -p ~/Library/Application<span class="se">\ </span>Support/pip
 </code></pre></div>
 
 <p>We’ll then open Pip’s configuration file </p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>vim<span class="w"> </span>~/Library/Application<span class="se">\ </span>Support/pip/pip.conf
+<div class="highlight"><pre><span></span><code>$ vim ~/Library/Application<span class="se">\ </span>Support/pip/pip.conf
 </code></pre></div>
 
 <p>add the following lines: </p>
 <div class="highlight"><pre><span></span><code><span class="o">[</span>install<span class="o">]</span>
-require-virtualenv<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+require-virtualenv <span class="o">=</span> <span class="nb">true</span>
 
 <span class="o">[</span>uninstall<span class="o">]</span>
-require-virtualenv<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+require-virtualenv <span class="o">=</span> <span class="nb">true</span>
 </code></pre></div>
 
 <h2><strong>Create Pelican Virtual Environment </strong></h2>
 <p>With our MacOS configured we can now install pelican. First we create the virtual environment:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/Virtualenvs
-$<span class="w"> </span>virtualenv<span class="w"> </span>pelican
+<div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> ~/Virtualenvs
+$ virtualenv pelican
 </code></pre></div>
 
 <p>and activate it via:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>pelican
-$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>bin/activate
+<div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> pelican
+$ <span class="nb">source</span> bin/activate
 </code></pre></div>
 
 <p>Install pelican using pip2:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>pip2<span class="w"> </span>install<span class="w"> </span>pelican<span class="w"> </span>markdown<span class="w"> </span>typogrify
+<div class="highlight"><pre><span></span><code>$ pip2 install pelican markdown typogrify
 </code></pre></div>
 
 <h2><strong>Setting up GitHub Pages</strong></h2>
@@ -248,40 +306,40 @@ $<span class="w"> </span><span class="nb">source</span><span class="w"> </span>b
 <p>The <em>yourusername.github.blog</em> repository will hold the source code of the blog and the  <em>yourusername.github.io</em> repository
 will hold the output HTML files that pelican generates.</p>
 <p>Next, you'll clone your <em>yourusername.github.blog</em> branch into your projects folder, if you don't have one. Go ahead and create one.</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/Projects/
-$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/Projects/
-$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yourusername/yourusername.github.blog.git
+<div class="highlight"><pre><span></span><code>$ mkdir -p ~/Projects/
+$ <span class="nb">cd</span> ~/Projects/
+$ git clone https://github.com/yourusername/yourusername.github.blog.git
 </code></pre></div>
 
 <h2><strong>Setting up Pelican</strong></h2>
 <p>Once Pelican has been installed, and your repositories are set up,  you can create a skeleton project via the pelican-quickstart command. First
 we need to switch to the directory of our project.</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/Projects/yourusername.github.blog
+<div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> ~/Projects/yourusername.github.blog
 </code></pre></div>
 
 <p>initiate pelican using the command: </p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>pelican-quickstart
+<div class="highlight"><pre><span></span><code>$ pelican-quickstart
 </code></pre></div>
 
 <p>It should ask you a series of questions:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>Where<span class="w"> </span><span class="k">do</span><span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>create<span class="w"> </span>your<span class="w"> </span>new<span class="w"> </span>web<span class="w"> </span>site?<span class="w"> </span><span class="o">[</span>.<span class="o">]</span><span class="w"> </span>./
-$<span class="w"> </span>What<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>the<span class="w"> </span>title<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>web<span class="w"> </span>site?<span class="w"> </span>blog
-$<span class="w"> </span>Who<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>the<span class="w"> </span>author<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>web<span class="w"> </span>site?<span class="w"> </span>Your<span class="w"> </span>Name
-$<span class="w"> </span>What<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>the<span class="w"> </span>default<span class="w"> </span>language<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>web<span class="w"> </span>site?<span class="w"> </span><span class="o">[</span>pt<span class="o">]</span><span class="w"> </span>en
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>specify<span class="w"> </span>a<span class="w"> </span>URL<span class="w"> </span>prefix?<span class="w"> </span>e.g.,<span class="w"> </span>http://example.com<span class="w">   </span><span class="o">(</span>Y/n<span class="o">)</span><span class="w"> </span>n
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>article<span class="w"> </span>pagination?<span class="w"> </span><span class="o">(</span>Y/n<span class="o">)</span><span class="w"> </span>y
-$<span class="w"> </span>How<span class="w"> </span>many<span class="w"> </span>articles<span class="w"> </span>per<span class="w"> </span>page<span class="w"> </span><span class="k">do</span><span class="w"> </span>you<span class="w"> </span>want?<span class="w"> </span><span class="o">[</span><span class="m">10</span><span class="o">]</span><span class="w"> </span><span class="m">10</span>
-$<span class="w"> </span>What<span class="w"> </span>is<span class="w"> </span>your<span class="w"> </span><span class="nb">time</span><span class="w"> </span>zone?<span class="w"> </span>
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>Fabfile/Makefile<span class="w"> </span>to<span class="w"> </span>automate<span class="w"> </span>generation<span class="w"> </span>and<span class="w"> </span>publishing?<span class="w"> </span><span class="o">(</span>Y/n<span class="o">)</span><span class="w"> </span>Y<span class="w"> </span>
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>an<span class="w"> </span>auto-reload<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span>simpleHTTP<span class="w"> </span>script<span class="w"> </span>to<span class="w"> </span>assist<span class="w"> </span>with<span class="w"> </span>theme<span class="w"> </span>and<span class="w"> </span>site<span class="w"> </span>development?<span class="w"> </span><span class="o">(</span>Y/n<span class="o">)</span><span class="w"> </span>n
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>upload<span class="w"> </span>your<span class="w"> </span>website<span class="w"> </span>using<span class="w"> </span>FTP?<span class="w"> </span><span class="o">(</span>y/N<span class="o">)</span><span class="w"> </span>n
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>upload<span class="w"> </span>your<span class="w"> </span>website<span class="w"> </span>using<span class="w"> </span>SSH?<span class="w"> </span><span class="o">(</span>y/N<span class="o">)</span><span class="w"> </span>n
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>upload<span class="w"> </span>your<span class="w"> </span>website<span class="w"> </span>using<span class="w"> </span>Dropbox?<span class="w"> </span><span class="o">(</span>y/N<span class="o">)</span><span class="w"> </span>n
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>upload<span class="w"> </span>your<span class="w"> </span>website<span class="w"> </span>using<span class="w"> </span>S3?<span class="w"> </span><span class="o">(</span>y/N<span class="o">)</span><span class="w"> </span>n
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>upload<span class="w"> </span>your<span class="w"> </span>website<span class="w"> </span>using<span class="w"> </span>Rackspace<span class="w"> </span>Cloud<span class="w"> </span>Files?<span class="w"> </span><span class="o">(</span>y/N<span class="o">)</span><span class="w"> </span>n
-$<span class="w"> </span>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>upload<span class="w"> </span>your<span class="w"> </span>website<span class="w"> </span>using<span class="w"> </span>GitHub<span class="w"> </span>Pages?<span class="w"> </span><span class="o">(</span>y/N<span class="o">)</span><span class="w"> </span>y
-$<span class="w"> </span>Is<span class="w"> </span>this<span class="w"> </span>your<span class="w"> </span>personal<span class="w"> </span>page<span class="w"> </span><span class="o">(</span>yourusername.github.io<span class="o">)</span>?<span class="w"> </span><span class="o">(</span>y/N<span class="o">)</span><span class="w"> </span>y
-Done.<span class="w"> </span>Your<span class="w"> </span>new<span class="w"> </span>project<span class="w"> </span>is<span class="w"> </span>available<span class="w"> </span>at<span class="w"> </span>/home/yourusername/yourusername.github.io
+<div class="highlight"><pre><span></span><code>$ Where <span class="k">do</span> you want to create your new web site? <span class="o">[</span>.<span class="o">]</span> ./
+$ What will be the title of this web site? blog
+$ Who will be the author of this web site? Your Name
+$ What will be the default language of this web site? <span class="o">[</span>pt<span class="o">]</span> en
+$ Do you want to specify a URL prefix? e.g., http://example.com   <span class="o">(</span>Y/n<span class="o">)</span> n
+$ Do you want to <span class="nb">enable</span> article pagination? <span class="o">(</span>Y/n<span class="o">)</span> y
+$ How many articles per page <span class="k">do</span> you want? <span class="o">[</span><span class="m">10</span><span class="o">]</span> <span class="m">10</span>
+$ What is your <span class="nb">time</span> zone? 
+$ Do you want to generate a Fabfile/Makefile to automate generation and publishing? <span class="o">(</span>Y/n<span class="o">)</span> Y 
+$ Do you want an auto-reload <span class="p">&amp;</span> simpleHTTP script to assist with theme and site development? <span class="o">(</span>Y/n<span class="o">)</span> n
+$ Do you want to upload your website using FTP? <span class="o">(</span>y/N<span class="o">)</span> n
+$ Do you want to upload your website using SSH? <span class="o">(</span>y/N<span class="o">)</span> n
+$ Do you want to upload your website using Dropbox? <span class="o">(</span>y/N<span class="o">)</span> n
+$ Do you want to upload your website using S3? <span class="o">(</span>y/N<span class="o">)</span> n
+$ Do you want to upload your website using Rackspace Cloud Files? <span class="o">(</span>y/N<span class="o">)</span> n
+$ Do you want to upload your website using GitHub Pages? <span class="o">(</span>y/N<span class="o">)</span> y
+$ Is this your personal page <span class="o">(</span>yourusername.github.io<span class="o">)</span>? <span class="o">(</span>y/N<span class="o">)</span> y
+Done. Your new project is available at /home/yourusername/yourusername.github.io
 </code></pre></div>
 
 <h4>Picking a theme</h4>
@@ -289,23 +347,23 @@ Done.<span class="w"> </span>Your<span class="w"> </span>new<span class="w"> </s
 live examples of themes.</p>
 <p>Once a theme is picked you need create a submodule of the theme you want.
 Clone the pelican-themes repository into a submodule of <em>yourusername.github.blog</em>. For this example, I'm using the Flexi :</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>submodule<span class="w"> </span>add<span class="w"> </span>git@github.com:alexandrevicenzi/Flex.git<span class="w"> </span>Flex
-$<span class="w"> </span>git<span class="w"> </span>submodule<span class="w"> </span>init
-$<span class="w"> </span>git<span class="w"> </span>submodule<span class="w"> </span>update
+<div class="highlight"><pre><span></span><code>$ git submodule add git@github.com:alexandrevicenzi/Flex.git Flex
+$ git submodule init
+$ git submodule update
 </code></pre></div>
 
 <p>Now you should have your pelican-themes repository stored at <em>~/Projects/yourusername.github.blog/Flex</em>.
 To use one of the themes, edit your Pelican settings file <code>pelicanconf.py</code> to include this line:</p>
-<div class="highlight"><pre><span></span><code><span class="nx">THEME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./Flex&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nx">THEME</span> <span class="o">=</span> <span class="s2">&quot;./Flex&quot;</span>
 </code></pre></div>
 
 <p>Save the changes and regenerate your site by using the make command </p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>make<span class="w"> </span>devserver
+<div class="highlight"><pre><span></span><code>$ make devserver
 </code></pre></div>
 
 <p>Which will simultaneously run Pelican in regeneration mode as well as serve the output at <code>http://localhost:8000</code>. 
 Once you are done viewing your changes, you should stop the development server via:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>make<span class="w"> </span>stopserver
+<div class="highlight"><pre><span></span><code>$ make stopserver
 </code></pre></div>
 
 <h4>Add Custom Domain to Blog</h4>
@@ -332,9 +390,9 @@ Then use the STATIC_PATHS setting to tell Pelican to copy this file to your outp
 <p>To confirm that your DNS record is set up correctly, use the dig command with your custom domain. Using a custom domain as an example:</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>dig<span class="w"> </span>+noall<span class="w"> </span>+answer<span class="w"> </span>example.com
-<span class="w"> </span>example.com.<span class="w">   </span><span class="m">73</span><span class="w">  </span>IN<span class="w">  </span>A<span class="w"> </span><span class="m">192</span>.30.252.153
-<span class="w"> </span>example.com.<span class="w">   </span><span class="m">73</span><span class="w">  </span>IN<span class="w">  </span>A<span class="w"> </span><span class="m">192</span>.30.252.154
+<div class="highlight"><pre><span></span><code>$ dig +noall +answer example.com
+ example.com.   <span class="m">73</span>  IN  A <span class="m">192</span>.30.252.153
+ example.com.   <span class="m">73</span>  IN  A <span class="m">192</span>.30.252.154
 </code></pre></div>
 
 <h2><strong>Setting up Travis CI</strong></h2>
@@ -348,24 +406,24 @@ fabric
 
 <p>Then create a <code>.travis.yml</code> file in the same folder:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">branches</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">only</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
-<span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
+  <span class="nt">only</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">master</span>
+<span class="nt">language</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">python</span>
 <span class="nt">python</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.7</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">2.7</span>
 <span class="nt">install</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
 <span class="nt">script</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make html</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">make html</span>
 <span class="nt">notifications</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">email</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">on_success</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
-<span class="w">    </span><span class="nt">on_failure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+  <span class="nt">email</span><span class="p">:</span>
+    <span class="nt">on_success</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
+    <span class="nt">on_failure</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
 <span class="nt">env</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">global</span><span class="p">:</span>
+  <span class="nt">global</span><span class="p">:</span>
 <span class="nt">before_install</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">git submodule update --init --recursive</span>
-<span class="nt">after_success</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bash deploy.sh</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">git submodule update --init --recursive</span>
+<span class="nt">after_success</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bash deploy.sh</span>
 </code></pre></div>
 
 <p>Then add also the <code>deploy.sh</code> script and update the global variable with yours:</p>
@@ -374,36 +432,36 @@ fabric
 <span class="nv">TARGET_REPO</span><span class="o">=</span>yourusername/yourusername.github.io.git
 <span class="nv">PELICAN_OUTPUT_FOLDER</span><span class="o">=</span>output
 
-<span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;Testing travis-encrypt&quot;</span>
-<span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$VARNAME</span><span class="s2">&quot;</span>
+<span class="nb">echo</span> -e <span class="s2">&quot;Testing travis-encrypt&quot;</span>
+<span class="nb">echo</span> -e <span class="s2">&quot;</span><span class="nv">$VARNAME</span><span class="s2">&quot;</span>
 
-<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TRAVIS_PULL_REQUEST</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;Starting to deploy to Github Pages\n&quot;</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TRAVIS</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span><span class="s2">&quot;travis@travis-ci.org&quot;</span>
-<span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;Travis&quot;</span>
-<span class="w">    </span><span class="k">fi</span>
-<span class="w">    </span><span class="c1">#using token clone gh-pages branch</span>
-<span class="w">    </span>git<span class="w"> </span>clone<span class="w"> </span>--quiet<span class="w"> </span>--branch<span class="o">=</span><span class="nv">$BRANCH</span><span class="w"> </span>https://<span class="si">${</span><span class="nv">GH_TOKEN</span><span class="si">}</span>@github.com/<span class="nv">$TARGET_REPO</span><span class="w"> </span>built_website<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
-<span class="w">    </span><span class="c1">#go into directory and copy data we&#39;re interested in to that directory</span>
-<span class="w">    </span><span class="nb">cd</span><span class="w"> </span>built_website
-<span class="w">    </span>rsync<span class="w"> </span>-rv<span class="w"> </span>--exclude<span class="o">=</span>.git<span class="w">  </span>../<span class="nv">$PELICAN_OUTPUT_FOLDER</span>/*<span class="w"> </span>.
-<span class="w">    </span><span class="c1">#add, commit and push files</span>
-<span class="w">    </span>git<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>.
-<span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Travis build </span><span class="nv">$TRAVIS_BUILD_NUMBER</span><span class="s2"> pushed to Github Pages&quot;</span>
-<span class="w">    </span>git<span class="w"> </span>push<span class="w"> </span>-fq<span class="w"> </span>origin<span class="w"> </span><span class="nv">$BRANCH</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/null
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;Deploy completed\n&quot;</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$TRAVIS_PULL_REQUEST</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;false&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> -e <span class="s2">&quot;Starting to deploy to Github Pages\n&quot;</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$TRAVIS</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        git config --global user.email <span class="s2">&quot;travis@travis-ci.org&quot;</span>
+        git config --global user.name <span class="s2">&quot;Travis&quot;</span>
+    <span class="k">fi</span>
+    <span class="c1">#using token clone gh-pages branch</span>
+    git clone --quiet --branch<span class="o">=</span><span class="nv">$BRANCH</span> https://<span class="si">${</span><span class="nv">GH_TOKEN</span><span class="si">}</span>@github.com/<span class="nv">$TARGET_REPO</span> built_website &gt; /dev/null
+    <span class="c1">#go into directory and copy data we&#39;re interested in to that directory</span>
+    <span class="nb">cd</span> built_website
+    rsync -rv --exclude<span class="o">=</span>.git  ../<span class="nv">$PELICAN_OUTPUT_FOLDER</span>/* .
+    <span class="c1">#add, commit and push files</span>
+    git add -f .
+    git commit -m <span class="s2">&quot;Travis build </span><span class="nv">$TRAVIS_BUILD_NUMBER</span><span class="s2"> pushed to Github Pages&quot;</span>
+    git push -fq origin <span class="nv">$BRANCH</span> &gt; /dev/null
+    <span class="nb">echo</span> -e <span class="s2">&quot;Deploy completed\n&quot;</span>
 <span class="k">fi</span>
 </code></pre></div>
 
 <p>Now we need to create the encrypted token under env global in order to let Travis CI intract withtthe repository.
 Login to the Github web interface to get an <a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">Authentication Token</a>, and then install the travis command line tool with:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>ruby1.9.1-dev
-$<span class="w"> </span>sudo<span class="w"> </span>gem<span class="w"> </span>install<span class="w"> </span>travis
+<div class="highlight"><pre><span></span><code>$ sudo apt-get install ruby1.9.1-dev
+$ sudo gem install travis
 </code></pre></div>
 
 <p>and run from inside the repository:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>travis<span class="w"> </span>encrypt<span class="w"> </span><span class="nv">GH_TOKEN</span><span class="o">=</span>AUTHENTICATIONTOKENFROMGITHUB<span class="w"> </span>--add<span class="w"> </span>env.global
+<div class="highlight"><pre><span></span><code>$ travis encrypt <span class="nv">GH_TOKEN</span><span class="o">=</span>AUTHENTICATIONTOKENFROMGITHUB --add env.global
 </code></pre></div>
 
 <p>From now on, every time you commit a change to master, it should kick off a build in travis ci and push the code to your <em>yourusername.github.io</em></p>
@@ -424,13 +482,13 @@ $<span class="w"> </span>sudo<span class="w"> </span>gem<span class="w"> </span>
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="http://www.devlo.io/tag/pelican.html">pelican</a>
-      <a href="http://www.devlo.io/tag/mac.html">mac</a>
-      <a href="http://www.devlo.io/tag/python.html">python</a>
-      <a href="http://www.devlo.io/tag/blog.html">blog</a>
-      <a href="http://www.devlo.io/tag/setup.html">setup</a>
-      <a href="http://www.devlo.io/tag/travis-ci.html">travis-ci</a>
-      <a href="http://www.devlo.io/tag/github-pages.html">github pages</a>
+      <a href="https://www.devlo.io/tag/pelican.html">pelican</a>
+      <a href="https://www.devlo.io/tag/mac.html">mac</a>
+      <a href="https://www.devlo.io/tag/python.html">python</a>
+      <a href="https://www.devlo.io/tag/blog.html">blog</a>
+      <a href="https://www.devlo.io/tag/setup.html">setup</a>
+      <a href="https://www.devlo.io/tag/travis-ci.html">travis-ci</a>
+      <a href="https://www.devlo.io/tag/github-pages.html">github pages</a>
     </p>
   </div>
 
@@ -438,27 +496,31 @@ $<span class="w"> </span>sudo<span class="w"> </span>gem<span class="w"> </span>
 
 
 
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234566"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 </article>
 
-    <footer>
+<footer>
 <p>&copy;  </p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
-</p>    </footer>
-  </main>
-
-
-
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "http://www.devlo.io",
+  "url" : "https://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
-
 </body>
 </html>

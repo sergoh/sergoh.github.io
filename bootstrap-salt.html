@@ -6,24 +6,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+  <meta name="robots" content="index, follow" />
 
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/pygments/arduino.min.css">
-  <link rel="stylesheet" type="text/css" href="http://www.devlo.io/theme/font-awesome/css/font-awesome.min.css">
-
-    <link href="http://www.devlo.io/extra/static/custom.css" rel="stylesheet">
-
-    <link href="http://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
 
 
-    <link rel="shortcut icon" href="theme//favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
 
-<!-- Google Analytics -->
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
 <script type="text/javascript">
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,32 +40,46 @@
   ga('create', 'UA-116740360-1', 'auto');
   ga('send', 'pageview');
 </script>
-<!-- End Google Analytics -->
+
+
+
+
+
+
+ 
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Use scripts to automatically register new EC2 minions with Salt-Master" />
 <meta name="keywords" content="saltstack, aws, cloud, EC2, automation">
 
-<meta property="og:site_name" content="DevLo Software Blog"/>
-<meta property="og:title" content="Automate Salt-Minion Registrations on EC2"/>
-<meta property="og:description" content="Use scripts to automatically register new EC2 minions with Salt-Master"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="http://www.devlo.io/bootstrap-salt.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2018-03-30 00:00:00-07:00"/>
-<meta property="article:modified_time" content="2018-03-30 00:00:00-07:00"/>
-<meta property="article:author" content="http://www.devlo.io/author/miguel-lopez.html">
-<meta property="article:section" content="automation"/>
-<meta property="article:tag" content="saltstack"/>
-<meta property="article:tag" content="aws"/>
-<meta property="article:tag" content="cloud"/>
-<meta property="article:tag" content="EC2"/>
-<meta property="article:tag" content="automation"/>
-<meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Automate Salt-Minion Registrations on EC2"/>
+  <meta property="og:description" content="Use scripts to automatically register new EC2 minions with Salt-Master"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/bootstrap-salt.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2018-03-30 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2018-03-30 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="automation"/>
+  <meta property="article:tag" content="saltstack"/>
+  <meta property="article:tag" content="aws"/>
+  <meta property="article:tag" content="cloud"/>
+  <meta property="article:tag" content="EC2"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Automate Salt-Minion Registrations on EC2</title>
 
-<!-- Google Tag Manager -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
 <script>
   (function(w,d,s,l,i){
     w[l]=w[l]||[];
@@ -69,79 +90,116 @@
     f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-T32GC6Q');
 </script>
-<!-- End Google Tag Manager --></head>
-<body>
-<!-- Google Tag Manager -->
+</head>
+<body class="light-theme">
 <noscript>
   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
-<!-- End Google Tag Manager -->  <aside>
-    <div>
-      <a href="http://www.devlo.io">
-        <img src="/images/Devlo-Logo.png" alt="" title="">
-      </a>
-      <!--<h1><a href="http://www.devlo.io"></a></h1>-->
 
-<p>Lopez Brothers Blog</p>
-      <div class="authors-profiles">
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
-            <figcaption>Miguel</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/lopezm1/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/lopezm1" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-        <div>
-          <figure>
-            <img src="http://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
-            <figcaption>Sergio</figcaption>
-          </figure>
-          <ul class="social">
-            <li><a class="sc-linkedin" href="https://www.linkedin.com/in/sergiolopezjr/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
-            <li><a class="sc-github" href="https://github.com/sergoh" target="_blank"><i class="fa fa-github"></i></a></li>
-          </ul>
-        </div>
-      </div>
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
 
-      <nav>
-        <ul class="list">
-          <li><a href="http://www.devlo.io/pages/about.html">About</a></li>
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
 
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
         </ul>
-      </nav>
-
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
 
 
-  </aside>
-  <main>
 
     <nav>
-      <a href="http://www.devlo.io">    Home
-</a>
+      <ul class="list">
 
-      <a href="/archives.html">Archives</a>
-      <a href="/categories.html">Categories</a>
-      <a href="/tags.html">Tags</a>
 
-      <a href="http://www.devlo.io/feeds/all.atom.xml">    Atom
-</a>
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
 
+      </ul>
     </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234561"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
 
 <article class="single">
   <header>
       
     <h1 id="bootstrap-salt">Automate Salt-Minion Registrations on EC2</h1>
     <p>
-          Posted on Fri 30 March 2018 in <a href="http://www.devlo.io/category/automation.html">automation</a>
-
-
-          by <a href="http://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a>
-
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Fri 30 March 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
 
     </p>
   </header>
@@ -172,36 +230,36 @@
 <li>auto-deploy your latest revision from a CodeDeploy deployment group to this instance </li>
 </ul>
 <div class="highlight"><pre><span></span><code>#cloud-config
-#<span class="w"> </span>Set<span class="w"> </span>hostname<span class="w"> </span>to<span class="w"> </span>match<span class="w"> </span>the<span class="w"> </span>instance<span class="w"> </span>ID,<span class="w"> </span>rather<span class="w"> </span>than<span class="w"> </span>the
-#<span class="w"> </span>automatic<span class="w"> </span>hostname<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>IP<span class="w"> </span>address.
-#<span class="w"> </span>In<span class="w"> </span>these<span class="w"> </span>three<span class="w"> </span>commands<span class="w"> </span>_GRP_<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>placeholder<span class="w"> </span>and
-#<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>changed<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>Auto<span class="w"> </span>Scaling<span class="w"> </span>Group<span class="w"> </span>name.
+# Set hostname to match the instance ID, rather than the
+# automatic hostname based on the IP address.
+# In these three commands _GRP_ is a placeholder and
+# should be changed to your Auto Scaling Group name.
 bootcmd:
-<span class="w">  </span>#<span class="w"> </span>Dynamically<span class="w"> </span>fetch<span class="w"> </span>region<span class="w"> </span>for<span class="w"> </span>EC2<span class="w"> </span>in<span class="w"> </span>aws
-<span class="w">  </span>-<span class="w"> </span>&quot;region=$(curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/placement/availability-zone<span class="w"> </span>|<span class="w"> </span>sed<span class="w"> </span>&#39;s/.$//&#39;)&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>ruby<span class="w"> </span>wget<span class="w"> </span>jq&quot;
-<span class="w">  </span>#<span class="w"> </span>Install<span class="w"> </span>codedeploy<span class="w"> </span>https://aws.amazon.com/codedeploy/
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>cd<span class="w"> </span>/home/ec2-user&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>wget<span class="w"> </span>https://aws-codedeploy-<span class="cp">${</span><span class="n">region</span><span class="cp">}</span>.s3.amazonaws.com/latest/install&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>./install&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>./install<span class="w"> </span>auto&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>service<span class="w"> </span>codedeploy-agent<span class="w"> </span>start&quot;
-<span class="w">  </span>#<span class="w"> </span>BOX_NAME<span class="w"> </span>fetches<span class="w"> </span>the<span class="w"> </span>EC2<span class="w"> </span>tag<span class="w"> </span>for<span class="w"> </span>&quot;Name&quot;<span class="w"> </span>-<span class="w"> </span>name<span class="w"> </span>used<span class="w"> </span>to<span class="w"> </span>register<span class="w"> </span>with<span class="w"> </span>salt<span class="w"> </span>master
-<span class="w">  </span>-<span class="w"> </span>&quot;INSTANCE_ID=$(curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/instance-id)&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;BOX_NAME=$(aws<span class="w"> </span>ec2<span class="w"> </span>describe-tags<span class="w"> </span>--region<span class="w"> </span><span class="nv">$region</span><span class="w"> </span>--filters<span class="w"> </span>\&quot;Name=resource-id,Values=<span class="nv">$INSTANCE_ID</span>\&quot;<span class="w"> </span>|<span class="w"> </span>jq<span class="w"> </span>&#39;.Tags[]<span class="w"> </span>|<span class="w"> </span>select(.Key<span class="w"> </span>==<span class="w"> </span>\&quot;Name\&quot;)<span class="w"> </span>|<span class="w"> </span>.Value&#39;<span class="w"> </span>|<span class="w"> </span>sed<span class="w"> </span>s/\\\&quot;//g)&quot;
-<span class="w">  </span>#<span class="w"> </span>Change<span class="w"> </span>hostnames<span class="w"> </span>on<span class="w"> </span>VM
-<span class="w">  </span>-<span class="w"> </span>&quot;cloud-init-per<span class="w"> </span>instance<span class="w"> </span>my_set_hostname<span class="w"> </span>sh<span class="w"> </span>-xc<span class="w"> </span>\&quot;echo<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/hostname;<span class="w"> </span>hostname<span class="w"> </span>-F<span class="w"> </span>/etc/hostname\&quot;&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;cloud-init-per<span class="w"> </span>instance<span class="w"> </span>my_etc_hosts<span class="w"> </span>sh<span class="w"> </span>-xc<span class="w"> </span>\&quot;sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span>&#39;/^127.0.0.1/d&#39;<span class="w"> </span>/etc/hosts;<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span>&#39;/^::1/d&#39;<span class="w"> </span>/etc/hosts;<span class="w"> </span>echo<span class="w"> </span>127.0.0.1<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts\&quot;&quot;
-<span class="w">  </span>#<span class="w"> </span>Install<span class="w"> </span>and<span class="w"> </span>bootstrap<span class="w"> </span>salt-minion<span class="w"> </span>to<span class="w"> </span>saltmaster
-<span class="w">  </span>-<span class="w"> </span>&quot;SALT_MASTER_IP={IP-TO-SALT-MASTER-HERE}&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/salt/;<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/salt/minion_id&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>curl<span class="w"> </span>-o<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-L<span class="w"> </span>https://bootstrap.saltstack.com&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>sh<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-i<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>-A<span class="w"> </span><span class="nv">$SALT_MASTER_IP</span>&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/bootstrap-salt.sh&quot;
-#<span class="w"> </span>Preserve<span class="w"> </span>the<span class="w"> </span>hostname<span class="w"> </span>file<span class="w"> </span>since<span class="w"> </span>we&#39;ve<span class="w"> </span>had<span class="w"> </span>to<span class="w"> </span>manually<span class="w"> </span>edit<span class="w"> </span>it
-preserve_hostname:<span class="w"> </span>true
-#<span class="w"> </span>Don&#39;t<span class="w"> </span>let<span class="w"> </span>cloud-init<span class="w"> </span>update<span class="w"> </span>the<span class="w"> </span>hosts<span class="w"> </span>file<span class="w"> </span>since<span class="w"> </span>we<span class="w"> </span>have<span class="w"> </span>edited<span class="w"> </span>it<span class="w"> </span>manually
-manage_etc_hosts:<span class="w"> </span>false
+  # Dynamically fetch region for EC2 in aws
+  - &quot;region=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone | sed &#39;s/.$//&#39;)&quot;
+  - &quot;sudo yum -y install ruby wget jq&quot;
+  # Install codedeploy https://aws.amazon.com/codedeploy/
+  - &quot;sudo cd /home/ec2-user&quot;
+  - &quot;sudo wget https://aws-codedeploy-<span class="cp">${</span><span class="n">region</span><span class="cp">}</span>.s3.amazonaws.com/latest/install&quot;
+  - &quot;sudo chmod +x ./install&quot;
+  - &quot;sudo ./install auto&quot;
+  - &quot;sudo service codedeploy-agent start&quot;
+  # BOX_NAME fetches the EC2 tag for &quot;Name&quot; - name used to register with salt master
+  - &quot;INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)&quot;
+  - &quot;BOX_NAME=$(aws ec2 describe-tags --region <span class="nv">$region</span> --filters \&quot;Name=resource-id,Values=<span class="nv">$INSTANCE_ID</span>\&quot; | jq &#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39; | sed s/\\\&quot;//g)&quot;
+  # Change hostnames on VM
+  - &quot;cloud-init-per instance my_set_hostname sh -xc \&quot;echo <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/hostname; hostname -F /etc/hostname\&quot;&quot;
+  - &quot;cloud-init-per instance my_etc_hosts sh -xc \&quot;sed -i -e &#39;/^127.0.0.1/d&#39; /etc/hosts; sed -i -e &#39;/^::1/d&#39; /etc/hosts; echo 127.0.0.1 <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt;&gt; /etc/hosts\&quot;&quot;
+  # Install and bootstrap salt-minion to saltmaster
+  - &quot;SALT_MASTER_IP={IP-TO-SALT-MASTER-HERE}&quot;
+  - &quot;mkdir -p /etc/salt/; <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/salt/minion_id&quot;
+  - &quot;sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com&quot;
+  - &quot;sudo sh /tmp/bootstrap-salt.sh -i <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> -A <span class="nv">$SALT_MASTER_IP</span>&quot;
+  - &quot;sudo rm -f /tmp/bootstrap-salt.sh&quot;
+# Preserve the hostname file since we&#39;ve had to manually edit it
+preserve_hostname: true
+# Don&#39;t let cloud-init update the hosts file since we have edited it manually
+manage_etc_hosts: false
 </code></pre></div>
 
 <p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>
@@ -213,7 +271,7 @@ manage_etc_hosts:<span class="w"> </span>false
 - <em>test-www</em></p>
 <p>These are all great examples of "Name" tags for instances because it allows you to apply salt states by '<em>www', '</em>api', 'stage<em>' or 'test</em>' or some other combination. </p>
 <p>This can be extremely useful for defining how you run salt commands. This naming convention would allow you to run salt commands in the following way: </p>
-<div class="highlight"><pre><span></span><code>salt<span class="w"> </span><span class="s1">&#39;stage*&#39;</span><span class="w"> </span>state.show_top
+<div class="highlight"><pre><span></span><code>salt <span class="s1">&#39;stage*&#39;</span> state.show_top
 </code></pre></div>
 
 <p>This command would only apply salt states to environments tagged with <em>stage</em> in their name. In this example, that would mean the stage-api and stage-www server. </p>
@@ -227,34 +285,34 @@ manage_etc_hosts:<span class="w"> </span>false
 </ul>
 <p>Run this as a bootstrapping script on an EC2 instance. </p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Dynamically fetch region for EC2 in aws</span>
-<span class="nv">region</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/placement/availability-zone<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>’s/.$//‘<span class="k">)</span><span class="p">;</span>
+<span class="nv">region</span><span class="o">=</span><span class="k">$(</span>curl http://169.254.169.254/latest/meta-data/placement/availability-zone <span class="p">|</span> sed ’s/.$//‘<span class="k">)</span><span class="p">;</span>
 
 <span class="c1"># gr8 packages</span>
-sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>ruby<span class="w"> </span>wget<span class="w"> </span>jq<span class="p">;</span>
+sudo yum -y install ruby wget jq<span class="p">;</span>
 
 <span class="c1"># Install codedeploy https://aws.amazon.com/codedeploy/</span>
-sudo<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/home/ec2-user<span class="p">;</span>
-sudo<span class="w"> </span>wget<span class="w"> </span>https://aws-codedeploy-<span class="si">${</span><span class="nv">region</span><span class="si">}</span>.s3.amazonaws.com/latest/install<span class="p">;</span>
-sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>./install<span class="p">;</span>
-sudo<span class="w"> </span>./install<span class="w"> </span>auto<span class="p">;</span>
-sudo<span class="w"> </span>service<span class="w"> </span>codedeploy-agent<span class="w"> </span>start<span class="p">;</span>
+sudo <span class="nb">cd</span> /home/ec2-user<span class="p">;</span>
+sudo wget https://aws-codedeploy-<span class="si">${</span><span class="nv">region</span><span class="si">}</span>.s3.amazonaws.com/latest/install<span class="p">;</span>
+sudo chmod +x ./install<span class="p">;</span>
+sudo ./install auto<span class="p">;</span>
+sudo service codedeploy-agent start<span class="p">;</span>
 
 <span class="c1"># Name used to register with salt master</span>
-<span class="nv">BOX_NAME</span><span class="o">=</span><span class="k">$(</span>aws<span class="w"> </span>ec2<span class="w"> </span>describe-tags<span class="w"> </span>--region<span class="w"> </span><span class="nv">$region</span><span class="w"> </span>--filters<span class="w"> </span><span class="se">\&quot;</span><span class="nv">Name</span><span class="o">=</span>resource-id,Values<span class="o">=</span><span class="nv">$INSTANCE_ID</span><span class="se">\&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>s/<span class="se">\\\&quot;</span>//g<span class="k">)</span><span class="p">;</span>
-<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/instance-id<span class="k">)</span><span class="p">;</span>
+<span class="nv">BOX_NAME</span><span class="o">=</span><span class="k">$(</span>aws ec2 describe-tags --region <span class="nv">$region</span> --filters <span class="se">\&quot;</span><span class="nv">Name</span><span class="o">=</span>resource-id,Values<span class="o">=</span><span class="nv">$INSTANCE_ID</span><span class="se">\&quot;</span> <span class="p">|</span> jq <span class="s1">&#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39;</span> <span class="p">|</span> sed s/<span class="se">\\\&quot;</span>//g<span class="k">)</span><span class="p">;</span>
+<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="k">$(</span>curl http://169.254.169.254/latest/meta-data/instance-id<span class="k">)</span><span class="p">;</span>
 
 <span class="c1"># Change hostnames on VM</span>
-<span class="nb">echo</span><span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/hostname<span class="p">;</span>
-sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;/^127.0.0.1/d&#39;</span><span class="w"> </span>/etc/hosts<span class="p">;</span><span class="w"> </span>
-sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;/^::1/d&#39;</span><span class="w"> </span>/etc/hosts<span class="p">;</span><span class="w"> </span>
-<span class="nb">echo</span><span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts<span class="p">;</span>
+<span class="nb">echo</span> <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/hostname<span class="p">;</span>
+sed -i -e <span class="s1">&#39;/^127.0.0.1/d&#39;</span> /etc/hosts<span class="p">;</span> 
+sed -i -e <span class="s1">&#39;/^::1/d&#39;</span> /etc/hosts<span class="p">;</span> 
+<span class="nb">echo</span> <span class="m">127</span>.0.0.1 <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt;&gt; /etc/hosts<span class="p">;</span>
 
 <span class="c1"># Install and bootstrap salt-minion to saltmaster</span>
 <span class="nv">SALT_MASTER_IP</span><span class="o">={</span>IP-TO-SALT-MASTER-HERE<span class="o">}</span>
-mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/salt/<span class="p">;</span><span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/salt/minion_id<span class="p">;</span>
-sudo<span class="w"> </span>curl<span class="w"> </span>-o<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-L<span class="w"> </span>https://bootstrap.saltstack.com<span class="p">;</span>
-sudo<span class="w"> </span>sh<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-i<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>-A<span class="w"> </span><span class="nv">$SALT_MASTER_IP</span><span class="p">;</span>
-sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="p">;</span>
+mkdir -p /etc/salt/<span class="p">;</span> <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/salt/minion_id<span class="p">;</span>
+sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com<span class="p">;</span>
+sudo sh /tmp/bootstrap-salt.sh -i <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> -A <span class="nv">$SALT_MASTER_IP</span><span class="p">;</span>
+sudo rm -f /tmp/bootstrap-salt.sh<span class="p">;</span>
 </code></pre></div>
 
 <p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>
@@ -262,11 +320,11 @@ sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>
   </div>
   <div class="tag-cloud">
     <p>
-      <a href="http://www.devlo.io/tag/saltstack.html">saltstack</a>
-      <a href="http://www.devlo.io/tag/aws.html">aws</a>
-      <a href="http://www.devlo.io/tag/cloud.html">cloud</a>
-      <a href="http://www.devlo.io/tag/ec2.html">EC2</a>
-      <a href="http://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/saltstack.html">saltstack</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/ec2.html">EC2</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
     </p>
   </div>
 
@@ -274,27 +332,31 @@ sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>
 
 
 
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="1234566"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 </article>
 
-    <footer>
+<footer>
 <p>&copy;  </p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
-</p>    </footer>
-  </main>
-
-
-
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
 
 <script type="application/ld+json">
 {
   "@context" : "http://schema.org",
   "@type" : "Blog",
   "name": " DevLo Software Blog ",
-  "url" : "http://www.devlo.io",
+  "url" : "https://www.devlo.io",
   "image": "/images/Devlo-Logo.png",
   "description": "DevLo - Software Blog."
 }
 </script>
-
 </body>
 </html>
