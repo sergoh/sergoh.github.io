@@ -233,24 +233,24 @@ Read: 10 minutes </p>
 </ul>
 <p>Serverless Framework uses a serverless.yml file to deploy your functions to a cloud provider. </p>
 <p>Here is a basic example:</p>
-<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span><span class="w"> </span><span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span>
+<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span>
 
-<span class="n">frameworkVersion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
+<span class="n">frameworkVersion</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
 
 <span class="n">provider</span><span class="o">:</span>
-<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">aws</span>
-<span class="w">  </span><span class="n">runtime</span><span class="o">:</span><span class="w"> </span><span class="n">java8</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">aws</span>
+  <span class="n">runtime</span><span class="o">:</span> <span class="n">java8</span>
 
 <span class="kd">package</span><span class="o">:</span>
-<span class="w">  </span><span class="n">artifact</span><span class="o">:</span><span class="w"> </span><span class="n">build</span><span class="sr">/distributions/</span><span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span><span class="o">.</span><span class="na">zip</span>
+  <span class="n">artifact</span><span class="o">:</span> <span class="n">build</span><span class="sr">/distributions/</span><span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">simple</span><span class="o">-</span><span class="n">http</span><span class="o">-</span><span class="n">endpoint</span><span class="o">.</span><span class="na">zip</span>
 
 <span class="n">functions</span><span class="o">:</span>
-<span class="w">  </span><span class="n">currentTime</span><span class="o">:</span>
-<span class="w">    </span><span class="n">handler</span><span class="o">:</span><span class="w"> </span><span class="n">com</span><span class="o">.</span><span class="na">serverless</span><span class="o">.</span><span class="na">Handler</span>
-<span class="w">    </span><span class="n">events</span><span class="o">:</span>
-<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="n">http</span><span class="o">:</span>
-<span class="w">          </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">ping</span>
-<span class="w">          </span><span class="n">method</span><span class="o">:</span><span class="w"> </span><span class="kd">get</span>
+  <span class="n">currentTime</span><span class="o">:</span>
+    <span class="n">handler</span><span class="o">:</span> <span class="n">com</span><span class="o">.</span><span class="na">serverless</span><span class="o">.</span><span class="na">Handler</span>
+    <span class="n">events</span><span class="o">:</span>
+      <span class="o">-</span> <span class="n">http</span><span class="o">:</span>
+          <span class="n">path</span><span class="o">:</span> <span class="n">ping</span>
+          <span class="n">method</span><span class="o">:</span> <span class="kd">get</span>
 </code></pre></div>
 
 <p>If you haven't deployed a function with Serverless yet, I'd recommend taking a few minutes to deploy their boilerplate function <a href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/">here</a>.</p>
@@ -258,16 +258,16 @@ Read: 10 minutes </p>
 <p>A creative way to build environments on your serverless.yml file is to take advantage of the serverless variable system. The Serverless variable system allows you to reference other yml files by loading them into a variable. This will be the bread and butter of the pattern i'm about to show you.</p>
 <p>For example: </p>
 <div class="highlight"><pre><span></span><code><span class="n">custom</span><span class="o">:</span>
-<span class="w">  </span><span class="n">configFile</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">file</span><span class="o">(./</span><span class="n">config</span><span class="o">/</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}.</span><span class="n">yml</span><span class="o">)}</span>
+  <span class="n">configFile</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">file</span><span class="o">(./</span><span class="n">config</span><span class="o">/</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}.</span><span class="n">yml</span><span class="o">)}</span>
 
 <span class="n">provider</span><span class="o">:</span>
-<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">aws</span>
-<span class="w">  </span><span class="n">runtime</span><span class="o">:</span><span class="w"> </span><span class="n">java8</span>
-<span class="w">  </span><span class="n">stage</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;dev&#39;</span><span class="o">}</span>
-<span class="w">  </span><span class="n">region</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;us-east-2&#39;</span>
-<span class="w">  </span><span class="n">profile</span><span class="o">:</span><span class="w"> </span><span class="n">personal</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">aws</span>
+  <span class="n">runtime</span><span class="o">:</span> <span class="n">java8</span>
+  <span class="n">stage</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span> <span class="s1">&#39;dev&#39;</span><span class="o">}</span>
+  <span class="n">region</span><span class="o">:</span> <span class="s1">&#39;us-east-2&#39;</span>
+  <span class="n">profile</span><span class="o">:</span> <span class="n">personal</span>
 
-<span class="w">  </span><span class="n">vpc</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">vpc</span><span class="o">}</span>
+  <span class="n">vpc</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">vpc</span><span class="o">}</span>
 </code></pre></div>
 
 <ul>
@@ -297,42 +297,42 @@ Read: 10 minutes </p>
 
 <p>A typical config file will look like this:</p>
 <p><em>dev.yml</em></p>
-<div class="highlight"><pre><span></span><code>region:<span class="w"> </span>&quot;us-east-2&quot;
+<div class="highlight"><pre><span></span><code>region: &quot;us-east-2&quot;
 
-APNS_BASE_ARN:<span class="w"> </span><span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">apns</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
-GCM_BASE_ARN:<span class="w"> </span><span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">gcm</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
+APNS_BASE_ARN: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">apns</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
+GCM_BASE_ARN: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">sns</span><span class="o">-</span><span class="n">gcm</span><span class="o">-</span><span class="n">development</span><span class="cp">}</span>
 
-KMS_KEY:<span class="w"> </span><span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">security</span><span class="o">/</span><span class="n">default</span><span class="o">-</span><span class="n">kms</span><span class="o">-</span><span class="n">key</span><span class="cp">}</span>
-ELASTICACHE_CONFIGURATION_ENDPOINT:<span class="w"> </span><span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">DEV</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">memcached</span><span class="o">/</span><span class="n">connection</span><span class="o">-</span><span class="n">url</span><span class="cp">}</span>
-MEMCACHED_DEFAULT_TTL_VALUE:<span class="w"> </span>&quot;604800&quot;
+KMS_KEY: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">NONPROD</span><span class="o">/</span><span class="n">security</span><span class="o">/</span><span class="n">default</span><span class="o">-</span><span class="n">kms</span><span class="o">-</span><span class="n">key</span><span class="cp">}</span>
+ELASTICACHE_CONFIGURATION_ENDPOINT: <span class="cp">${</span><span class="n">ssm</span><span class="p">:</span><span class="o">/</span><span class="n">DEV</span><span class="o">/</span><span class="n">services</span><span class="o">/</span><span class="n">memcached</span><span class="o">/</span><span class="n">connection</span><span class="o">-</span><span class="n">url</span><span class="cp">}</span>
+MEMCACHED_DEFAULT_TTL_VALUE: &quot;604800&quot;
 </code></pre></div>
 
 <p>This allows you to define different regions per {stage}.yml. You have the flexibility to set different values for different variables. You could decide that the <code>MEMCACHED_DEFAULT_TTL_VALUE:</code> needs to be <code>172800</code> in PROD as opposed to the <code>604800</code> in DEV. You could call different SSM values or even define different VPC Security Groups and Subnets. </p>
 <p>This pattern gives you a clear-readable format for your environment config files that are loaded into the parent <code>serverless.yml</code> file. </p>
 <p>Here is a general <code>serverless.yml</code> that will use the following <code>dev.yml</code> file. </p>
-<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span><span class="w"> </span><span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">sample</span>
+<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span> <span class="n">aws</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">sample</span>
 
-<span class="n">frameworkVersion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
+<span class="n">frameworkVersion</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.2.0 &lt;2.0.0&quot;</span>
 
 <span class="n">custom</span><span class="o">:</span>
-<span class="w">  </span><span class="n">configFile</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">file</span><span class="o">(./</span><span class="n">config</span><span class="o">/</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}.</span><span class="n">yml</span><span class="o">)}</span>
+  <span class="n">configFile</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">file</span><span class="o">(./</span><span class="n">config</span><span class="o">/</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}.</span><span class="n">yml</span><span class="o">)}</span>
 
 <span class="n">provider</span><span class="o">:</span>
-<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">aws</span>
-<span class="w">  </span><span class="n">runtime</span><span class="o">:</span><span class="w"> </span><span class="n">java8</span>
-<span class="w">  </span><span class="n">stage</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;dev&#39;</span><span class="o">}</span>
-<span class="w">  </span><span class="n">region</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">region</span><span class="o">}</span>
-<span class="w">  </span><span class="n">profile</span><span class="o">:</span><span class="w"> </span><span class="n">personal</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">aws</span>
+  <span class="n">runtime</span><span class="o">:</span> <span class="n">java8</span>
+  <span class="n">stage</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span> <span class="s1">&#39;dev&#39;</span><span class="o">}</span>
+  <span class="n">region</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">region</span><span class="o">}</span>
+  <span class="n">profile</span><span class="o">:</span> <span class="n">personal</span>
 
-<span class="w">  </span><span class="n">versionFunctions</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
-<span class="w">  </span><span class="n">logRetentionInDays</span><span class="o">:</span><span class="w"> </span><span class="mi">30</span>
+  <span class="n">versionFunctions</span><span class="o">:</span> <span class="kc">false</span>
+  <span class="n">logRetentionInDays</span><span class="o">:</span> <span class="mi">30</span>
 
-<span class="w">  </span><span class="n">environment</span><span class="o">:</span>
-<span class="w">        </span><span class="n">APNS_BASE_ARN</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">APNS_BASE_ARN</span><span class="o">}</span>
-<span class="w">        </span><span class="n">GCM_BASE_ARN</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">GCM_BASE_ARN</span><span class="o">}</span>
+  <span class="n">environment</span><span class="o">:</span>
+        <span class="n">APNS_BASE_ARN</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">APNS_BASE_ARN</span><span class="o">}</span>
+        <span class="n">GCM_BASE_ARN</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">GCM_BASE_ARN</span><span class="o">}</span>
 
-<span class="w">        </span><span class="n">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">}</span>
-<span class="w">        </span><span class="n">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">}</span>
+        <span class="n">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">ELASTICACHE_CONFIGURATION_ENDPOINT</span><span class="o">}</span>
+        <span class="n">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">:</span> <span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">configFile</span><span class="o">.</span><span class="na">MEMCACHED_DEFAULT_TTL_VALUE</span><span class="o">}</span>
 </code></pre></div>
 
 <p>The <code>APNS_BAS_ARN</code>, <code>GCM_BASE_ARN</code>, <code>ELASTICACHE_CONFIGURATION_ENDPOINT</code>, and <code>MEMCACHED_DEFAULT_TTL_VALUE</code> variables are loaded from the <code>custom.configFile</code> file we loaded earlier with <code>sls deploy --stage {env}</code>.</p>

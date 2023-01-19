@@ -240,44 +240,44 @@
 <li><code>localstack</code> runs the AWS Emulator and will expose AWS services at <code>http://localstack:4566</code>. </li>
 <li><code>api</code> is running a Django API Server</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="s s-Atom">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
-<span class="s s-Atom">services</span><span class="p">:</span>
-    <span class="s s-Atom">localstack</span><span class="p">:</span>
-        <span class="s s-Atom">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
-        <span class="s s-Atom">ports</span><span class="p">:</span>
-            <span class="o">-</span> <span class="mi">4566</span><span class="o">:</span><span class="mi">4566</span>            <span class="s s-Atom">#</span> <span class="nv">LocalStack</span> <span class="nv">Edge</span> <span class="nv">Proxy</span>
-        <span class="s s-Atom">environment</span><span class="p">:</span>
-            <span class="nv">AWS_DEFAULT_REGION</span><span class="o">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
-            <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">:</span> <span class="s s-Atom">test</span>
-            <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">:</span> <span class="s s-Atom">test</span>
-            <span class="nv">DEBUG</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DEBUG</span><span class="o">:-</span><span class="mi">1</span><span class="p">}</span>
-            <span class="nv">DEFAULT_REGION</span><span class="o">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
-            <span class="nv">DOCKER_HOST</span><span class="o">:</span> <span class="s s-Atom">unix</span><span class="p">:</span><span class="s s-Atom">///var</span><span class="o">/</span><span class="s s-Atom">run</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="p">.</span><span class="s s-Atom">sock</span>
-            <span class="nv">DATA_DIR</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DATA_DIR</span><span class="s s-Atom">-</span><span class="p">}</span>
-            <span class="nv">LAMBDA_EXECUTOR</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">LAMBDA_EXECUTOR</span><span class="o">:-</span><span class="s s-Atom">local</span><span class="p">}</span>
-            <span class="nv">LS_LOG</span><span class="o">:</span> <span class="nv">WARN</span>
-            <span class="nv">HOST_TMP_FOLDER</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">TMPDIR</span><span class="o">:-/</span><span class="s s-Atom">tmp/</span><span class="p">}</span><span class="s s-Atom">localstack</span>
-            <span class="nv">HOSTNAME</span><span class="o">:</span> <span class="s s-Atom">localstack</span>
-            <span class="nv">HOSTNAME_EXTERNAL</span><span class="o">:</span> <span class="s s-Atom">localstack</span>
-            <span class="nv">USE_SINGLE_REGION</span><span class="o">:</span> <span class="mi">1</span>
-        <span class="s s-Atom">volumes</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nn">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
+<span class="nn">services</span><span class="p">:</span>
+    <span class="nn">localstack</span><span class="p">:</span>
+        <span class="nn">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
+        <span class="nn">ports</span><span class="p">:</span>
+            <span class="o">-</span> <span class="mi">4566</span><span class="s s-Atom">:</span><span class="mi">4566</span>            <span class="s s-Atom">#</span> <span class="nv">LocalStack</span> <span class="nv">Edge</span> <span class="nv">Proxy</span>
+        <span class="nn">environment</span><span class="p">:</span>
+            <span class="nv">AWS_DEFAULT_REGION</span><span class="s s-Atom">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
+            <span class="nv">AWS_ACCESS_KEY_ID</span><span class="s s-Atom">:</span> <span class="s s-Atom">test</span>
+            <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="s s-Atom">:</span> <span class="s s-Atom">test</span>
+            <span class="nv">DEBUG</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DEBUG</span><span class="p">:-</span><span class="mi">1</span><span class="p">}</span>
+            <span class="nv">DEFAULT_REGION</span><span class="s s-Atom">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
+            <span class="nv">DOCKER_HOST</span><span class="s s-Atom">:</span> <span class="nn">unix</span><span class="p">:</span><span class="s s-Atom">///var</span><span class="o">/</span><span class="s s-Atom">run</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="p">.</span><span class="s s-Atom">sock</span>
+            <span class="nv">DATA_DIR</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DATA_DIR</span><span class="s s-Atom">-</span><span class="p">}</span>
+            <span class="nv">LAMBDA_EXECUTOR</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">LAMBDA_EXECUTOR</span><span class="p">:-</span><span class="s s-Atom">local</span><span class="p">}</span>
+            <span class="nv">LS_LOG</span><span class="s s-Atom">:</span> <span class="nv">WARN</span>
+            <span class="nv">HOST_TMP_FOLDER</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">TMPDIR</span><span class="p">:-</span><span class="o">/</span><span class="s s-Atom">tmp/</span><span class="p">}</span><span class="s s-Atom">localstack</span>
+            <span class="nv">HOSTNAME</span><span class="s s-Atom">:</span> <span class="s s-Atom">localstack</span>
+            <span class="nv">HOSTNAME_EXTERNAL</span><span class="s s-Atom">:</span> <span class="s s-Atom">localstack</span>
+            <span class="nv">USE_SINGLE_REGION</span><span class="s s-Atom">:</span> <span class="mi">1</span>
+        <span class="nn">volumes</span><span class="p">:</span>
             <span class="o">-</span> <span class="s2">&quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&quot;</span>
             <span class="o">-</span> <span class="s2">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
-    <span class="s s-Atom">api</span><span class="p">:</span>
-        <span class="s s-Atom">build</span><span class="p">:</span>
-            <span class="s s-Atom">dockerfile</span><span class="p">:</span> <span class="nv">Dockerfile</span>
-        <span class="s s-Atom">environment</span><span class="p">:</span>
-            <span class="nv">AWS_ENDPOINT_URL</span><span class="o">:</span> <span class="s s-Atom">http</span><span class="p">:</span><span class="o">//</span><span class="s s-Atom">localstack</span><span class="p">:</span><span class="mi">4566</span>
-            <span class="nv">CELERY_BROKER_URL</span><span class="o">:</span> <span class="s s-Atom">sqs</span><span class="p">:</span><span class="o">//</span><span class="s s-Atom">test</span><span class="p">:</span><span class="s s-Atom">test@localstack</span><span class="p">:</span><span class="mi">4566</span>
-            <span class="nv">DJANGO_SETTINGS_MODULE</span><span class="o">:</span> <span class="s s-Atom">messages</span><span class="p">.</span><span class="s s-Atom">settings</span><span class="p">.</span><span class="s s-Atom">docker_localstack</span>
-            <span class="nv">LOG_HANDLER</span><span class="o">:</span> <span class="s s-Atom">console</span>
-            <span class="nv">LOG_LEVEL</span><span class="o">:</span> <span class="s2">&quot;INFO&quot;</span>
-            <span class="nv">PYTHONUNBUFFERED</span><span class="o">:</span> <span class="mi">1</span>
-        <span class="s s-Atom">depends_on</span><span class="o">:</span>
+    <span class="nn">api</span><span class="p">:</span>
+        <span class="nn">build</span><span class="p">:</span>
+            <span class="nn">dockerfile</span><span class="p">:</span> <span class="nv">Dockerfile</span>
+        <span class="nn">environment</span><span class="p">:</span>
+            <span class="nv">AWS_ENDPOINT_URL</span><span class="s s-Atom">:</span> <span class="nn">http</span><span class="p">:</span><span class="o">//</span><span class="nn">localstack</span><span class="p">:</span><span class="mi">4566</span>
+            <span class="nv">CELERY_BROKER_URL</span><span class="s s-Atom">:</span> <span class="nn">sqs</span><span class="p">:</span><span class="o">//</span><span class="nn">test</span><span class="p">:</span><span class="s s-Atom">test@</span><span class="nn">localstack</span><span class="p">:</span><span class="mi">4566</span>
+            <span class="nv">DJANGO_SETTINGS_MODULE</span><span class="s s-Atom">:</span> <span class="s s-Atom">messages</span><span class="p">.</span><span class="s s-Atom">settings</span><span class="p">.</span><span class="s s-Atom">docker_localstack</span>
+            <span class="nv">LOG_HANDLER</span><span class="s s-Atom">:</span> <span class="s s-Atom">console</span>
+            <span class="nv">LOG_LEVEL</span><span class="s s-Atom">:</span> <span class="s2">&quot;INFO&quot;</span>
+            <span class="nv">PYTHONUNBUFFERED</span><span class="s s-Atom">:</span> <span class="mi">1</span>
+        <span class="s s-Atom">depends_on:</span>
             <span class="o">-</span> <span class="s s-Atom">localstack</span>
-        <span class="s s-Atom">ports</span><span class="p">:</span>
+        <span class="nn">ports</span><span class="p">:</span>
             <span class="o">-</span> <span class="s2">&quot;80:80&quot;</span>
-        <span class="s s-Atom">command</span><span class="p">:</span> <span class="s s-Atom">uwsgi</span> <span class="s s-Atom">--http</span> <span class="mf">0.0.0.0</span><span class="o">:</span><span class="mi">9090</span> <span class="s s-Atom">--wsgi</span><span class="o">-</span><span class="s s-Atom">file</span> <span class="s s-Atom">messages</span><span class="o">/</span><span class="s s-Atom">wsgi</span><span class="o">/</span><span class="s s-Atom">dev</span><span class="p">.</span><span class="s s-Atom">py</span> <span class="s s-Atom">--callable</span> <span class="s s-Atom">application</span> <span class="s s-Atom">--uid</span> <span class="s s-Atom">appuser</span> <span class="s s-Atom">--gid</span> <span class="s s-Atom">appuser</span> <span class="s s-Atom">--enable</span><span class="o">-</span><span class="s s-Atom">threads</span>
+        <span class="nn">command</span><span class="p">:</span> <span class="s s-Atom">uwsgi</span> <span class="s s-Atom">--http</span> <span class="mf">0.0.0.0</span><span class="s s-Atom">:</span><span class="mi">9090</span> <span class="s s-Atom">--wsgi</span><span class="o">-</span><span class="s s-Atom">file</span> <span class="s s-Atom">messages</span><span class="o">/</span><span class="s s-Atom">wsgi</span><span class="o">/</span><span class="s s-Atom">dev</span><span class="p">.</span><span class="s s-Atom">py</span> <span class="s s-Atom">--callable</span> <span class="s s-Atom">application</span> <span class="s s-Atom">--uid</span> <span class="s s-Atom">appuser</span> <span class="s s-Atom">--gid</span> <span class="s s-Atom">appuser</span> <span class="s s-Atom">--enable</span><span class="o">-</span><span class="s s-Atom">threads</span>
 </code></pre></div>
 
 <ol>
@@ -297,7 +297,7 @@
 <ul>
 <li>Set the envrionment variable <code>AWS_ENDPOINT_URL</code> for your API application in <code>docker-compose.yml</code>. </li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">AWS_ENDPOINT_URL</span><span class="o">:</span><span class="w"> </span><span class="n">http</span><span class="o">://</span><span class="n">localstack</span><span class="o">:</span><span class="mi">4566</span>
+<div class="highlight"><pre><span></span><code><span class="n">AWS_ENDPOINT_URL</span><span class="o">:</span> <span class="n">http</span><span class="o">://</span><span class="n">localstack</span><span class="o">:</span><span class="mi">4566</span>
 </code></pre></div>
 
 <ul>

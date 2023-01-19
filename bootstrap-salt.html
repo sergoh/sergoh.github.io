@@ -230,36 +230,36 @@
 <li>auto-deploy your latest revision from a CodeDeploy deployment group to this instance </li>
 </ul>
 <div class="highlight"><pre><span></span><code>#cloud-config
-#<span class="w"> </span>Set<span class="w"> </span>hostname<span class="w"> </span>to<span class="w"> </span>match<span class="w"> </span>the<span class="w"> </span>instance<span class="w"> </span>ID,<span class="w"> </span>rather<span class="w"> </span>than<span class="w"> </span>the
-#<span class="w"> </span>automatic<span class="w"> </span>hostname<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>IP<span class="w"> </span>address.
-#<span class="w"> </span>In<span class="w"> </span>these<span class="w"> </span>three<span class="w"> </span>commands<span class="w"> </span>_GRP_<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>placeholder<span class="w"> </span>and
-#<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>changed<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>Auto<span class="w"> </span>Scaling<span class="w"> </span>Group<span class="w"> </span>name.
+# Set hostname to match the instance ID, rather than the
+# automatic hostname based on the IP address.
+# In these three commands _GRP_ is a placeholder and
+# should be changed to your Auto Scaling Group name.
 bootcmd:
-<span class="w">  </span>#<span class="w"> </span>Dynamically<span class="w"> </span>fetch<span class="w"> </span>region<span class="w"> </span>for<span class="w"> </span>EC2<span class="w"> </span>in<span class="w"> </span>aws
-<span class="w">  </span>-<span class="w"> </span>&quot;region=$(curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/placement/availability-zone<span class="w"> </span>|<span class="w"> </span>sed<span class="w"> </span>&#39;s/.$//&#39;)&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>ruby<span class="w"> </span>wget<span class="w"> </span>jq&quot;
-<span class="w">  </span>#<span class="w"> </span>Install<span class="w"> </span>codedeploy<span class="w"> </span>https://aws.amazon.com/codedeploy/
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>cd<span class="w"> </span>/home/ec2-user&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>wget<span class="w"> </span>https://aws-codedeploy-<span class="cp">${</span><span class="n">region</span><span class="cp">}</span>.s3.amazonaws.com/latest/install&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>./install&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>./install<span class="w"> </span>auto&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>service<span class="w"> </span>codedeploy-agent<span class="w"> </span>start&quot;
-<span class="w">  </span>#<span class="w"> </span>BOX_NAME<span class="w"> </span>fetches<span class="w"> </span>the<span class="w"> </span>EC2<span class="w"> </span>tag<span class="w"> </span>for<span class="w"> </span>&quot;Name&quot;<span class="w"> </span>-<span class="w"> </span>name<span class="w"> </span>used<span class="w"> </span>to<span class="w"> </span>register<span class="w"> </span>with<span class="w"> </span>salt<span class="w"> </span>master
-<span class="w">  </span>-<span class="w"> </span>&quot;INSTANCE_ID=$(curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/instance-id)&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;BOX_NAME=$(aws<span class="w"> </span>ec2<span class="w"> </span>describe-tags<span class="w"> </span>--region<span class="w"> </span><span class="nv">$region</span><span class="w"> </span>--filters<span class="w"> </span>\&quot;Name=resource-id,Values=<span class="nv">$INSTANCE_ID</span>\&quot;<span class="w"> </span>|<span class="w"> </span>jq<span class="w"> </span>&#39;.Tags[]<span class="w"> </span>|<span class="w"> </span>select(.Key<span class="w"> </span>==<span class="w"> </span>\&quot;Name\&quot;)<span class="w"> </span>|<span class="w"> </span>.Value&#39;<span class="w"> </span>|<span class="w"> </span>sed<span class="w"> </span>s/\\\&quot;//g)&quot;
-<span class="w">  </span>#<span class="w"> </span>Change<span class="w"> </span>hostnames<span class="w"> </span>on<span class="w"> </span>VM
-<span class="w">  </span>-<span class="w"> </span>&quot;cloud-init-per<span class="w"> </span>instance<span class="w"> </span>my_set_hostname<span class="w"> </span>sh<span class="w"> </span>-xc<span class="w"> </span>\&quot;echo<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/hostname;<span class="w"> </span>hostname<span class="w"> </span>-F<span class="w"> </span>/etc/hostname\&quot;&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;cloud-init-per<span class="w"> </span>instance<span class="w"> </span>my_etc_hosts<span class="w"> </span>sh<span class="w"> </span>-xc<span class="w"> </span>\&quot;sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span>&#39;/^127.0.0.1/d&#39;<span class="w"> </span>/etc/hosts;<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span>&#39;/^::1/d&#39;<span class="w"> </span>/etc/hosts;<span class="w"> </span>echo<span class="w"> </span>127.0.0.1<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts\&quot;&quot;
-<span class="w">  </span>#<span class="w"> </span>Install<span class="w"> </span>and<span class="w"> </span>bootstrap<span class="w"> </span>salt-minion<span class="w"> </span>to<span class="w"> </span>saltmaster
-<span class="w">  </span>-<span class="w"> </span>&quot;SALT_MASTER_IP={IP-TO-SALT-MASTER-HERE}&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/salt/;<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/salt/minion_id&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>curl<span class="w"> </span>-o<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-L<span class="w"> </span>https://bootstrap.saltstack.com&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>sh<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-i<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>-A<span class="w"> </span><span class="nv">$SALT_MASTER_IP</span>&quot;
-<span class="w">  </span>-<span class="w"> </span>&quot;sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/bootstrap-salt.sh&quot;
-#<span class="w"> </span>Preserve<span class="w"> </span>the<span class="w"> </span>hostname<span class="w"> </span>file<span class="w"> </span>since<span class="w"> </span>we&#39;ve<span class="w"> </span>had<span class="w"> </span>to<span class="w"> </span>manually<span class="w"> </span>edit<span class="w"> </span>it
-preserve_hostname:<span class="w"> </span>true
-#<span class="w"> </span>Don&#39;t<span class="w"> </span>let<span class="w"> </span>cloud-init<span class="w"> </span>update<span class="w"> </span>the<span class="w"> </span>hosts<span class="w"> </span>file<span class="w"> </span>since<span class="w"> </span>we<span class="w"> </span>have<span class="w"> </span>edited<span class="w"> </span>it<span class="w"> </span>manually
-manage_etc_hosts:<span class="w"> </span>false
+  # Dynamically fetch region for EC2 in aws
+  - &quot;region=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone | sed &#39;s/.$//&#39;)&quot;
+  - &quot;sudo yum -y install ruby wget jq&quot;
+  # Install codedeploy https://aws.amazon.com/codedeploy/
+  - &quot;sudo cd /home/ec2-user&quot;
+  - &quot;sudo wget https://aws-codedeploy-<span class="cp">${</span><span class="n">region</span><span class="cp">}</span>.s3.amazonaws.com/latest/install&quot;
+  - &quot;sudo chmod +x ./install&quot;
+  - &quot;sudo ./install auto&quot;
+  - &quot;sudo service codedeploy-agent start&quot;
+  # BOX_NAME fetches the EC2 tag for &quot;Name&quot; - name used to register with salt master
+  - &quot;INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)&quot;
+  - &quot;BOX_NAME=$(aws ec2 describe-tags --region <span class="nv">$region</span> --filters \&quot;Name=resource-id,Values=<span class="nv">$INSTANCE_ID</span>\&quot; | jq &#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39; | sed s/\\\&quot;//g)&quot;
+  # Change hostnames on VM
+  - &quot;cloud-init-per instance my_set_hostname sh -xc \&quot;echo <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/hostname; hostname -F /etc/hostname\&quot;&quot;
+  - &quot;cloud-init-per instance my_etc_hosts sh -xc \&quot;sed -i -e &#39;/^127.0.0.1/d&#39; /etc/hosts; sed -i -e &#39;/^::1/d&#39; /etc/hosts; echo 127.0.0.1 <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt;&gt; /etc/hosts\&quot;&quot;
+  # Install and bootstrap salt-minion to saltmaster
+  - &quot;SALT_MASTER_IP={IP-TO-SALT-MASTER-HERE}&quot;
+  - &quot;mkdir -p /etc/salt/; <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/salt/minion_id&quot;
+  - &quot;sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com&quot;
+  - &quot;sudo sh /tmp/bootstrap-salt.sh -i <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> -A <span class="nv">$SALT_MASTER_IP</span>&quot;
+  - &quot;sudo rm -f /tmp/bootstrap-salt.sh&quot;
+# Preserve the hostname file since we&#39;ve had to manually edit it
+preserve_hostname: true
+# Don&#39;t let cloud-init update the hosts file since we have edited it manually
+manage_etc_hosts: false
 </code></pre></div>
 
 <p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>
@@ -271,7 +271,7 @@ manage_etc_hosts:<span class="w"> </span>false
 - <em>test-www</em></p>
 <p>These are all great examples of "Name" tags for instances because it allows you to apply salt states by '<em>www', '</em>api', 'stage<em>' or 'test</em>' or some other combination. </p>
 <p>This can be extremely useful for defining how you run salt commands. This naming convention would allow you to run salt commands in the following way: </p>
-<div class="highlight"><pre><span></span><code>salt<span class="w"> </span><span class="s1">&#39;stage*&#39;</span><span class="w"> </span>state.show_top
+<div class="highlight"><pre><span></span><code>salt <span class="s1">&#39;stage*&#39;</span> state.show_top
 </code></pre></div>
 
 <p>This command would only apply salt states to environments tagged with <em>stage</em> in their name. In this example, that would mean the stage-api and stage-www server. </p>
@@ -285,34 +285,34 @@ manage_etc_hosts:<span class="w"> </span>false
 </ul>
 <p>Run this as a bootstrapping script on an EC2 instance. </p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Dynamically fetch region for EC2 in aws</span>
-<span class="nv">region</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/placement/availability-zone<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>’s/.$//‘<span class="k">)</span><span class="p">;</span>
+<span class="nv">region</span><span class="o">=</span><span class="k">$(</span>curl http://169.254.169.254/latest/meta-data/placement/availability-zone <span class="p">|</span> sed ’s/.$//‘<span class="k">)</span><span class="p">;</span>
 
 <span class="c1"># gr8 packages</span>
-sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>ruby<span class="w"> </span>wget<span class="w"> </span>jq<span class="p">;</span>
+sudo yum -y install ruby wget jq<span class="p">;</span>
 
 <span class="c1"># Install codedeploy https://aws.amazon.com/codedeploy/</span>
-sudo<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/home/ec2-user<span class="p">;</span>
-sudo<span class="w"> </span>wget<span class="w"> </span>https://aws-codedeploy-<span class="si">${</span><span class="nv">region</span><span class="si">}</span>.s3.amazonaws.com/latest/install<span class="p">;</span>
-sudo<span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>./install<span class="p">;</span>
-sudo<span class="w"> </span>./install<span class="w"> </span>auto<span class="p">;</span>
-sudo<span class="w"> </span>service<span class="w"> </span>codedeploy-agent<span class="w"> </span>start<span class="p">;</span>
+sudo <span class="nb">cd</span> /home/ec2-user<span class="p">;</span>
+sudo wget https://aws-codedeploy-<span class="si">${</span><span class="nv">region</span><span class="si">}</span>.s3.amazonaws.com/latest/install<span class="p">;</span>
+sudo chmod +x ./install<span class="p">;</span>
+sudo ./install auto<span class="p">;</span>
+sudo service codedeploy-agent start<span class="p">;</span>
 
 <span class="c1"># Name used to register with salt master</span>
-<span class="nv">BOX_NAME</span><span class="o">=</span><span class="k">$(</span>aws<span class="w"> </span>ec2<span class="w"> </span>describe-tags<span class="w"> </span>--region<span class="w"> </span><span class="nv">$region</span><span class="w"> </span>--filters<span class="w"> </span><span class="se">\&quot;</span><span class="nv">Name</span><span class="o">=</span>resource-id,Values<span class="o">=</span><span class="nv">$INSTANCE_ID</span><span class="se">\&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>s/<span class="se">\\\&quot;</span>//g<span class="k">)</span><span class="p">;</span>
-<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>http://169.254.169.254/latest/meta-data/instance-id<span class="k">)</span><span class="p">;</span>
+<span class="nv">BOX_NAME</span><span class="o">=</span><span class="k">$(</span>aws ec2 describe-tags --region <span class="nv">$region</span> --filters <span class="se">\&quot;</span><span class="nv">Name</span><span class="o">=</span>resource-id,Values<span class="o">=</span><span class="nv">$INSTANCE_ID</span><span class="se">\&quot;</span> <span class="p">|</span> jq <span class="s1">&#39;.Tags[] | select(.Key == \&quot;Name\&quot;) | .Value&#39;</span> <span class="p">|</span> sed s/<span class="se">\\\&quot;</span>//g<span class="k">)</span><span class="p">;</span>
+<span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="k">$(</span>curl http://169.254.169.254/latest/meta-data/instance-id<span class="k">)</span><span class="p">;</span>
 
 <span class="c1"># Change hostnames on VM</span>
-<span class="nb">echo</span><span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/hostname<span class="p">;</span>
-sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;/^127.0.0.1/d&#39;</span><span class="w"> </span>/etc/hosts<span class="p">;</span><span class="w"> </span>
-sed<span class="w"> </span>-i<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;/^::1/d&#39;</span><span class="w"> </span>/etc/hosts<span class="p">;</span><span class="w"> </span>
-<span class="nb">echo</span><span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/hosts<span class="p">;</span>
+<span class="nb">echo</span> <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/hostname<span class="p">;</span>
+sed -i -e <span class="s1">&#39;/^127.0.0.1/d&#39;</span> /etc/hosts<span class="p">;</span> 
+sed -i -e <span class="s1">&#39;/^::1/d&#39;</span> /etc/hosts<span class="p">;</span> 
+<span class="nb">echo</span> <span class="m">127</span>.0.0.1 <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt;&gt; /etc/hosts<span class="p">;</span>
 
 <span class="c1"># Install and bootstrap salt-minion to saltmaster</span>
 <span class="nv">SALT_MASTER_IP</span><span class="o">={</span>IP-TO-SALT-MASTER-HERE<span class="o">}</span>
-mkdir<span class="w"> </span>-p<span class="w"> </span>/etc/salt/<span class="p">;</span><span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>&gt;<span class="w"> </span>/etc/salt/minion_id<span class="p">;</span>
-sudo<span class="w"> </span>curl<span class="w"> </span>-o<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-L<span class="w"> </span>https://bootstrap.saltstack.com<span class="p">;</span>
-sudo<span class="w"> </span>sh<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="w"> </span>-i<span class="w"> </span><span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span><span class="w"> </span>-A<span class="w"> </span><span class="nv">$SALT_MASTER_IP</span><span class="p">;</span>
-sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="p">;</span>
+mkdir -p /etc/salt/<span class="p">;</span> <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> &gt; /etc/salt/minion_id<span class="p">;</span>
+sudo curl -o /tmp/bootstrap-salt.sh -L https://bootstrap.saltstack.com<span class="p">;</span>
+sudo sh /tmp/bootstrap-salt.sh -i <span class="nv">$BOX_NAME</span>-<span class="nv">$INSTANCE_ID</span> -A <span class="nv">$SALT_MASTER_IP</span><span class="p">;</span>
+sudo rm -f /tmp/bootstrap-salt.sh<span class="p">;</span>
 </code></pre></div>
 
 <p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>

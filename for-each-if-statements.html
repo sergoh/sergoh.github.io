@@ -236,27 +236,27 @@ However, <strong>not</strong> every autoscaling group requires a load balancer.<
 <p>How can we build a module that does not require a load balancer for each service component being defined?</p>
 <p>Take the following input as an example:</p>
 <div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">services</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">api</span><span class="p p-Indicator">:</span>
-<span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">t4g.medium</span>
-<span class="w">    </span><span class="nt">min_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">max_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">desired_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">load_balancer_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">load_balancer</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
-<span class="w w-Error">  </span><span class="nt">worker</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">t4g.medium</span>
-<span class="w">    </span><span class="nt">min_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">max_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">desired_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">load_balancer_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">api</span><span class="p p-Indicator">:</span>
+    <span class="nt">instance_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">t4g.medium</span>
+    <span class="nt">min_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">max_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">desired_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">load_balancer_enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">load_balancer</span><span class="p">:</span>
+      <span class="nt">internal</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+      <span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
+<span class=" -Error">  </span><span class="nt">worker</span><span class="p">:</span>
+    <span class="nt">instance_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">t4g.medium</span>
+    <span class="nt">min_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">max_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">desired_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+    <span class="nt">load_balancer_enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 <p><a class="reference external" href="https://www.terraform.io/language/functions/yamldecode">terraform input represented as ymlencoded input</a></p>
 </div>
 <div class="section" id="building-the-for-each-loop-1">
 <h3>Building the for_each loop</h3>
-<div class="highlight"><pre><span></span><span class="nb">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.services</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nv">value.load_balancer_enabled</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="no">true</span><span class="w"> </span><span class="p">}</span>
+<div class="highlight"><pre><span></span><span class="nb">for_each</span> <span class="o">=</span> <span class="p">{</span> <span class="err">for</span> <span class="err">key</span><span class="p">,</span> <span class="err">value</span> <span class="err">in</span> <span class="nv">var.services</span> <span class="p">:</span> <span class="na">key</span> <span class="o">=</span><span class="err">&gt;</span> <span class="err">value</span> <span class="err">if</span> <span class="nv">value.load_balancer_enabled</span> <span class="p">==</span> <span class="no">true</span> <span class="p">}</span>
 </pre></div>
 <p>In this example, the <code>if</code> statement lives inside the <code>for_each</code> loop. Notice how I use <code>{ }</code> around my loop. This tells
 Terraform we are reducing our complex <cite>var.services</cite> object based on the <code>if</code> result.</p>
@@ -266,24 +266,24 @@ loop removing the <code>worker</code> object from the loop.</p>
 <p>Now only services that require will build out the load balancers they need.</p>
 <p>This is an extremely useful trick for building dynamic modules with configurable resources.</p>
 <p>Here is the full example on <code>load_balancer</code> module:</p>
-<div class="highlight"><pre><span></span><span class="kr">module</span><span class="w"> </span><span class="nv">&quot;load_balancer&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nb">for_each</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.services</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nv">value.load_balancer_enabled</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="no">true</span><span class="w"> </span><span class="p">}</span>
-<span class="w">  </span><span class="na">source</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../load-balancer&quot;</span><span class="c1">  # custom module reference as an example</span>
+<div class="highlight"><pre><span></span><span class="kr">module</span> <span class="nv">&quot;load_balancer&quot;</span> <span class="p">{</span>
+  <span class="nb">for_each</span>  <span class="o">=</span> <span class="p">{</span> <span class="err">for</span> <span class="err">key</span><span class="p">,</span> <span class="err">value</span> <span class="err">in</span> <span class="nv">var.services</span> <span class="p">:</span> <span class="na">key</span> <span class="o">=</span><span class="err">&gt;</span> <span class="err">value</span> <span class="err">if</span> <span class="nv">value.load_balancer_enabled</span> <span class="p">==</span> <span class="no">true</span> <span class="p">}</span>
+  <span class="na">source</span>    <span class="o">=</span> <span class="s2">&quot;../load-balancer&quot;</span><span class="c1">  # custom module reference as an example</span>
 
-<span class="w">  </span><span class="na">name</span><span class="w">                       </span><span class="o">=</span><span class="w"> </span><span class="nv">each.key</span>
-<span class="w">  </span><span class="na">enable_deletion_protection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enable_deletion_protection&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p">)</span>
+  <span class="na">name</span>                       <span class="o">=</span> <span class="nv">each.key</span>
+  <span class="na">enable_deletion_protection</span> <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;enable_deletion_protection&quot;</span><span class="p">,</span> <span class="no">true</span><span class="p">)</span>
 
-<span class="w">  </span><span class="na">domain</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;domain&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">null</span><span class="p">)</span>
-<span class="w">  </span><span class="na">security_groups</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;security_groups&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
-<span class="w">  </span><span class="na">internal</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;internal&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p">)</span>
-<span class="w">  </span><span class="na">load_balancer_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;load_balancer_type&quot;, &quot;application&quot;</span><span class="p">)</span>
+  <span class="na">domain</span>             <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;domain&quot;</span><span class="p">,</span> <span class="kt">null</span><span class="p">)</span>
+  <span class="na">security_groups</span>    <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;security_groups&quot;</span><span class="p">,</span> <span class="p">[])</span>
+  <span class="na">internal</span>           <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="no">true</span><span class="p">)</span>
+  <span class="na">load_balancer_type</span> <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;load_balancer_type&quot;, &quot;application&quot;</span><span class="p">)</span>
 
-<span class="w">  </span><span class="na">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nf">jsondecode</span><span class="p">(</span><span class="nv">var.tags</span><span class="p">),</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tags&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}),</span><span class="w"> </span><span class="nv">local.common_tags</span><span class="p">)</span>
+  <span class="na">tags</span> <span class="o">=</span> <span class="nf">merge</span><span class="p">(</span><span class="nf">jsondecode</span><span class="p">(</span><span class="nv">var.tags</span><span class="p">),</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value</span><span class="p">,</span> <span class="s2">&quot;tags&quot;</span><span class="p">,</span> <span class="p">{}),</span> <span class="nv">local.common_tags</span><span class="p">)</span>
 
-<span class="w">  </span><span class="na">target_groups</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;target_groups&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
-<span class="w">  </span><span class="na">load_balancer_listeners</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;listeners&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
-<span class="w">  </span><span class="na">extra_listener_rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;extra_listener_rules&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
-<span class="w">  </span><span class="na">extra_ssl_certs</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;extra_ssl_certs&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
+  <span class="na">target_groups</span>        <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;target_groups&quot;</span><span class="p">,</span> <span class="p">{})</span>
+  <span class="na">load_balancer_listeners</span>         <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;listeners&quot;</span><span class="p">,</span> <span class="p">{})</span>
+  <span class="na">extra_listener_rules</span> <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;extra_listener_rules&quot;</span><span class="p">,</span> <span class="p">{})</span>
+  <span class="na">extra_ssl_certs</span>      <span class="o">=</span> <span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span> <span class="s2">&quot;extra_ssl_certs&quot;</span><span class="p">,</span> <span class="p">{})</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -297,28 +297,28 @@ Terraform load balancers. Network load balancers will always require a VPC link 
 <div class="section" id="inputs">
 <h3>Inputs</h3>
 <div class="highlight"><pre><span></span><span class="nt">extra_load_balancers</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">balancer_1</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">load_balancer_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application</span>
-<span class="w">    </span><span class="nt">enable_deletion_protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">security_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">target_groups</span><span class="p">:</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
-<span class="w">  </span><span class="nt">balancer_2</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">load_balancer_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network</span>
-<span class="w">    </span><span class="nt">enable_deletion_protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">security_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">target_groups</span><span class="p">:</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
+  <span class="nt">balancer_1</span><span class="p">:</span>
+    <span class="nt">load_balancer_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">application</span>
+    <span class="nt">enable_deletion_protection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">security_groups</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="p p-Indicator">]</span>
+    <span class="nt">target_groups</span><span class="p">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
+  <span class="nt">balancer_2</span><span class="p">:</span>
+    <span class="nt">load_balancer_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">network</span>
+    <span class="nt">enable_deletion_protection</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">security_groups</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="p p-Indicator">]</span>
+    <span class="nt">target_groups</span><span class="p">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
 </pre></div>
 </div>
 <div class="section" id="looping-through-a-resource">
 <h3>Looping through a Resource</h3>
-<div class="highlight"><pre><span></span><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_api_gateway_vpc_link&quot;</span><span class="w"> </span><span class="nv">&quot;link&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nb">for_each</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.extra_load_balancers</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="err">value</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;load_balancer_type&quot;, &quot;application&quot;) == &quot;network&quot;</span><span class="w"> </span><span class="p">}</span>
-<span class="w">  </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="s2">&quot;%s-%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">each.key</span><span class="p">)</span>
-<span class="w">  </span><span class="na">target_arns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">module.extra_load_balancer[each.key].lb_arn</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="kr">resource</span> <span class="nc">&quot;aws_api_gateway_vpc_link&quot;</span> <span class="nv">&quot;link&quot;</span> <span class="p">{</span>
+  <span class="nb">for_each</span>    <span class="o">=</span> <span class="p">{</span> <span class="err">for</span> <span class="err">key</span><span class="p">,</span> <span class="err">value</span> <span class="err">in</span> <span class="nv">var.extra_load_balancers</span> <span class="p">:</span> <span class="na">key</span> <span class="o">=</span><span class="err">&gt;</span> <span class="err">value</span> <span class="err">if</span> <span class="nf">lookup</span><span class="p">(</span><span class="err">value</span><span class="p">,</span> <span class="s2">&quot;load_balancer_type&quot;, &quot;application&quot;) == &quot;network&quot;</span> <span class="p">}</span>
+  <span class="na">name</span>        <span class="o">=</span> <span class="nf">format</span><span class="p">(</span><span class="s2">&quot;%s-%s&quot;</span><span class="p">,</span> <span class="nv">each.key</span><span class="p">)</span>
+  <span class="na">target_arns</span> <span class="o">=</span> <span class="p">[</span><span class="nv">module.extra_load_balancer[each.key].lb_arn</span><span class="p">]</span>
 
-<span class="w">  </span><span class="na">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">module.extra_load_balancer.lb_arn</span><span class="p">]</span>
+  <span class="na">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="nv">module.extra_load_balancer.lb_arn</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>

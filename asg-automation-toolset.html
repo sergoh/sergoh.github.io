@@ -225,31 +225,31 @@ Read: 10 minutes </p>
 <h2><strong>Automatic Code Deployment</strong></h2>
 <p>This is important because if your ASG group ever needs to scale up another node, you need to find a way to deploy code to it without having to manually trigger a build. </p>
 <p>I’ve had great success accomplishing this with CodeDeploy. CodeDeploy is an AWS service that uses .yml based instructions in order to install an application on a VM. Here’s an example:</p>
-<div class="highlight"><pre><span></span><code><span class="n">version</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0</span>
-<span class="n">os</span><span class="o">:</span><span class="w"> </span><span class="n">linux</span>
+<div class="highlight"><pre><span></span><code><span class="n">version</span><span class="o">:</span> <span class="mf">0.0</span>
+<span class="n">os</span><span class="o">:</span> <span class="n">linux</span>
 <span class="n">files</span><span class="o">:</span>
-<span class="w">  </span><span class="o">-</span><span class="w"> </span><span class="n">source</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">app</span>
-<span class="w">    </span><span class="n">destination</span><span class="o">:</span><span class="w"> </span><span class="sr">/var/www/html/</span><span class="n">WordPress</span>
-<span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">source</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">backend</span>
-<span class="w">    </span><span class="n">destination</span><span class="o">:</span><span class="w"> </span><span class="sr">/var/www/backend/s</span><span class="n">ervice</span>
+  <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="o">/</span><span class="n">app</span>
+    <span class="n">destination</span><span class="o">:</span> <span class="sr">/var/www/html/</span><span class="n">WordPress</span>
+ <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="o">/</span><span class="n">backend</span>
+    <span class="n">destination</span><span class="o">:</span> <span class="sr">/var/www/backend/s</span><span class="n">ervice</span>
 <span class="n">hooks</span><span class="o">:</span>
-<span class="w">  </span><span class="n">BeforeInstall</span><span class="o">:</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">location</span><span class="o">:</span><span class="w"> </span><span class="n">scripts</span><span class="o">/</span><span class="n">install_dependencies</span><span class="o">.</span><span class="na">sh</span>
-<span class="w">      </span><span class="n">timeout</span><span class="o">:</span><span class="w"> </span><span class="mi">300</span>
-<span class="w">      </span><span class="n">runas</span><span class="o">:</span><span class="w"> </span><span class="n">root</span>
-<span class="w">  </span><span class="n">AfterInstall</span><span class="o">:</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">location</span><span class="o">:</span><span class="w"> </span><span class="n">scripts</span><span class="o">/</span><span class="n">change_permissions</span><span class="o">.</span><span class="na">sh</span>
-<span class="w">      </span><span class="n">timeout</span><span class="o">:</span><span class="w"> </span><span class="mi">300</span>
-<span class="w">      </span><span class="n">runas</span><span class="o">:</span><span class="w"> </span><span class="n">root</span>
-<span class="w">  </span><span class="n">ApplicationStart</span><span class="o">:</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">location</span><span class="o">:</span><span class="w"> </span><span class="n">scripts</span><span class="o">/</span><span class="n">start_server</span><span class="o">.</span><span class="na">sh</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">location</span><span class="o">:</span><span class="w"> </span><span class="n">scripts</span><span class="o">/</span><span class="n">create_test_db</span><span class="o">.</span><span class="na">sh</span>
-<span class="w">      </span><span class="n">timeout</span><span class="o">:</span><span class="w"> </span><span class="mi">300</span>
-<span class="w">      </span><span class="n">runas</span><span class="o">:</span><span class="w"> </span><span class="n">root</span>
-<span class="w">  </span><span class="n">ApplicationStop</span><span class="o">:</span>
-<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">location</span><span class="o">:</span><span class="w"> </span><span class="n">scripts</span><span class="o">/</span><span class="n">stop_server</span><span class="o">.</span><span class="na">sh</span>
-<span class="w">      </span><span class="n">timeout</span><span class="o">:</span><span class="w"> </span><span class="mi">300</span>
-<span class="w">      </span><span class="n">runas</span><span class="o">:</span><span class="w"> </span><span class="n">root</span>
+  <span class="n">BeforeInstall</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">location</span><span class="o">:</span> <span class="n">scripts</span><span class="o">/</span><span class="n">install_dependencies</span><span class="o">.</span><span class="na">sh</span>
+      <span class="n">timeout</span><span class="o">:</span> <span class="mi">300</span>
+      <span class="n">runas</span><span class="o">:</span> <span class="n">root</span>
+  <span class="n">AfterInstall</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">location</span><span class="o">:</span> <span class="n">scripts</span><span class="o">/</span><span class="n">change_permissions</span><span class="o">.</span><span class="na">sh</span>
+      <span class="n">timeout</span><span class="o">:</span> <span class="mi">300</span>
+      <span class="n">runas</span><span class="o">:</span> <span class="n">root</span>
+  <span class="n">ApplicationStart</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">location</span><span class="o">:</span> <span class="n">scripts</span><span class="o">/</span><span class="n">start_server</span><span class="o">.</span><span class="na">sh</span>
+    <span class="o">-</span> <span class="n">location</span><span class="o">:</span> <span class="n">scripts</span><span class="o">/</span><span class="n">create_test_db</span><span class="o">.</span><span class="na">sh</span>
+      <span class="n">timeout</span><span class="o">:</span> <span class="mi">300</span>
+      <span class="n">runas</span><span class="o">:</span> <span class="n">root</span>
+  <span class="n">ApplicationStop</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">location</span><span class="o">:</span> <span class="n">scripts</span><span class="o">/</span><span class="n">stop_server</span><span class="o">.</span><span class="na">sh</span>
+      <span class="n">timeout</span><span class="o">:</span> <span class="mi">300</span>
+      <span class="n">runas</span><span class="o">:</span> <span class="n">root</span>
 </code></pre></div>
 
 <p>It comes complete with life cycle events, the power to run shell scripts and even allows you to install code in multiple locations. </p>

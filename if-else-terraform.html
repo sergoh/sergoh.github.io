@@ -214,7 +214,7 @@
 </code></pre></div>
 
 <p>Combine this idea with a boolean conditional and you have an if statement. A boolean ternary function would look like....</p>
-<div class="highlight"><pre><span></span><code><span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">.</span><span class="n">create_eip</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="bp">true</span><span class="w"> </span><span class="err">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">.</span><span class="n">create_eip</span> <span class="o">==</span> <span class="bp">true</span> <span class="err">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 </code></pre></div>
 
 <p>If the variable <code>create_ip</code> == <code>true</code> then return 1, else return 0. We will combine this idea with the <code>count</code> attribtue of a resource to create an if-else statement. </p>
@@ -232,13 +232,13 @@
 <p>Based on HCL semantics, setting the <code>create_eip</code> to <code>true</code> would result in the ternary operation <code>${var.create_eip == true ? 1 : 0}</code> resolving to value of 1.
 This means a value of 1 would be passed on to the <code>count</code> parameter of the <code>aws_eip</code> resource. This would create one eip resource.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># frontend-app module</span>
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;create_eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create an EIP if set to True&quot;</span>
+<span class="n">variable</span> <span class="s2">&quot;create_eip&quot;</span> <span class="p">{</span>
+  <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Create an EIP if set to True&quot;</span>
 <span class="p">}</span>
 
-<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;web-eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_eip == true ? 1 : 0}&quot;</span>
-<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="n">resource</span> <span class="s2">&quot;aws_eip&quot;</span> <span class="s2">&quot;web-eip&quot;</span> <span class="p">{</span>
+  <span class="n">count</span> <span class="o">=</span> <span class="s2">&quot;${var.create_eip == true ? 1 : 0}&quot;</span>
+  <span class="n">instance</span> <span class="o">=</span> <span class="s2">&quot;${aws_instance.example.id}&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -255,18 +255,18 @@ This means a value of 1 would be passed on to the <code>count</code> parameter o
 </code></pre></div>
 
 <div class="highlight"><pre><span></span><code><span class="c1"># frontend-app module</span>
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;create_first_eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create the first eip if set to true, otherwise create the second eip if set to false&quot;</span>
+<span class="n">variable</span> <span class="s2">&quot;create_first_eip&quot;</span> <span class="p">{</span>
+  <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Create the first eip if set to true, otherwise create the second eip if set to false&quot;</span>
 <span class="p">}</span>
 
-<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;if-eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_first_eip == true ? 1 : 0}&quot;</span>
-<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="n">resource</span> <span class="s2">&quot;aws_eip&quot;</span> <span class="s2">&quot;if-eip&quot;</span> <span class="p">{</span>
+  <span class="n">count</span> <span class="o">=</span> <span class="s2">&quot;${var.create_first_eip == true ? 1 : 0}&quot;</span>
+  <span class="n">instance</span> <span class="o">=</span> <span class="s2">&quot;${aws_instance.example.id}&quot;</span>
 <span class="p">}</span>
 
-<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;else-eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_first_eip == false ? 1 : 0}&quot;</span>
-<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="n">resource</span> <span class="s2">&quot;aws_eip&quot;</span> <span class="s2">&quot;else-eip&quot;</span> <span class="p">{</span>
+  <span class="n">count</span> <span class="o">=</span> <span class="s2">&quot;${var.create_first_eip == false ? 1 : 0}&quot;</span>
+  <span class="n">instance</span> <span class="o">=</span> <span class="s2">&quot;${aws_instance.example.id}&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 

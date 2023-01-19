@@ -242,9 +242,9 @@
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">awslocal</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">mb</span><span class="w"> </span><span class="nl">s3:</span><span class="c1">//hsl-local-terraform --region us-west-2</span>
-<span class="n">awslocal</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">mb</span><span class="w"> </span><span class="nl">s3:</span><span class="c1">//hsl-local-serverless --region us-west-2</span>
-<span class="n">awslocal</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">ls</span><span class="w"> </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mh">2</span>
+<div class="highlight"><pre><span></span><code><span class="n">awslocal</span> <span class="n">s3</span> <span class="n">mb</span> <span class="nl">s3:</span><span class="c1">//hsl-local-terraform --region us-west-2</span>
+<span class="n">awslocal</span> <span class="n">s3</span> <span class="n">mb</span> <span class="nl">s3:</span><span class="c1">//hsl-local-serverless --region us-west-2</span>
+<span class="n">awslocal</span> <span class="n">s3</span> <span class="n">ls</span> <span class="o">--</span><span class="n">region</span> <span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mh">2</span>
 </code></pre></div>
 
 <ul>
@@ -253,15 +253,15 @@
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="s s-Atom">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
-<span class="s s-Atom">services</span><span class="p">:</span>
-    <span class="s s-Atom">localstack</span><span class="p">:</span>
-        <span class="s s-Atom">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
+<div class="highlight"><pre><span></span><code><span class="nn">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
+<span class="nn">services</span><span class="p">:</span>
+    <span class="nn">localstack</span><span class="p">:</span>
+        <span class="nn">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
         <span class="p">...</span>
-        <span class="s s-Atom">volumes</span><span class="p">:</span>
+        <span class="nn">volumes</span><span class="p">:</span>
             <span class="o">-</span> <span class="s2">&quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&quot;</span>
             <span class="o">-</span> <span class="s2">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
-            <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span><span class="p">:</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="o">-</span><span class="s s-Atom">entrypoint</span><span class="o">-</span><span class="s s-Atom">initaws</span><span class="p">.</span><span class="s s-Atom">d</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span>
+            <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="nn">sh</span><span class="p">:</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="o">-</span><span class="s s-Atom">entrypoint</span><span class="o">-</span><span class="s s-Atom">initaws</span><span class="p">.</span><span class="s s-Atom">d</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span>
 </code></pre></div>
 
 <ul>
@@ -278,30 +278,30 @@ localstack-1  | 2023-01-16 23:43:34 hsl-local-serverless
 <p>If you're running additional containers alongside the <code>localstack</code> container, you will need to access the <code>localstack</code> container using the URL <code>http://localstack:4566</code>. Any boto3 S3 client will need <code>endpoint_url</code> overridden for <code>localstack</code>.</p>
 <p>If you're running commands inside the <code>localstack</code> container, then you can stick to <code>localhost:4566</code> since you're not on the local network. </p>
 <h2>Full Docker-Compose Example</h2>
-<div class="highlight"><pre><span></span><code><span class="s s-Atom">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
-<span class="s s-Atom">services</span><span class="p">:</span>
-    <span class="s s-Atom">localstack</span><span class="p">:</span>
-        <span class="s s-Atom">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
-        <span class="s s-Atom">ports</span><span class="p">:</span>
-            <span class="o">-</span> <span class="mi">4566</span><span class="o">:</span><span class="mi">4566</span>            <span class="s s-Atom">#</span> <span class="nv">LocalStack</span> <span class="nv">Edge</span> <span class="nv">Proxy</span>
-        <span class="s s-Atom">environment</span><span class="p">:</span>
-        <span class="nv">AWS_DEFAULT_REGION</span><span class="o">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
-        <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">:</span> <span class="s s-Atom">test</span>
-        <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">:</span> <span class="s s-Atom">test</span>
-        <span class="nv">DEBUG</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DEBUG</span><span class="o">:-</span><span class="mi">1</span><span class="p">}</span>
-        <span class="nv">DEFAULT_REGION</span><span class="o">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
-        <span class="nv">DOCKER_HOST</span><span class="o">:</span> <span class="s s-Atom">unix</span><span class="p">:</span><span class="s s-Atom">///var</span><span class="o">/</span><span class="s s-Atom">run</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="p">.</span><span class="s s-Atom">sock</span>
-        <span class="nv">DATA_DIR</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DATA_DIR</span><span class="s s-Atom">-</span><span class="p">}</span>
-        <span class="nv">LAMBDA_EXECUTOR</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">LAMBDA_EXECUTOR</span><span class="o">:-</span><span class="s s-Atom">local</span><span class="p">}</span>
-        <span class="nv">LS_LOG</span><span class="o">:</span> <span class="nv">WARN</span>
-        <span class="nv">HOST_TMP_FOLDER</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">TMPDIR</span><span class="o">:-/</span><span class="s s-Atom">tmp/</span><span class="p">}</span><span class="s s-Atom">localstack</span>
-        <span class="nv">HOSTNAME</span><span class="o">:</span> <span class="s s-Atom">localstack</span>
-        <span class="nv">HOSTNAME_EXTERNAL</span><span class="o">:</span> <span class="s s-Atom">localstack</span>
-        <span class="nv">USE_SINGLE_REGION</span><span class="o">:</span> <span class="mi">1</span>
-        <span class="s s-Atom">volumes</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nn">version</span><span class="p">:</span> <span class="s2">&quot;3.8&quot;</span> 
+<span class="nn">services</span><span class="p">:</span>
+    <span class="nn">localstack</span><span class="p">:</span>
+        <span class="nn">image</span><span class="p">:</span> <span class="s s-Atom">localstack</span><span class="o">/</span><span class="s s-Atom">localstack</span>
+        <span class="nn">ports</span><span class="p">:</span>
+            <span class="o">-</span> <span class="mi">4566</span><span class="s s-Atom">:</span><span class="mi">4566</span>            <span class="s s-Atom">#</span> <span class="nv">LocalStack</span> <span class="nv">Edge</span> <span class="nv">Proxy</span>
+        <span class="nn">environment</span><span class="p">:</span>
+        <span class="nv">AWS_DEFAULT_REGION</span><span class="s s-Atom">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
+        <span class="nv">AWS_ACCESS_KEY_ID</span><span class="s s-Atom">:</span> <span class="s s-Atom">test</span>
+        <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="s s-Atom">:</span> <span class="s s-Atom">test</span>
+        <span class="nv">DEBUG</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DEBUG</span><span class="p">:-</span><span class="mi">1</span><span class="p">}</span>
+        <span class="nv">DEFAULT_REGION</span><span class="s s-Atom">:</span> <span class="s s-Atom">us</span><span class="o">-</span><span class="s s-Atom">west</span><span class="o">-</span><span class="mi">2</span>
+        <span class="nv">DOCKER_HOST</span><span class="s s-Atom">:</span> <span class="nn">unix</span><span class="p">:</span><span class="s s-Atom">///var</span><span class="o">/</span><span class="s s-Atom">run</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="p">.</span><span class="s s-Atom">sock</span>
+        <span class="nv">DATA_DIR</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">DATA_DIR</span><span class="s s-Atom">-</span><span class="p">}</span>
+        <span class="nv">LAMBDA_EXECUTOR</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">LAMBDA_EXECUTOR</span><span class="p">:-</span><span class="s s-Atom">local</span><span class="p">}</span>
+        <span class="nv">LS_LOG</span><span class="s s-Atom">:</span> <span class="nv">WARN</span>
+        <span class="nv">HOST_TMP_FOLDER</span><span class="s s-Atom">:</span> <span class="err">$</span><span class="p">{</span><span class="nv">TMPDIR</span><span class="p">:-</span><span class="o">/</span><span class="s s-Atom">tmp/</span><span class="p">}</span><span class="s s-Atom">localstack</span>
+        <span class="nv">HOSTNAME</span><span class="s s-Atom">:</span> <span class="s s-Atom">localstack</span>
+        <span class="nv">HOSTNAME_EXTERNAL</span><span class="s s-Atom">:</span> <span class="s s-Atom">localstack</span>
+        <span class="nv">USE_SINGLE_REGION</span><span class="s s-Atom">:</span> <span class="mi">1</span>
+        <span class="nn">volumes</span><span class="p">:</span>
             <span class="o">-</span> <span class="s2">&quot;${TMPDIR:-/tmp}/localstack:/var/lib/localstack&quot;</span>
             <span class="o">-</span> <span class="s2">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
-            <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span><span class="p">:</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="o">-</span><span class="s s-Atom">entrypoint</span><span class="o">-</span><span class="s s-Atom">initaws</span><span class="p">.</span><span class="s s-Atom">d</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span>
+            <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="nn">sh</span><span class="p">:</span><span class="o">/</span><span class="s s-Atom">docker</span><span class="o">-</span><span class="s s-Atom">entrypoint</span><span class="o">-</span><span class="s s-Atom">initaws</span><span class="p">.</span><span class="s s-Atom">d</span><span class="o">/</span><span class="s s-Atom">start</span><span class="o">-</span><span class="s s-Atom">localstack</span><span class="p">.</span><span class="s s-Atom">sh</span>
 </code></pre></div>
 
 <h2>Overall Benefits of Localstack</h2>

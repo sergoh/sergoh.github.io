@@ -217,7 +217,7 @@ Read: 5 minutes </p>
 <p>I've done my best to avoid installing any duplicates by checking if you've already installed the application in the /Applications folder of the Mac. </p>
 <h2><strong>Installation</strong></h2>
 <p>Once you've download the script, head to your downloads folder on terminal and run...</p>
-<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>brew-install-mac-dev-environment.sh
+<div class="highlight"><pre><span></span><code>bash brew-install-mac-dev-environment.sh
 </code></pre></div>
 
 <h2><strong>Packages Installed</strong></h2>
@@ -239,10 +239,10 @@ Read: 5 minutes </p>
 </ul>
 <p>Feel free to verify any of these packages after installation by checking your /Applications folder or checking for the instance in terminal. </p>
 <p>For example:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>--version
-python<span class="w"> </span>--version
-pip3<span class="w"> </span>--version
-node<span class="w"> </span>--version
+<div class="highlight"><pre><span></span><code>git --version
+python --version
+pip3 --version
+node --version
 </code></pre></div>
 
 <p><em>If you don't need to extend the script, stop reading <strong>here</strong></em></p>
@@ -250,20 +250,20 @@ node<span class="w"> </span>--version
 <p>Extending the script is easy. </p>
 <p>If you wish to add other homebrew formulas, just add them at the end of the script. </p>
 <div class="highlight"><pre><span></span><code><span class="c1">## Install other miscellaneous tools</span>
-<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">git</span>
-<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">python</span>
-<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">node</span>
-<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">coreutils</span>
-<span class="n">brew</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">&lt;</span><span class="n">your</span><span class="w"> </span><span class="n">formula</span><span class="w"> </span><span class="n">here</span><span class="o">&gt;</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">git</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">python</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">node</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">coreutils</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">formula</span> <span class="n">here</span><span class="o">&gt;</span>
 <span class="o">.</span>
 <span class="o">.</span>
 </code></pre></div>
 
 <p>If you wish to add another application, you'll need to use <code>brew cask install</code> and edit the script in two places.</p>
 <p><strong>1) Add to the application name to the application array list. (We'll add Skype as an example)</strong></p>
-<div class="highlight"><pre><span></span><code>##<span class="w"> </span><span class="nv">Applications</span><span class="w"> </span><span class="nv">we</span><span class="w"> </span><span class="nv">will</span><span class="w"> </span><span class="nv">install</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span>`<span class="nv">brew</span><span class="w"> </span><span class="nv">cask</span><span class="w"> </span><span class="nv">install</span>`
-##<span class="w"> </span><span class="nv">additional</span><span class="w"> </span><span class="nv">applications</span><span class="w"> </span><span class="nv">can</span><span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="nv">added</span><span class="w"> </span><span class="nv">here</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">wish</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">install</span><span class="w"> </span><span class="nv">them</span>
-<span class="nv">declare</span><span class="w"> </span><span class="o">-</span><span class="nv">a</span><span class="w"> </span><span class="nv">applications</span><span class="o">=</span><span class="ss">(</span><span class="w"> </span><span class="s2">&quot;Skype&quot;</span><span class="w"> </span><span class="nv">Spotify</span><span class="w"> </span><span class="nv">Sourcetree</span><span class="w"> </span><span class="nv">Slack</span><span class="w"> </span><span class="nv">Docker</span><span class="w"> </span><span class="nv">iTerm</span><span class="w"> </span><span class="s2">&quot;IntelliJ Idea&quot;</span><span class="w"> </span><span class="s2">&quot;Google Chrome&quot;</span><span class="w"> </span><span class="ss">)</span>
+<div class="highlight"><pre><span></span><code>## <span class="nv">Applications</span> <span class="nv">we</span> <span class="nv">will</span> <span class="nv">install</span> <span class="nv">with</span> `<span class="nv">brew</span> <span class="nv">cask</span> <span class="nv">install</span>`
+## <span class="nv">additional</span> <span class="nv">applications</span> <span class="nv">can</span> <span class="nv">be</span> <span class="nv">added</span> <span class="nv">here</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">wish</span> <span class="nv">to</span> <span class="nv">install</span> <span class="nv">them</span>
+<span class="nv">declare</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">applications</span><span class="o">=</span><span class="ss">(</span> <span class="s2">&quot;</span><span class="s">Skype</span><span class="s2">&quot;</span> <span class="nv">Spotify</span> <span class="nv">Sourcetree</span> <span class="nv">Slack</span> <span class="nv">Docker</span> <span class="nv">iTerm</span> <span class="s2">&quot;</span><span class="s">IntelliJ Idea</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="s">Google Chrome</span><span class="s2">&quot;</span> <span class="ss">)</span>
 </code></pre></div>
 
 <p>Skype is capitalized because it would be saved to your /Applciations folder as Skype.app (the script will use this to make sure the application isn't already installed).</p>
