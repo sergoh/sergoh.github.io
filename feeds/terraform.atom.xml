@@ -23,13 +23,13 @@
 &lt;p&gt;This example returns &lt;code&gt;[1]&lt;/code&gt; when the conditional if-statement is &lt;strong&gt;true&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;[1]&lt;/code&gt; passed back to the &lt;code&gt;for_each&lt;/code&gt; means the &lt;code&gt;dynamic "default_action"&lt;/code&gt; will be created.&lt;/p&gt;
 &lt;h2&gt;Real Terraform Examples&lt;/h2&gt;
-&lt;p&gt;Here's how to use these if-statements in a real Terraform file..&lt;/p&gt;
-&lt;ol&gt;
+&lt;p&gt;Here's how to use these if-statements in Terraform:&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;Notice the &lt;strong&gt;two&lt;/strong&gt; conditionals if-statements for the two different &lt;code&gt;dynamic "default_action" {}&lt;/code&gt; blocks in the &lt;code&gt;aws_lb_listener&lt;/code&gt; resource. &lt;/li&gt;
 &lt;li&gt;The &lt;code&gt;default_action&lt;/code&gt; is selected by a matching the &lt;code&gt;var.default_action_type&lt;/code&gt; to &lt;code&gt;dynamic&lt;/code&gt; block.&lt;/li&gt;
-&lt;li&gt;Use &lt;code&gt;var.target_group_arn&lt;/code&gt; for &lt;code&gt;var.default_action_type == "forward"&lt;/code&gt; to include the target group.&lt;/li&gt;
-&lt;li&gt;Use &lt;code&gt;varauthenticate_oidc&lt;/code&gt; for &lt;code&gt;var.default_action_type == "authenticate-oidc"&lt;/code&gt; to include oidc configuration.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
+&lt;p&gt;Use &lt;code&gt;var.target_group_arn&lt;/code&gt; for &lt;code&gt;var.default_action_type == "forward"&lt;/code&gt; to include the target group.&lt;/p&gt;
+&lt;p&gt;Use &lt;code&gt;var.authenticate_oidc&lt;/code&gt; for &lt;code&gt;var.default_action_type == "authenticate-oidc"&lt;/code&gt; to include oidc configuration.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;resources.tf&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;resource&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;&amp;quot;aws_lb_listener&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;&amp;quot;listener&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="na"&gt;load_balancer_arn&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;aws_lb.application.arn&lt;/span&gt;

@@ -160,10 +160,12 @@ localstack-1  | 2023-01-16 23:43:34 hsl-local-serverless
 &lt;p&gt;Copy and paste the following code into &lt;code&gt;docker-compose.yml&lt;/code&gt;.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Build the images: &lt;code&gt;docker-compose -f docker-compose.yml build --pull&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Build the images: &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker-compose -f docker-compose.yml build --pull&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Run the containers: &lt;code&gt;docker-compose -f docker-compose.yml up&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Run the containers: &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker-compose -f docker-compose.yml up&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;At this point, &lt;code&gt;localstack&lt;/code&gt; will start alongside the &lt;code&gt;api&lt;/code&gt; container and will be ready to mock AWS services at &lt;code&gt;http://localstack:4566&lt;/code&gt;. &lt;/p&gt;

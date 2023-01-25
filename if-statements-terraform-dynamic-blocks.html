@@ -253,13 +253,13 @@
 <p>This example returns <code>[1]</code> when the conditional if-statement is <strong>true</strong>.</p>
 <p>The <code>[1]</code> passed back to the <code>for_each</code> means the <code>dynamic "default_action"</code> will be created.</p>
 <h2>Real Terraform Examples</h2>
-<p>Here's how to use these if-statements in a real Terraform file..</p>
-<ol>
+<p>Here's how to use these if-statements in Terraform:</p>
+<ul>
 <li>Notice the <strong>two</strong> conditionals if-statements for the two different <code>dynamic "default_action" {}</code> blocks in the <code>aws_lb_listener</code> resource. </li>
 <li>The <code>default_action</code> is selected by a matching the <code>var.default_action_type</code> to <code>dynamic</code> block.</li>
-<li>Use <code>var.target_group_arn</code> for <code>var.default_action_type == "forward"</code> to include the target group.</li>
-<li>Use <code>varauthenticate_oidc</code> for <code>var.default_action_type == "authenticate-oidc"</code> to include oidc configuration.</li>
-</ol>
+</ul>
+<p>Use <code>var.target_group_arn</code> for <code>var.default_action_type == "forward"</code> to include the target group.</p>
+<p>Use <code>var.authenticate_oidc</code> for <code>var.default_action_type == "authenticate-oidc"</code> to include oidc configuration.</p>
 <p><strong>resources.tf</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_lb_listener&quot;</span><span class="w"> </span><span class="nv">&quot;listener&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="na">load_balancer_arn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_lb.application.arn</span>
