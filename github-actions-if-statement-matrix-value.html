@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+ 
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Github Actions: Use an if statement to conditionally run a block given a specific matrix value. (Matrix Strategy Jobs)" />
+<meta name="keywords" content="github, actions, github-actions, devops, automation, matrix, job, if, if-statement">
+
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Github Actions: If Statement for Matrix Value"/>
+  <meta property="og:description" content="Github Actions: Use an if statement to conditionally run a block given a specific matrix value. (Matrix Strategy Jobs)"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/github-actions-if-statement-matrix-value.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2023-02-11 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2023-02-11 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="automation"/>
+  <meta property="article:tag" content="github"/>
+  <meta property="article:tag" content="actions"/>
+  <meta property="article:tag" content="github-actions"/>
+  <meta property="article:tag" content="devops"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="matrix"/>
+  <meta property="article:tag" content="job"/>
+  <meta property="article:tag" content="if"/>
+  <meta property="article:tag" content="if-statement"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <title>DevLo Software Blog &ndash; Github Actions: If Statement for Matrix Value</title>
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
+</head>
+<body class="light-theme">
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
+
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
+
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <nav>
+      <ul class="list">
+
+
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
+
+      </ul>
+    </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="7180191250"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle ads-responsive"
+           data-ad-client="ca-pub-2119138261035978"
+           data-ad-slot="7180191250"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="github-actions-if-statement-matrix-value">Github Actions: If Statement for Matrix Value</h1>
+    <p>
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Sat 11 February 2023 in <a href="https://www.devlo.io/category/automation.html">automation</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Technical Stack: Github Actions</p>
+<p>Read: 2 minutes</p>
+<h2>Prerequisites</h2>
+<ul>
+<li>Github</li>
+<li>Github Actions</li>
+</ul>
+<h2>Introduction</h2>
+<p><strong>Github Actions</strong> is a continuous integration and continuous delivery (CI/CD) platform that allows you to automate your build, test, and deployment pipeline. <a href="https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions">Read More Here.</a></p>
+<p><strong>Matrix Jobs</strong> lets you use variables in a single job definition to automatically create multiple job runs that are based on the combinations of the variables. For example, you can use a matrix strategy to test your code in multiple versions of a language or on multiple operating systems. <a href="https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs">Source</a></p>
+<h3>After reading this, your will understand:</h3>
+<ul>
+<li>How Matrix Jobs run in Github Actions</li>
+<li>How to conditionally run a block given a specific matrix value</li>
+</ul>
+<h2>Given This Matrix Strategy..</h2>
+<p>Github Actions allows you to pass an array of objects to define matrix jobs. This allows you to access the variables
+at <code>matrix.platforms.os</code> or <code>matrix.platforms.os_version</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">jobs</span><span class="o">:</span>
+<span class="w">  </span><span class="n">create</span><span class="o">-</span><span class="n">image</span><span class="o">:</span>
+<span class="w">    </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Create Base Images&#39;</span>
+<span class="w">    </span><span class="n">runs</span><span class="o">-</span><span class="n">on</span><span class="o">:</span><span class="w"> </span><span class="n">ubuntu</span><span class="o">-</span><span class="n">latest</span>
+<span class="w">    </span><span class="n">strategy</span><span class="o">:</span>
+<span class="w">      </span><span class="n">fail</span><span class="o">-</span><span class="n">fast</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="n">matrix</span><span class="o">:</span>
+<span class="w">        </span><span class="n">platforms</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>
+<span class="w">          </span><span class="o">{</span><span class="w"> </span><span class="n">os</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">os_version</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;16.04&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">npm_version</span><span class="o">:</span><span class="w"> </span><span class="mi">12</span><span class="o">,</span><span class="w"> </span><span class="n">ruby</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="o">},</span><span class="w"> </span>
+<span class="w">          </span><span class="o">{</span><span class="w"> </span><span class="n">os</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">os_version</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;18.04&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">npm_version</span><span class="o">:</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="o">},</span><span class="w"> </span>
+<span class="w">          </span><span class="o">{</span><span class="w"> </span><span class="n">os</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">os_version</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;20.04&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">npm_version</span><span class="o">:</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="o">}</span>
+<span class="w">        </span><span class="o">]</span>
+</code></pre></div>
+
+<h2>If Statement - Matrix Value Null / Boolean Check</h2>
+<p>For null/boolean comparisons, do not compare your matrix value to any strings, numbers or booleans. Use the format <code>if: matrix.platforms.ruby</code> for two reasons:</p>
+<ol>
+<li>This format performs a <em>null</em> check on the <code>ruby</code> value. Jobs could choose to omit the <code>matrix.platforms.ruby</code> and this job will be skipped.</li>
+<li>This format also peforms a <em>boolean</em> check if <code>ruby</code> contains a boolean value. </li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">ruby</span>
+<span class="w">  </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ruby</span><span class="w"> </span><span class="nv">Dependencies</span>
+<span class="w">  </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ruby specific packages.&quot;</span>
+</code></pre></div>
+
+<p><a href="https://docs.github.com/en/actions/learn-github-actions/expressions#operators">Full List of Github Action Operators</a></p>
+<h2>If Statement - Matrix Value String / Number Comparison</h2>
+<p>For string values, be sure to enclose your value in single quotes <code>' '</code>. Enclosing them in double quotes <code>"</code> will throw an error. </p>
+<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;16.04&#39;</span>
+<span class="w">  </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ubuntu</span><span class="w"> </span><span class="nv">Packages</span><span class="w"> </span><span class="ss">(</span><span class="nv">legacy</span><span class="ss">)</span>
+<span class="w">  </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
+<span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">npm_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span>
+<span class="w">  </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">NPM</span><span class="w"> </span><span class="nv">Dependencies</span>
+<span class="w">  </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install NPM dependencies.&quot;</span>
+</code></pre></div>
+
+<p><a href="https://docs.github.com/en/actions/learn-github-actions/expressions#operators">Full List of Github Action Operators</a></p>
+<h2>Full Github Action</h2>
+<div class="highlight"><pre><span></span><code><span class="nv">name</span>:<span class="w"> </span><span class="s1">&#39;Create Artifacts&#39;</span>
+<span class="nv">on</span>:
+<span class="w">  </span><span class="nv">pull_request</span>:
+<span class="nv">jobs</span>:
+<span class="w">  </span><span class="nv">create</span><span class="o">-</span><span class="nv">images</span>:
+<span class="w">    </span><span class="nv">name</span>:<span class="w"> </span><span class="s1">&#39;Create Base Images&#39;</span>
+<span class="w">    </span><span class="nv">runs</span><span class="o">-</span><span class="nv">on</span>:<span class="w"> </span><span class="nv">ubuntu</span><span class="o">-</span><span class="nv">latest</span>
+<span class="w">    </span><span class="nv">strategy</span>:
+<span class="w">      </span><span class="nv">fail</span><span class="o">-</span><span class="nv">fast</span>:<span class="w"> </span><span class="nv">false</span>
+<span class="w">      </span><span class="nv">matrix</span>:
+<span class="w">        </span><span class="nv">platforms</span>:<span class="w"> </span>[<span class="w"> </span>
+<span class="w">          </span>{<span class="nv">os</span>:<span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span>,<span class="w"> </span><span class="nv">os_version</span>:<span class="w"> </span><span class="s2">&quot;16.04&quot;</span>,<span class="w"> </span><span class="nv">legacy</span>:<span class="w"> </span><span class="nv">true</span>},<span class="w"> </span>
+<span class="w">          </span>{<span class="nv">os</span>:<span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span>,<span class="w"> </span><span class="nv">os_version</span>:<span class="w"> </span><span class="s2">&quot;18.04&quot;</span>},<span class="w"> </span>
+<span class="w">          </span>{<span class="nv">os</span>:<span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span>,<span class="w"> </span><span class="nv">os_version</span>:<span class="w"> </span><span class="s2">&quot;20.04&quot;</span>}
+<span class="w">        </span>]
+<span class="w">    </span><span class="nv">steps</span>:
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;16.04&#39;</span>
+<span class="w">        </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ubuntu</span><span class="w"> </span><span class="nv">Packages</span><span class="w"> </span><span class="ss">(</span><span class="nv">legacy</span><span class="ss">)</span>
+<span class="w">        </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ubuntu</span><span class="w"> </span><span class="nv">Packages</span>
+<span class="w">        </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ubuntu packages.&quot;</span>
+</code></pre></div>
+
+<h2>Using A Different Matrix Strategy</h2>
+<p>Traditional Matrix Jobs are setup like this: </p>
+<div class="highlight"><pre><span></span><code><span class="n">jobs</span><span class="o">:</span>
+<span class="w">  </span><span class="n">example_matrix</span><span class="o">:</span>
+<span class="w">    </span><span class="n">strategy</span><span class="o">:</span>
+<span class="w">      </span><span class="n">matrix</span><span class="o">:</span>
+<span class="w">        </span><span class="n">os_version</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;16.04&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;18.04&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;20.04&#39;</span><span class="o">]</span>
+<span class="w">        </span><span class="n">os</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;ubuntu&#39;</span><span class="o">]</span>
+</code></pre></div>
+
+<p>You could still use if statements in the following way:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="o">:</span><span class="w"> </span><span class="n">matrix</span><span class="o">.</span><span class="na">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;18.04&#39;</span>
+</code></pre></div>
+
+<h3>Includes and Excludes</h3>
+<p>Github Actions has support to skip an entire matrix value using <code>include</code> or <code>exclude</code>. The following configuraiton
+would skip the <code>{ "os": "ubuntu", "os_version": "16.04" }</code> job. </p>
+<div class="highlight"><pre><span></span><code>exclude:
+    - os_version: &#39;16.04&#39;
+</code></pre></div>
+
+<p>Using <code>exclude</code> or <code>include</code> skips the entire workflow. <em>For this reason, it's sometimes better to use <code>if</code> statements in order to accomplish your workflow.</em></p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://www.devlo.io/tag/github.html">github</a>
+      <a href="https://www.devlo.io/tag/actions.html">actions</a>
+      <a href="https://www.devlo.io/tag/github-actions.html">github-actions</a>
+      <a href="https://www.devlo.io/tag/devops.html">devops</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/matrix.html">matrix</a>
+      <a href="https://www.devlo.io/tag/job.html">job</a>
+      <a href="https://www.devlo.io/tag/if.html">if</a>
+      <a href="https://www.devlo.io/tag/if-statement.html">if-statement</a>
+    </p>
+  </div>
+
+
+
+
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="5952522457"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</article>
+
+<footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo Software Blog ",
+  "url" : "https://www.devlo.io",
+  "image": "/images/Devlo-Logo.png",
+  "description": "DevLo - Software Blog."
+}
+</script>
+</body>
+</html>
