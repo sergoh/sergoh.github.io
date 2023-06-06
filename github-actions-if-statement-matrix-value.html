@@ -255,45 +255,45 @@ at <code>matrix.platforms.os</code> or <code>matrix.platforms.os_version</code>.
 <li>This format performs a <em>null</em> check on the <code>ruby</code> value. Jobs could choose to omit the <code>matrix.platforms.ruby</code> and this job will be skipped.</li>
 <li>This format also peforms a <em>boolean</em> check if <code>ruby</code> contains a boolean value. </li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">ruby</span>
-<span class="w">  </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ruby</span><span class="w"> </span><span class="nv">Dependencies</span>
-<span class="w">  </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ruby specific packages.&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">ruby</span>
+<span class="w">  </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">Ruby</span><span class="w"> </span><span class="nx">Dependencies</span>
+<span class="w">  </span><span class="nx">run</span><span class="p">:</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s">&quot;Install Ruby specific packages.&quot;</span>
 </code></pre></div>
 
 <p><a href="https://docs.github.com/en/actions/learn-github-actions/expressions#operators">Full List of Github Action Operators</a></p>
 <h2>If Statement - Matrix Value String / Number Comparison</h2>
 <p>For string values, be sure to enclose your value in single quotes <code>' '</code>. Enclosing them in double quotes <code>"</code> will throw an error. </p>
-<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;16.04&#39;</span>
-<span class="w">  </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ubuntu</span><span class="w"> </span><span class="nv">Packages</span><span class="w"> </span><span class="ss">(</span><span class="nv">legacy</span><span class="ss">)</span>
-<span class="w">  </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
-<span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">npm_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span>
-<span class="w">  </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">NPM</span><span class="w"> </span><span class="nv">Dependencies</span>
-<span class="w">  </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install NPM dependencies.&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">&#39;</span><span class="m m-Double">16.0</span><span class="mi">4</span><span class="err">&#39;</span>
+<span class="w">  </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">Ubuntu</span><span class="w"> </span><span class="nx">Packages</span><span class="w"> </span><span class="p">(</span><span class="nx">legacy</span><span class="p">)</span>
+<span class="w">  </span><span class="nx">run</span><span class="p">:</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
+<span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">npm_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span>
+<span class="w">  </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">NPM</span><span class="w"> </span><span class="nx">Dependencies</span>
+<span class="w">  </span><span class="nx">run</span><span class="p">:</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s">&quot;Install NPM dependencies.&quot;</span>
 </code></pre></div>
 
 <p><a href="https://docs.github.com/en/actions/learn-github-actions/expressions#operators">Full List of Github Action Operators</a></p>
 <h2>Full Github Action</h2>
-<div class="highlight"><pre><span></span><code><span class="nv">name</span>:<span class="w"> </span><span class="s1">&#39;Create Artifacts&#39;</span>
-<span class="nv">on</span>:
-<span class="w">  </span><span class="nv">pull_request</span>:
-<span class="nv">jobs</span>:
-<span class="w">  </span><span class="nv">create</span><span class="o">-</span><span class="nv">images</span>:
-<span class="w">    </span><span class="nv">name</span>:<span class="w"> </span><span class="s1">&#39;Create Base Images&#39;</span>
-<span class="w">    </span><span class="nv">runs</span><span class="o">-</span><span class="nv">on</span>:<span class="w"> </span><span class="nv">ubuntu</span><span class="o">-</span><span class="nv">latest</span>
-<span class="w">    </span><span class="nv">strategy</span>:
-<span class="w">      </span><span class="nv">fail</span><span class="o">-</span><span class="nv">fast</span>:<span class="w"> </span><span class="nv">false</span>
-<span class="w">      </span><span class="nv">matrix</span>:
-<span class="w">        </span><span class="nv">platforms</span>:<span class="w"> </span>[<span class="w"> </span>
-<span class="w">          </span>{<span class="nv">os</span>:<span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span>,<span class="w"> </span><span class="nv">os_version</span>:<span class="w"> </span><span class="s2">&quot;16.04&quot;</span>,<span class="w"> </span><span class="nv">legacy</span>:<span class="w"> </span><span class="nv">true</span>},<span class="w"> </span>
-<span class="w">          </span>{<span class="nv">os</span>:<span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span>,<span class="w"> </span><span class="nv">os_version</span>:<span class="w"> </span><span class="s2">&quot;18.04&quot;</span>},<span class="w"> </span>
-<span class="w">          </span>{<span class="nv">os</span>:<span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span>,<span class="w"> </span><span class="nv">os_version</span>:<span class="w"> </span><span class="s2">&quot;20.04&quot;</span>}
-<span class="w">        </span>]
-<span class="w">    </span><span class="nv">steps</span>:
-<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="k">if</span>:<span class="w"> </span><span class="nv">matrix</span>.<span class="nv">platforms</span>.<span class="nv">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;16.04&#39;</span>
-<span class="w">        </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ubuntu</span><span class="w"> </span><span class="nv">Packages</span><span class="w"> </span><span class="ss">(</span><span class="nv">legacy</span><span class="ss">)</span>
-<span class="w">        </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
-<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nv">name</span>:<span class="w"> </span><span class="nv">Add</span><span class="w"> </span><span class="nv">Ubuntu</span><span class="w"> </span><span class="nv">Packages</span>
-<span class="w">        </span><span class="nv">run</span>:<span class="w"> </span><span class="nv">echo</span><span class="w"> </span><span class="s2">&quot;Install Ubuntu packages.&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">Create</span><span class="w"> </span><span class="nx">Artifacts</span><span class="err">&#39;</span>
+<span class="nx">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nx">pull_request</span><span class="p">:</span>
+<span class="nx">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nx">create</span><span class="o">-</span><span class="nx">images</span><span class="p">:</span>
+<span class="w">    </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">Create</span><span class="w"> </span><span class="nx">Base</span><span class="w"> </span><span class="nx">Images</span><span class="err">&#39;</span>
+<span class="w">    </span><span class="nx">runs</span><span class="o">-</span><span class="nx">on</span><span class="p">:</span><span class="w"> </span><span class="nx">ubuntu</span><span class="o">-</span><span class="nx">latest</span>
+<span class="w">    </span><span class="nx">strategy</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">fail</span><span class="o">-</span><span class="nx">fast</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="nx">matrix</span><span class="p">:</span>
+<span class="w">        </span><span class="nx">platforms</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span>
+<span class="w">          </span><span class="p">{</span><span class="nx">os</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ubuntu&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">os_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;16.04&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">legacy</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">},</span><span class="w"> </span>
+<span class="w">          </span><span class="p">{</span><span class="nx">os</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ubuntu&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">os_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;18.04&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">          </span><span class="p">{</span><span class="nx">os</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ubuntu&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">os_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;20.04&quot;</span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="nx">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">&#39;</span><span class="m m-Double">16.0</span><span class="mi">4</span><span class="err">&#39;</span>
+<span class="w">        </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">Ubuntu</span><span class="w"> </span><span class="nx">Packages</span><span class="w"> </span><span class="p">(</span><span class="nx">legacy</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">run</span><span class="p">:</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">Ubuntu</span><span class="w"> </span><span class="nx">Packages</span>
+<span class="w">        </span><span class="nx">run</span><span class="p">:</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s">&quot;Install Ubuntu packages.&quot;</span>
 </code></pre></div>
 
 <h2>Using A Different Matrix Strategy</h2>

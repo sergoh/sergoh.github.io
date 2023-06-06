@@ -227,13 +227,13 @@
 <p>If the variable <code>create_ip</code> == <code>true</code> then return 1, else return 0. We will combine this idea with the <code>count</code> attribtue of a resource to create an if-else statement. </p>
 <h2><strong>If Statement</strong></h2>
 <p>Start by looking at the boolean value we are passing to <code>create_eip</code> in this module. </p>
-<div class="highlight"><pre><span></span><code><span class="k">module</span> <span class="s">&quot;frontend&quot;</span> {
-  <span class="nb">source</span> = <span class="s">&quot;/modules/frontend-app&quot;</span>
-  <span class="n">box_name</span> = <span class="s">&quot;web-01&quot;</span>
-  <span class="n">ami</span> = <span class="s">&quot;ami-25615740&quot;</span>
-  <span class="n">instance_type</span> = <span class="s">&quot;t2.micro&quot;</span>
-  <span class="n">create_eip</span> = <span class="n">true</span>
-}
+<div class="highlight"><pre><span></span><code><span class="nx">module</span><span class="w"> </span><span class="s">&quot;frontend&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">source</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;/modules/frontend-app&quot;</span>
+<span class="w">  </span><span class="nx">box_name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;web-01&quot;</span>
+<span class="w">  </span><span class="nx">ami</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ami-25615740&quot;</span>
+<span class="w">  </span><span class="nx">instance_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;t2.micro&quot;</span>
+<span class="w">  </span><span class="nx">create_eip</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>Based on HCL semantics, setting the <code>create_eip</code> to <code>true</code> would result in the ternary operation <code>${var.create_eip == true ? 1 : 0}</code> resolving to value of 1.
@@ -252,13 +252,13 @@ This means a value of 1 would be passed on to the <code>count</code> parameter o
 <h2><strong>If-Else Statement</strong></h2>
 <p>Create an if-else statement in a similar manner.</p>
 <p>Take a careful look at the following <code>if-eip</code>, <code>else-eip</code> example. We will use two tenary operations to achieve if-else.</p>
-<div class="highlight"><pre><span></span><code><span class="k">module</span> <span class="s">&quot;frontend&quot;</span> {
-  <span class="nb">source</span> = <span class="s">&quot;/modules/frontend-app&quot;</span>
-  <span class="n">box_name</span> = <span class="s">&quot;web-01&quot;</span>
-  <span class="n">ami</span> = <span class="s">&quot;ami-25615740&quot;</span>
-  <span class="n">instance_type</span> = <span class="s">&quot;t2.micro&quot;</span>
-  <span class="n">create_first_eip</span> = <span class="n">true</span>
-}
+<div class="highlight"><pre><span></span><code><span class="nx">module</span><span class="w"> </span><span class="s">&quot;frontend&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">source</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;/modules/frontend-app&quot;</span>
+<span class="w">  </span><span class="nx">box_name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;web-01&quot;</span>
+<span class="w">  </span><span class="nx">ami</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ami-25615740&quot;</span>
+<span class="w">  </span><span class="nx">instance_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;t2.micro&quot;</span>
+<span class="w">  </span><span class="nx">create_first_eip</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <div class="highlight"><pre><span></span><code><span class="c1"># frontend-app module</span>
