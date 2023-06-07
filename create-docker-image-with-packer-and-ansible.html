@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+ 
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Create a Docker Image with Packer + Ansible installed. This is useful for creating a Docker Image that can be used for CI/CD pipelines." />
+<meta name="keywords" content="docker, packer, ansible, devops, cicd, docker-compose, automation, bash, hashicorp, ami, aws, machine-image, infrastructure-as-code, images, img">
+
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Create Docker Image with Packer and Ansible"/>
+  <meta property="og:description" content="Create a Docker Image with Packer + Ansible installed. This is useful for creating a Docker Image that can be used for CI/CD pipelines."/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/create-docker-image-with-packer-and-ansible.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2023-06-06 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2023-06-06 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="tutorials"/>
+  <meta property="article:tag" content="docker"/>
+  <meta property="article:tag" content="packer"/>
+  <meta property="article:tag" content="ansible"/>
+  <meta property="article:tag" content="devops"/>
+  <meta property="article:tag" content="cicd"/>
+  <meta property="article:tag" content="docker-compose"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="bash"/>
+  <meta property="article:tag" content="hashicorp"/>
+  <meta property="article:tag" content="ami"/>
+  <meta property="article:tag" content="aws"/>
+  <meta property="article:tag" content="machine-image"/>
+  <meta property="article:tag" content="infrastructure-as-code"/>
+  <meta property="article:tag" content="images"/>
+  <meta property="article:tag" content="img"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <title>DevLo Software Blog &ndash; Create Docker Image with Packer and Ansible</title>
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
+</head>
+<body class="light-theme">
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
+
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
+
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <nav>
+      <ul class="list">
+
+
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
+
+      </ul>
+    </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="7180191250"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle ads-responsive"
+           data-ad-client="ca-pub-2119138261035978"
+           data-ad-slot="7180191250"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="create-docker-image-with-packer-and-ansible">Create Docker Image with Packer and Ansible</h1>
+    <p>
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Tue 06 June 2023 in <a href="https://www.devlo.io/category/tutorials.html">tutorials</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Technical Stack: Docker, Packer, Ansible</p>
+<h2>Introduction</h2>
+<p>The goal of this tutorial is to create a Docker Image with Packer and Ansible installed. </p>
+<p>This image can be used to execute Packer and Ansible builds in a CI/CD pipeline.</p>
+<h3>Create Dockerfile</h3>
+<p>Create a file named <code>Dockerfile</code> with the following contents:</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">hashicorp/packer</span>
+
+<span class="k">USER</span><span class="w"> </span><span class="s">root</span>
+
+<span class="k">RUN</span><span class="w"> </span>apk<span class="w"> </span>add<span class="w"> </span>-v<span class="w"> </span>--update<span class="w"> </span>--no-cache<span class="w"> </span>aws-cli<span class="w"> </span>ansible<span class="w"> </span>jq<span class="w"> </span>openssh<span class="w"> </span>bash<span class="w"> </span>curl<span class="w"> </span>py3-boto3<span class="w"> </span>sudo
+
+<span class="c"># Copy Packer Arifacts</span>
+<span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>.
+
+<span class="c"># Clean up apt</span>
+<span class="k">RUN</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/tmp/*<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/cache/apk/*<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/tmp/*
+</code></pre></div>
+
+<h3>Sample Packer HCL File</h3>
+<p>This Dockerfile is optimized to help you run Packer builds with the <code>ansible</code> provisioner. Something similar to the <code>build</code> section below:</p>
+<div class="highlight"><pre><span></span><code><span class="err">source</span><span class="w"> </span><span class="s2">&quot;amazon-ebs&quot; &quot;ubuntu&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+
+<span class="nb">build</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;packer-build&quot;</span>
+<span class="w">  </span><span class="na">sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;source.amazon-ebs.ubuntu&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+
+<span class="w">  </span><span class="kr">provisioner</span><span class="w"> </span><span class="nv">&quot;ansible&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ubuntu&quot;</span>
+<span class="w">    </span><span class="na">playbook_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./playbook.yml&quot;</span>
+<span class="w">    </span><span class="na">ansible_env_vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ANSIBLE_PIPELINING=true&quot;, &quot;ANSIBLE_SSH_PIPELINING=true&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="na">use_proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">false</span>
+<span class="w">    </span><span class="na">extra_arguments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;--become&quot;, &quot;--become-method=sudo&quot;</span>
+<span class="w">    </span><span class="p">]</span><span class="w"> </span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h1>Build Docker Image and Run Locally</h1>
+<p>You can run the following command to build your Docker Image locally:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>packer-ansible<span class="w"> </span>.
+</code></pre></div>
+
+<p>You can run the following command to execute your Packer + Ansible build:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--env-file<span class="w"> </span>~/.aws/credentials<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>packer-ansible<span class="w"> </span>build<span class="w"> </span>base-images.pkr.hcl
+</code></pre></div>
+
+<p><code>--env-file</code> is optional for passing AWS credentials to your Docker container.</p>
+<h3>Using Image in CI/CD</h3>
+<p>We use these images to speed up our automated packer builds. Otherwise, it will take you long time to install packer + ansible on every build. </p>
+<p>Here is an example of CircleCI config that uses this image:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">build-base-ami</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<span class="w">      </span><span class="no">Build Packer base AMIs.</span>
+<span class="w">    </span><span class="nt">resource_class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">small</span>
+<span class="w">    </span><span class="nt">docker</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xxxxxxxx.dkr.ecr.us-west-2.amazonaws.com/base-ami-builder:latest</span>
+<span class="w">        </span><span class="nt">aws_auth</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">aws_access_key_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_ACCESS_KEY_ID</span>
+<span class="w">          </span><span class="nt">aws_secret_access_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$AWS_SECRET_ACCESS_KEY</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">checkout</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build AMI</span>
+<span class="w">          </span><span class="nt">no_output_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30m</span>
+<span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">            </span><span class="no">packer init base-images.pkr.hcl</span>
+<span class="w">            </span><span class="no">packer validate base-images.pkr.hcl</span>
+<span class="w">            </span><span class="no">packer build base-images.pkr.hcl</span>
+</code></pre></div>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://www.devlo.io/tag/docker.html">docker</a>
+      <a href="https://www.devlo.io/tag/packer.html">packer</a>
+      <a href="https://www.devlo.io/tag/ansible.html">ansible</a>
+      <a href="https://www.devlo.io/tag/devops.html">devops</a>
+      <a href="https://www.devlo.io/tag/cicd.html">cicd</a>
+      <a href="https://www.devlo.io/tag/docker-compose.html">docker-compose</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/bash.html">bash</a>
+      <a href="https://www.devlo.io/tag/hashicorp.html">hashicorp</a>
+      <a href="https://www.devlo.io/tag/ami.html">ami</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/machine-image.html">machine-image</a>
+      <a href="https://www.devlo.io/tag/infrastructure-as-code.html">infrastructure-as-code</a>
+      <a href="https://www.devlo.io/tag/images.html">images</a>
+      <a href="https://www.devlo.io/tag/img.html">img</a>
+    </p>
+  </div>
+
+
+
+
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="5952522457"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</article>
+
+<footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo Software Blog ",
+  "url" : "https://www.devlo.io",
+  "image": "/images/Devlo-Logo.png",
+  "description": "DevLo - Software Blog."
+}
+</script>
+</body>
+</html>
