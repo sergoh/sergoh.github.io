@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/</loc>
-<lastmod>2023-06-07T00:16:44-00:00</lastmod>
+<lastmod>2023-06-07T00:40:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
@@ -19,6 +19,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/create-docker-image-with-packer-and-ansible.html</loc>
+<lastmod>2023-06-06T00:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/install-pyenv-on-linux-with-ansible.html</loc>
 <lastmod>2023-06-06T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.6</priority>
@@ -145,7 +152,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/category/automation.html</loc>
-<lastmod>2023-02-11T00:00:00-07:00</lastmod>
+<lastmod>2023-06-06T00:00:00-07:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
@@ -271,6 +278,27 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/tag/img.html</loc>
+<lastmod>2023-06-06T00:00:00-07:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/python.html</loc>
+<lastmod>2023-06-06T00:00:00-07:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/pyenv.html</loc>
+<lastmod>2023-06-06T00:00:00-07:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/pyenvironment.html</loc>
 <lastmod>2023-06-06T00:00:00-07:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
@@ -411,13 +439,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/tag/django.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.6</priority>
-</url>
-
-<url>
-<loc>https://www.devlo.io/tag/python.html</loc>
 <lastmod>2023-01-24T00:00:00-07:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>

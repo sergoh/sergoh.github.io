@@ -48,17 +48,33 @@
 
  
 
-    <meta name="author" content="Lopez Brothers" />
-    <meta name="description" content="DevLo - Software Blog." />
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="Install Pyenv on Linux using an Ansible Galaxy Role. This is useful for managing Python versions on your local machine or on a target linux machine." />
+<meta name="keywords" content="packer, ansible, python, pyenv, devops, pyenvironment, automation, bash, images">
+
+
   <meta property="og:site_name" content="DevLo Software Blog"/>
-  <meta property="og:type" content="blog"/>
-  <meta property="og:title" content="DevLo Software Blog"/>
-  <meta property="og:description" content="DevLo - Software Blog."/>
+  <meta property="og:title" content="Install Pyenv on Linux with Ansible"/>
+  <meta property="og:description" content="Install Pyenv on Linux using an Ansible Galaxy Role. This is useful for managing Python versions on your local machine or on a target linux machine."/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:url" content="https://www.devlo.io"/>
+  <meta property="og:url" content="https://www.devlo.io/install-pyenv-on-linux-with-ansible.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2023-06-06 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2023-06-06 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="automation"/>
+  <meta property="article:tag" content="packer"/>
+  <meta property="article:tag" content="ansible"/>
+  <meta property="article:tag" content="python"/>
+  <meta property="article:tag" content="pyenv"/>
+  <meta property="article:tag" content="devops"/>
+  <meta property="article:tag" content="pyenvironment"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="bash"/>
+  <meta property="article:tag" content="images"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
-  <title>DevLo Software Blog &ndash; Tag automation</title>
+  <title>DevLo Software Blog &ndash; Install Pyenv on Linux with Ansible</title>
 
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
@@ -189,171 +205,100 @@
 
 </nav>
 
-
-
-<article>
+<article class="single">
   <header>
-    <h2><a href="https://www.devlo.io/create-docker-image-with-packer-and-ansible.html">Create Docker Image with Packer and Ansible</a></h2>
-    <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Tue 06 June 2023 in <a href="https://www.devlo.io/category/tutorials.html">tutorials</a>
-
-
-    </p>
-  </header>
-  <div>
-      <div><p>Create a Docker Image with Packer + Ansible installed. This is useful for creating a Docker Image that can be used for CI/CD pipelines.</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/create-docker-image-with-packer-and-ansible.html">
-          Continue reading
-        </a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://www.devlo.io/install-pyenv-on-linux-with-ansible.html">Install Pyenv on Linux with Ansible</a></h2>
+      
+    <h1 id="install-pyenv-on-linux-with-ansible">Install Pyenv on Linux with Ansible</h1>
     <p>
       Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Tue 06 June 2023 in <a href="https://www.devlo.io/category/automation.html">automation</a>
 
-
     </p>
   </header>
+
+
   <div>
-      <div><p>Install Pyenv on Linux using an Ansible Galaxy Role. This is useful for managing Python versions on your local machine or on a target linux machine.</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/install-pyenv-on-linux-with-ansible.html">
-          Continue reading
-        </a>
+    <p>Technical Stack: Pyenv, Ansible, Linux</p>
+<h2>Introduction</h2>
+<p>Pyenv is a tool for managing multiple versions of Python on your local machine. By the end of this turtorial, you will understand how you can use <a href="https://github.com/staticdev/ansible-role-pyenv">staticdev/ansible-role-pyenv</a> Ansible role to manage your Pyenv installation.</p>
+<h3>Install Ansible Role</h3>
+<p>You can add this role to the <code>requirements.yml</code> file in your Ansible project:</p>
+<div class="highlight"><pre><span></span><code># requirements.yml
+---
+roles:
+- name: staticdev.pyenv
+</code></pre></div>
+
+<p>Then run the following command to install the role:</p>
+<div class="highlight"><pre><span></span><code>ansible-galaxy<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.yml
+</code></pre></div>
+
+<h3>Use Ansible Role in Playbook</h3>
+<p>One option of using this role will be inside your <code>playbook.yml</code> file:</p>
+<div class="highlight"><pre><span></span><code># playbook.yml
+---
+- hosts: servers
+  roles:
+    - role: staticdev.pyenv
+      pyenv_env: &quot;system&quot;
+      pyenv_global:
+        - 3.11.0
+        - 3.10.6
+      pyenv_enable_autocompletion: false
+      pyenv_python_versions:
+        - 3.11.0
+        - 3.10.6
+</code></pre></div>
+
+<h3>Import Role Inside Existing Tasks</h3>
+<p>You can also import the <code>staticdev.pyenv</code> role inside an existing playbook task like so:</p>
+<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">pyenv</span>
+<span class="w">  </span><span class="n">import_role</span><span class="p">:</span>
+<span class="w">    </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">staticdev</span><span class="o">.</span><span class="n">pyenv</span>
+<span class="w">  </span><span class="n">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="n">pyenv_env</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;system&#39;</span>
+<span class="w">    </span><span class="n">pyenv_global</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;3.8.16&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="n">pyenv_python_versions</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;3.8.16&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="n">pyenv_uninstall_python_w_wrong_configure_opts</span><span class="p">:</span><span class="w"> </span><span class="n">False</span>
+</code></pre></div>
+
+<h3>Full Configuration Options</h3>
+<p>For a full list of configuration options, please visit the github page for this role: <a href="https://github.com/staticdev/ansible-role-pyenv#role-variables">staticdev/ansible-role-pyenv</a></p>
+<h3>Verify Pyenv Installation</h3>
+<p>After executing your ansible build, your target machine will have Pyenv installed. You can verify this by running the following command:</p>
+<div class="highlight"><pre><span></span><code>pyenv<span class="w"> </span>versions
+</code></pre></div>
+
+<h3>Using on CI/CD Pipeline</h3>
+<p>Be sure to increase the wait timeout of your CI/CD pipeline to allow for the installation of Pyenv. These builds can take up to 15 minutes to complete.</p>
+<p>Something similar to <code>no_output_timeout: 30m</code> is good.</p>
   </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://www.devlo.io/github-actions-if-statement-matrix-value.html">Github Actions: If Statement for Matrix Value</a></h2>
+  <div class="tag-cloud">
     <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Sat 11 February 2023 in <a href="https://www.devlo.io/category/automation.html">automation</a>
-
-
+      <a href="https://www.devlo.io/tag/packer.html">packer</a>
+      <a href="https://www.devlo.io/tag/ansible.html">ansible</a>
+      <a href="https://www.devlo.io/tag/python.html">python</a>
+      <a href="https://www.devlo.io/tag/pyenv.html">pyenv</a>
+      <a href="https://www.devlo.io/tag/devops.html">devops</a>
+      <a href="https://www.devlo.io/tag/pyenvironment.html">pyenvironment</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/bash.html">bash</a>
+      <a href="https://www.devlo.io/tag/images.html">images</a>
     </p>
-  </header>
-  <div>
-      <div><p>Github Actions: Use an if statement to conditionally run a block given a specific matrix value. (Matrix Strategy Jobs)</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/github-actions-if-statement-matrix-value.html">
-          Continue reading
-        </a>
   </div>
-  <hr />
+
+
+
+
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="5952522457"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
 </article>
-<article>
-  <header>
-    <h2><a href="https://www.devlo.io/packer-ami-apt-get.html">Building Robust Packer AMIs</a></h2>
-    <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Fri 16 November 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
-
-
-    </p>
-  </header>
-  <div>
-      <div><p>How to avoid <code>Could not get lock /var/lib/dpkg/lock</code> while using Packer</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/packer-ami-apt-get.html">
-          Continue reading
-        </a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://www.devlo.io/ssm-env-jenkins.html">Jenkins Pipeline Env Variables w/ AWS SSM</a></h2>
-    <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Thu 12 April 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
-
-
-    </p>
-  </header>
-  <div>
-      <div><p>Pull environment variables from AWS Parameter Store in a Jenkins Declarative Pipeline</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/ssm-env-jenkins.html">
-          Continue reading
-        </a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://www.devlo.io/mac-developer-enviornment.html">Install Common Developement Tools on Mac</a></h2>
-    <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Wed 04 April 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
-
-
-    </p>
-  </header>
-  <div>
-      <div><p>Automatically install common developer tools on macOS with this script.</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/mac-developer-enviornment.html">
-          Continue reading
-        </a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://www.devlo.io/asg-automation-toolset.html">Managing Automation Around Auto Scaling Groups</a></h2>
-    <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Sat 31 March 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
-
-
-    </p>
-  </header>
-  <div>
-      <div><p>How to pick an automation toolset that supports auto scaling in the cloud</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/asg-automation-toolset.html">
-          Continue reading
-        </a>
-  </div>
-  <hr />
-</article>
-<article>
-  <header>
-    <h2><a href="https://www.devlo.io/bootstrap-salt.html">Automate Salt-Minion Registrations on EC2</a></h2>
-    <p>
-      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Fri 30 March 2018 in <a href="https://www.devlo.io/category/automation.html">automation</a>
-
-
-    </p>
-  </header>
-  <div>
-      <div><p>Use scripts to automatically register new EC2 minions with Salt-Master</p></div>
-        <br>
-        <a class="btn"
-           href="https://www.devlo.io/bootstrap-salt.html">
-          Continue reading
-        </a>
-  </div>
-</article>
-
-  <div class="pagination">
-  </div>
-
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <ins class="adsbygoogle ads-responsive"
-       data-ad-client="ca-pub-2119138261035978"
-       data-ad-slot="5952522457"></ins>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-
 
 <footer>
 <p>&copy;  </p>
