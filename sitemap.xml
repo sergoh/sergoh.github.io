@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/</loc>
-<lastmod>2023-06-07T00:40:24-00:00</lastmod>
+<lastmod>2023-06-07T00:44:11-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 </url>
@@ -278,6 +278,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/tag/img.html</loc>
+<lastmod>2023-06-06T00:00:00-07:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/dockerfile.html</loc>
 <lastmod>2023-06-06T00:00:00-07:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
