@@ -293,7 +293,7 @@ derezzed-base-infrastructure:
 <span class="w">  </span>sqsArn:<span class="w"> </span>arn:aws:sqs:us-west-2:xxxxxx:hsl-dev-derezzed-messages
 </code></pre></div>
 
-<h2>Connecting to SQS from your Lambda</h2>
+<h2>Connect your queue to your Lambda Function</h2>
 <p>IAM access to SQS is automatically granted to your Lambda Function with the <code>events</code> block. You can use the following <code>serverless.yml</code> to connect your SQS queue to your Lambda Function:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">functions</span><span class="p">:</span>
 <span class="w">  </span><span class="n">sample</span><span class="p">:</span>
