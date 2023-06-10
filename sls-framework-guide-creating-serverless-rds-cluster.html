@@ -49,13 +49,13 @@
  
 
 <meta name="author" content="Miguel Lopez" />
-<meta name="description" content="A guide to help you deploy serverless RDS clusters using the Serverless Framework. By the end of this guide, you will have a serverless Postgres database created by Serverless Framework to support your Lambda Functions." />
-<meta name="keywords" content="serverless, lambda, aws, python, cloud, developer, django, rds, serverless-framework, guide, python3.9, postgres, mysql, aurora, serverless-rds, serverless-rds-cluster">
+<meta name="description" content="A guide to help you deploy an SQS queue using the Serverless Framework. By the end of this guide, you will have an SQS queue deployed by Serverless Framework and connected to your Lambda Functions." />
+<meta name="keywords" content="serverless, lambda, aws, python, cloud, developer, django, rds, serverless-framework, guide, python3.9, postgres, mysql, aurora, sqs, simple, queue, service, serverless-sqs, serverless-sqs-queue">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
-  <meta property="og:title" content="Serverless Framework Guide: Creating a Serverless RDS Cluster"/>
-  <meta property="og:description" content="A guide to help you deploy serverless RDS clusters using the Serverless Framework. By the end of this guide, you will have a serverless Postgres database created by Serverless Framework to support your Lambda Functions."/>
+  <meta property="og:title" content="Serverless Framework Guide: Create an SQS Queue"/>
+  <meta property="og:description" content="A guide to help you deploy an SQS queue using the Serverless Framework. By the end of this guide, you will have an SQS queue deployed by Serverless Framework and connected to your Lambda Functions."/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:url" content="https://www.devlo.io/sls-framework-guide-creating-serverless-rds-cluster.html"/>
   <meta property="og:type" content="article"/>
@@ -77,11 +77,15 @@
   <meta property="article:tag" content="postgres"/>
   <meta property="article:tag" content="mysql"/>
   <meta property="article:tag" content="aurora"/>
-  <meta property="article:tag" content="serverless-rds"/>
-  <meta property="article:tag" content="serverless-rds-cluster"/>
+  <meta property="article:tag" content="sqs"/>
+  <meta property="article:tag" content="simple"/>
+  <meta property="article:tag" content="queue"/>
+  <meta property="article:tag" content="service"/>
+  <meta property="article:tag" content="serverless-sqs"/>
+  <meta property="article:tag" content="serverless-sqs-queue"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
-  <title>DevLo Software Blog &ndash; Serverless Framework Guide: Creating a Serverless RDS Cluster</title>
+  <title>DevLo Software Blog &ndash; Serverless Framework Guide: Create an SQS Queue</title>
 
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
@@ -215,7 +219,7 @@
 <article class="single">
   <header>
       
-    <h1 id="sls-framework-guide-creating-serverless-rds-cluster">Serverless Framework Guide: Creating a Serverless RDS Cluster</h1>
+    <h1 id="sls-framework-guide-creating-serverless-rds-cluster">Serverless Framework Guide: Create an SQS Queue</h1>
     <p>
       Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Sat 10 June 2023 in <a href="https://www.devlo.io/category/serverless.html">serverless</a>
 
@@ -224,7 +228,7 @@
 
 
   <div>
-    <p>Technical Stack: AWS, Lambda, Serverless Framework, Python, RDS, MySQL</p>
+    <p>Technical Stack: AWS, Lambda, Serverless Framework, SQS Queue</p>
 <p>Read: 10 minutes</p>
 <h2>Pre-Requisites</h2>
 <p>To deploy the following Serverless Framework template, you will need the following:</p>
@@ -234,25 +238,11 @@
 <li>API credentials for your AWS account configured in your AWS CLI locally by running <code>aws configure</code>.</li>
 <li>Serverless framework installed locally via <code>npm -g install serverless</code>.</li>
 </ul>
-<h2>Creating a Serverless RDS Cluster</h2>
-<p>Using Serverless Framwework, the following example creates these resources in AWS:
-- AWS::RDS::DBCluster
-- AWS::SecretsManager::Secret
-- AWS::SSM::Parameter</p>
-<p>In addition to the Database, the template also creates a secret and SSM parameter to store the database password and host address. Your lambda can use these values to connect to the database.</p>
-<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span><span class="w"> </span><span class="n">derezzed</span><span class="o">-</span><span class="n">db</span><span class="o">-</span><span class="n">infrastructure</span>
-
-<span class="n">configValidationMode</span><span class="o">:</span><span class="w"> </span><span class="n">error</span>
-
-<span class="n">custom</span><span class="o">:</span>
-<span class="w">  </span><span class="n">stage</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;dev&#39;</span><span class="o">}</span>
-
-<span class="n">params</span><span class="o">:</span>
-<span class="w">  </span><span class="k">default</span><span class="o">:</span>
-<span class="w">    </span><span class="n">securityGroupId</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s1">&#39;sg-xxxxxxxx&#39;</span><span class="w"> </span><span class="o">]</span>
-<span class="w">    </span><span class="n">DBSubnetGroupName</span><span class="o">:</span><span class="w"> </span><span class="k">default</span><span class="o">-</span><span class="n">vpc</span><span class="o">-</span><span class="n">xxxxxxxxx</span>
-<span class="w">    </span><span class="n">db_name</span><span class="o">:</span><span class="w"> </span><span class="n">derezzeddb</span>
-<span class="w">    </span><span class="n">master_username</span><span class="o">:</span><span class="w"> </span><span class="n">derezzed</span>
+<h2>Creating an SQS Queue</h2>
+<p>Using Serverless Framwework, the following <code>serverless.yml</code> example creates these resources in AWS:
+- <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html">AWS::SQS::Queue</a></p>
+<div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span><span class="w"> </span><span class="n">derezzed</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">infrastructure</span>
+<span class="n">frameworkVersion</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;3&#39;</span>
 
 <span class="n">provider</span><span class="o">:</span>
 <span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">aws</span>
@@ -267,53 +257,22 @@
 
 <span class="n">resources</span><span class="o">:</span>
 <span class="w">  </span><span class="n">Resources</span><span class="o">:</span>
-<span class="w">    </span><span class="n">AuroraDerezzedSecret</span><span class="o">:</span>
-<span class="w">      </span><span class="n">Type</span><span class="o">:</span><span class="w"> </span><span class="n">AWS</span><span class="o">::</span><span class="n">SecretsManager</span><span class="o">::</span><span class="n">Secret</span>
+<span class="w">    </span><span class="n">DerezzedMessagesQueue</span><span class="o">:</span>
+<span class="w">      </span><span class="n">Type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;AWS::SQS::Queue&quot;</span>
 <span class="w">      </span><span class="n">Properties</span><span class="o">:</span>
-<span class="w">        </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">Join</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;/&#39;</span><span class="o">,</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;${param:db_name}&quot;</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;${self:custom.stage}&quot;</span><span class="o">]]</span>
-<span class="w">        </span><span class="n">Description</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">Join</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;&quot;</span><span class="o">,</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;secret for derezzed database &quot;</span><span class="o">,</span><span class="w"> </span><span class="o">!</span><span class="n">Ref</span><span class="w"> </span><span class="s2">&quot;AWS::StackName&quot;</span><span class="o">]]</span>
-<span class="w">        </span><span class="n">GenerateSecretString</span><span class="o">:</span>
-<span class="w">          </span><span class="n">SecretStringTemplate</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;{&quot;username&quot;: &quot;${param:master_username}&quot;}&#39;</span>
-<span class="w">          </span><span class="n">GenerateStringKey</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;password&quot;</span>
-<span class="w">          </span><span class="n">ExcludeCharacters</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;&quot;@/\&#39;</span>
-<span class="s1">          PasswordLength: 16</span>
-<span class="s1">    DerezzedDBCluster:</span>
-<span class="s1">      Type: AWS::RDS::DBCluster</span>
-<span class="s1">      Properties:</span>
-<span class="s1">        MasterUsername: ${param:master_username}</span>
-<span class="s1">        MasterUserPassword: !Join [&#39;&#39;, [&#39;</span><span class="o">{{</span><span class="n">resolve</span><span class="o">:</span><span class="n">secretsmanager</span><span class="o">:</span><span class="s1">&#39;, !Ref AuroraDerezzedSecret, &#39;</span><span class="o">:</span><span class="n">SecretString</span><span class="o">:</span><span class="n">password</span><span class="o">}}</span><span class="err">&#39;</span><span class="w"> </span><span class="o">]]</span>
-<span class="w">        </span><span class="n">DatabaseName</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">param</span><span class="o">:</span><span class="n">db_name</span><span class="o">}</span>
-<span class="w">        </span><span class="n">Engine</span><span class="o">:</span><span class="w"> </span><span class="n">aurora</span><span class="o">-</span><span class="n">postgresql</span>
-<span class="w">        </span><span class="n">EngineMode</span><span class="o">:</span><span class="w"> </span><span class="n">serverless</span>
-<span class="w">        </span><span class="n">EnableHttpEndpoint</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">        </span><span class="n">DBClusterIdentifier</span><span class="o">:</span><span class="w"> </span><span class="n">DerezzedDBCluster</span><span class="o">-</span><span class="n">$</span><span class="o">{</span><span class="n">self</span><span class="o">:</span><span class="n">custom</span><span class="o">.</span><span class="na">stage</span><span class="o">}</span>
-<span class="w">        </span><span class="n">VpcSecurityGroupIds</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">param</span><span class="o">:</span><span class="n">securityGroupId</span><span class="o">}</span>
-<span class="w">        </span><span class="n">DBSubnetGroupName</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">param</span><span class="o">:</span><span class="n">DBSubnetGroupName</span><span class="o">}</span>
-<span class="w">        </span><span class="n">ScalingConfiguration</span><span class="o">:</span>
-<span class="w">          </span><span class="n">AutoPause</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
-<span class="w">          </span><span class="n">MaxCapacity</span><span class="o">:</span><span class="w"> </span><span class="mi">4</span>
-<span class="w">          </span><span class="n">MinCapacity</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
-<span class="w">    </span><span class="n">DatabaseHostParam</span><span class="o">:</span>
-<span class="w">      </span><span class="n">Type</span><span class="o">:</span><span class="w"> </span><span class="n">AWS</span><span class="o">::</span><span class="n">SSM</span><span class="o">::</span><span class="n">Parameter</span>
-<span class="w">      </span><span class="n">DependsOn</span><span class="o">:</span>
-<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">DerezzedDBCluster</span>
-<span class="w">      </span><span class="n">Properties</span><span class="o">:</span>
-<span class="w">        </span><span class="n">Description</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Host Address for the Derezzed DB&quot;</span>
-<span class="w">        </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;/derezzed/${self:custom.stage}/db-host&quot;</span>
-<span class="w">        </span><span class="n">Type</span><span class="o">:</span><span class="w"> </span><span class="n">String</span>
-<span class="w">        </span><span class="n">Value</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">GetAtt</span><span class="w"> </span><span class="n">DerezzedDBCluster</span><span class="o">.</span><span class="na">Endpoint</span><span class="o">.</span><span class="na">Address</span>
+<span class="w">        </span><span class="n">QueueName</span><span class="o">:</span><span class="w"> </span><span class="n">hsl</span><span class="o">-</span><span class="n">$</span><span class="o">{</span><span class="n">opt</span><span class="o">:</span><span class="n">stage</span><span class="o">,</span><span class="w"> </span><span class="n">self</span><span class="o">:</span><span class="n">provider</span><span class="o">.</span><span class="na">stage</span><span class="o">}-</span><span class="n">derezzed</span><span class="o">-</span><span class="n">messages</span>
+<span class="w">        </span><span class="n">DelaySeconds</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="n">MessageRetentionPeriod</span><span class="o">:</span><span class="w"> </span><span class="mi">345600</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">days</span>
+<span class="w">        </span><span class="n">VisibilityTimeout</span><span class="o">:</span><span class="w"> </span><span class="mi">30</span>
+
 <span class="w">  </span><span class="n">Outputs</span><span class="o">:</span>
-<span class="w">    </span><span class="n">AuroraDerezzedSecretArn</span><span class="o">:</span>
-<span class="w">      </span><span class="n">Value</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">GetAtt</span><span class="w"> </span><span class="n">AuroraDerezzedSecret</span><span class="o">.</span><span class="na">Arn</span>
-<span class="w">    </span><span class="n">AuroraDerezzedSecretName</span><span class="o">:</span>
-<span class="w">      </span><span class="n">Value</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">Ref</span><span class="w"> </span><span class="n">AuroraDerezzedSecret</span>
-<span class="w">    </span><span class="n">DatabaseHostParam</span><span class="o">:</span>
-<span class="w">      </span><span class="n">Value</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">Ref</span><span class="w"> </span><span class="n">DatabaseHostParam</span>
-<span class="w">    </span><span class="n">DatabaseClusterName</span><span class="o">:</span>
-<span class="w">      </span><span class="n">Value</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">Ref</span><span class="w"> </span><span class="n">DerezzedDBCluster</span>
+<span class="w">    </span><span class="n">sqsArn</span><span class="o">:</span>
+<span class="w">      </span><span class="n">Value</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">GetAtt</span><span class="w"> </span><span class="n">DerezzedMessagesQueue</span><span class="o">.</span><span class="na">Arn</span>
+<span class="w">    </span><span class="n">sqsUrl</span><span class="o">:</span>
+<span class="w">      </span><span class="n">Value</span><span class="o">:</span><span class="w"> </span><span class="o">!</span><span class="n">GetAtt</span><span class="w"> </span><span class="n">DerezzedMessagesQueue</span><span class="o">.</span><span class="na">QueueUrl</span>
 </code></pre></div>
 
-<h2>Deploying the Serverless RDS Cluster</h2>
+<h2>Deploying the SQS Queue</h2>
 <p>Run the following command to deploy the Serverless RDS Cluster:</p>
 <div class="highlight"><pre><span></span><code>sls<span class="w"> </span>deploy<span class="w"> </span>--stage<span class="w"> </span>dev
 </code></pre></div>
@@ -323,58 +282,28 @@
 
 Deploying<span class="w"> </span>to<span class="w"> </span>stage<span class="w"> </span>dev
 
-<span class="w">    </span>✔<span class="w">  </span>derezzed-db-infrastructure<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>219s
+<span class="w">    </span>✔<span class="w">  </span>derezzed-base-infrastructure<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>10s
 </code></pre></div>
 
 <p>Run <code>sls outputs --stage dev</code> to see the outputs of the deployment. You'll see the following:</p>
 <div class="highlight"><pre><span></span><code>Running<span class="w"> </span><span class="s2">&quot;serverless&quot;</span><span class="w"> </span>from<span class="w"> </span>node_modules
 
-derezzed-db-infrastructure:
-<span class="w">  </span>DatabaseHostParamName:<span class="w"> </span>/derezzed/dev/db-host
-<span class="w">  </span>DatabaseClusterName:<span class="w"> </span>derezzeddbcluster-dev
-<span class="w">  </span>AuroraDerezzedSecretName:<span class="w"> </span>arn:aws:secretsmanager:us-west-2:xxxxxxx:secret:derezzeddb/dev-DldvfU
-<span class="w">  </span>ServerlessDeploymentBucketName:<span class="w"> </span>hsl-dev-serverless
+derezzed-base-infrastructure:
+<span class="w">  </span>sqsUrl:<span class="w"> </span>https://sqs.us-west-2.amazonaws.com/xxxxxxx/hsl-dev-derezzed-messages
+<span class="w">  </span>sqsArn:<span class="w"> </span>arn:aws:sqs:us-west-2:xxxxxx:hsl-dev-derezzed-messages
 </code></pre></div>
 
-<h2>Connecting to the Cluster from your local machine</h2>
-<p>Once the cluster is created, you can connect to the database using the following command:</p>
-<div class="highlight"><pre><span></span><code>psql<span class="w"> </span>-h<span class="w"> </span><span class="k">$(</span>aws<span class="w"> </span>ssm<span class="w"> </span>get-parameter<span class="w"> </span>--name<span class="w"> </span>/derezzed/dev/db-host<span class="w"> </span>--query<span class="w"> </span>Parameter.Value<span class="w"> </span>--output<span class="w"> </span>text<span class="k">)</span><span class="w"> </span>-U<span class="w"> </span>derezzed<span class="w"> </span>-d<span class="w"> </span>derezzeddb
+<h2>Connecting to SQS from your Lambda</h2>
+<p>IAM access to SQS is automatically granted to your Lambda Function with the <code>events</code> block. You can use the following <code>serverless.yml</code> to connect your SQS queue to your Lambda Function:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">functions</span><span class="p">:</span>
+<span class="w">  </span><span class="n">sample</span><span class="p">:</span>
+<span class="w">    </span><span class="n">handler</span><span class="p">:</span><span class="w"> </span><span class="n">handler</span><span class="p">.</span><span class="n">example</span>
+<span class="w">    </span><span class="nb">events</span><span class="p">:</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="n">sqs</span><span class="p">:</span>
+<span class="w">          </span><span class="n">arn</span><span class="p">:</span><span class="w"> </span>!<span class="n">GetAtt</span><span class="w"> </span><span class="n">DerezzedMessagesQueue</span><span class="p">.</span><span class="n">Arn</span>
 </code></pre></div>
 
-<p>You can find the password value in Secrets Manager with the following command:</p>
-<div class="highlight"><pre><span></span><code>aws<span class="w"> </span>secretsmanager<span class="w"> </span>get-secret-value<span class="w"> </span>--secret-id<span class="w"> </span>derezzed/dev<span class="w"> </span>--query<span class="w"> </span>SecretString<span class="w"> </span>--output<span class="w"> </span>text
-</code></pre></div>
-
-<h2>Connecting to the Cluster from Lambda</h2>
-<p>To connect to the cluster from Lambda, you can use the following code:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">boto3</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">psycopg2</span>
-
-<span class="n">password</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;secretsmanager&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">(</span><span class="n">SecretId</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;SECRET_NAME&#39;</span><span class="p">])[</span><span class="s1">&#39;SecretString&#39;</span><span class="p">]</span>
-<span class="n">host</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;ssm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_parameter</span><span class="p">(</span><span class="n">Name</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DB_HOST_PARAM_NAME&#39;</span><span class="p">])[</span><span class="s1">&#39;Parameter&#39;</span><span class="p">][</span><span class="s1">&#39;Value&#39;</span><span class="p">]</span>
-
-<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-    <span class="n">host</span><span class="o">=</span><span class="n">host</span>
-    <span class="n">database</span><span class="o">=</span><span class="s2">&quot;derezzeddb&quot;</span><span class="p">,</span>
-    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;derezzed&quot;</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
-        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM users&quot;</span><span class="p">)</span>
-        <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-</code></pre></div>
-
-<p>Don't forget to fetch Secrets and Parameters outside of your lambda handler. This will prevent your lambda from fetching these values on every invocation. Saving you $$$$$.</p>
-<h2>Troubleshooting Connections</h2>
-<p>If you can't connect, check the following:</p>
-<ul>
-<li>Do you have the correct security group attached to the RDS Cluster? </li>
-<li>Are you invoking the CLI command from a machine that has access to the security group?</li>
-</ul>
+<p>For a full list of SQS attributes you can use in your serverless.yml, <a href="https://www.serverless.com/framework/docs/providers/aws/events/sqs/">read the Serverless Framework SQS Docs</a>.</p>
   </div>
   <div class="tag-cloud">
     <p>
@@ -392,8 +321,12 @@ derezzed-db-infrastructure:
       <a href="https://www.devlo.io/tag/postgres.html">postgres</a>
       <a href="https://www.devlo.io/tag/mysql.html">mysql</a>
       <a href="https://www.devlo.io/tag/aurora.html">aurora</a>
-      <a href="https://www.devlo.io/tag/serverless-rds.html">serverless-rds</a>
-      <a href="https://www.devlo.io/tag/serverless-rds-cluster.html">serverless-rds-cluster</a>
+      <a href="https://www.devlo.io/tag/sqs.html">sqs</a>
+      <a href="https://www.devlo.io/tag/simple.html">simple</a>
+      <a href="https://www.devlo.io/tag/queue.html">queue</a>
+      <a href="https://www.devlo.io/tag/service.html">service</a>
+      <a href="https://www.devlo.io/tag/serverless-sqs.html">serverless-sqs</a>
+      <a href="https://www.devlo.io/tag/serverless-sqs-queue.html">serverless-sqs-queue</a>
     </p>
   </div>
 
