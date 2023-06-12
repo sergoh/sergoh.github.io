@@ -10,8 +10,10 @@
 &lt;li&gt;Serverless framework installed locally via &lt;code&gt;npm -g install serverless&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Creating an SQS Queue&lt;/h2&gt;
-&lt;p&gt;Using Serverless Framwework, the following &lt;code&gt;serverless.yml&lt;/code&gt; example creates these resources in AWS:
-- &lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html"&gt;AWS::SQS::Queue&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Using Serverless Framwework, the following &lt;code&gt;serverless.yml&lt;/code&gt; example creates these resources in AWS:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html"&gt;AWS::SQS::Queue&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;derezzed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;
 &lt;span class="n"&gt;frameworkVersion&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;3&amp;#39;&lt;/span&gt;
 
