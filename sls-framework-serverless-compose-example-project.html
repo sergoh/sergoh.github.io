@@ -265,7 +265,7 @@ Running<span class="w"> </span><span class="s2">&quot;serverless&quot;</span><sp
 Deploying<span class="w"> </span>to<span class="w"> </span>stage<span class="w"> </span>dev
 
 <span class="w">    </span>✔<span class="w">  </span>derezzed-base-infrastructure<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>9s
-<span class="w">    </span>✔<span class="w">  </span>derezzed-requirements-layer<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>10s
+<span class="w">    </span>✔<span class="w">  </span>derezzed-db-infrastructure<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>10s
 <span class="w">    </span>✔<span class="w">  </span>derezzed-fastapi-lambda<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>50s
 </code></pre></div>
 
@@ -273,6 +273,12 @@ Deploying<span class="w"> </span>to<span class="w"> </span>stage<span class="w">
 <p>Use Serverless Compose to improve the resiliency of your application. Think about splitting important resources like <strong>databases, queues, and layers</strong> into their own Serverless projects. This allows you to preserve those key resources should you need to delete and redeploy your Lambda functions completely.</p>
 <p>You don't want to be the person who accidentally deletes the production database because you were trying to fix a bug in your Lambda function.</p>
 <p>Seperate your concerns and use Serverless Compose to deploy them all at once.</p>
+<h2>Other Serverless Framework Examples</h2>
+<p>Check out the other Serverless Framework example projects I've created:</p>
+<ul>
+<li><a href="https://www.devlo.io/sls-framework-guide-creating-sqs-queue.html">Serverless Framework: Creating an SQS Queue Example</a></li>
+<li><a href="https://www.devlo.io/sls-framework-guide-creating-serverless-rds-cluster.html">Serverless Framework: Creating an RDS Serverless Database Example</a></li>
+</ul>
   </div>
   <div class="tag-cloud">
     <p>
