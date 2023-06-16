@@ -236,10 +236,12 @@
 <li>Serverless framework installed locally via <code>npm -g install serverless</code>.</li>
 </ul>
 <h2>Creating a Serverless RDS Cluster</h2>
-<p>Using Serverless Framwework, the following <code>serverless.yml</code> example creates these resources in AWS:
-- <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html">AWS::RDS::DBCluster</a>
-- <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-secretsmanager-secret.html">AWS::SecretsManager::Secret</a>
-- <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ssm-parameter.html">AWS::SSM::Parameter</a></p>
+<p>Using Serverless Framwework, the following <code>serverless.yml</code> example creates these resources in AWS:</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html">AWS::RDS::DBCluster</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-secretsmanager-secret.html">AWS::SecretsManager::Secret</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ssm-parameter.html">AWS::SSM::Parameter</a></li>
+</ul>
 <p>In addition to the Database, the template also creates a secret and SSM parameter to store the database password and host address. Your lambda can use these values to connect to the database.</p>
 <div class="highlight"><pre><span></span><code><span class="n">service</span><span class="o">:</span><span class="w"> </span><span class="n">derezzed</span><span class="o">-</span><span class="n">db</span><span class="o">-</span><span class="n">infrastructure</span>
 

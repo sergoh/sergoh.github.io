@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo Software Blog - serverless</title><link href="https://www.devlo.io/" rel="alternate"></link><link href="https://www.devlo.io/feeds/serverless.atom.xml" rel="self"></link><id>https://www.devlo.io/</id><updated>2023-06-10T00:00:00-07:00</updated><subtitle>Lopez Brothers Blog</subtitle><entry><title>Serverless Framework: Creating an RDS Serverless Database Example</title><link href="https://www.devlo.io/sls-framework-guide-creating-serverless-rds-cluster.html" rel="alternate"></link><published>2023-06-10T00:00:00-07:00</published><updated>2023-06-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2023-06-10:/sls-framework-guide-creating-serverless-rds-cluster.html</id><summary type="html">&lt;p&gt;A guide to help you deploy serverless RDS clusters using the Serverless Framework. By the end of this guide, you will have a serverless Postgres database created by Serverless Framework to support your Lambda Functions.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS, Lambda, Serverless Framework, Python, RDS, MySQL&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo Software Blog - serverless</title><link href="https://www.devlo.io/" rel="alternate"></link><link href="https://www.devlo.io/feeds/serverless.atom.xml" rel="self"></link><id>https://www.devlo.io/</id><updated>2023-06-14T00:00:00-07:00</updated><subtitle>Lopez Brothers Blog</subtitle><entry><title>Serverless Framework: Serverless Compose Example Project</title><link href="https://www.devlo.io/sls-framework-serverless-compose-example-project.html" rel="alternate"></link><published>2023-06-14T00:00:00-07:00</published><updated>2023-06-14T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2023-06-14:/sls-framework-serverless-compose-example-project.html</id><summary type="html">&lt;p&gt;A guide to help you deploy mutiple Serverless projects at once using Serverless Compose. By the end of this guide, you will have an example of how to organize and deploy multiple Serverless projects using Serverless Compose.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS, Lambda, Serverless Framework&lt;/p&gt;
+&lt;p&gt;Read: 10 minutes&lt;/p&gt;
+&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
+&lt;p&gt;To deploy the following Serverless Framework template, you will need the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;An AWS account.&lt;/li&gt;
+&lt;li&gt;AWS CLI installed locally. &lt;/li&gt;
+&lt;li&gt;API credentials for your AWS account configured in your AWS CLI locally by running &lt;code&gt;aws configure&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Serverless framework installed locally via &lt;code&gt;npm -g install serverless&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Serverless compose installed locally via &lt;code&gt;npm -g install serverless-compose&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Serverless Compose Example Project&lt;/h2&gt;
+&lt;p&gt;Serverless Compose is a plugin for the Serverless Framework that allows you to deploy multiple Serverless projects at once. Each project is deployed as a serperate &lt;strong&gt;CloudFormation&lt;/strong&gt; stack in AWS with its own resources, outputs, and deployment.&lt;/p&gt;
+&lt;p&gt;Check out the following &lt;code&gt;serverless-compose.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;derezzed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;&lt;span class="sr"&gt;/derezzed-base-infrastructure/&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;derezzed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;&lt;span class="sr"&gt;/derezzed-db-infrastructure/&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;derezzed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fastapi&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;lambda&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lambdas&lt;/span&gt;&lt;span class="sr"&gt;/derezzed-fastapi-lambda/&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;dependsOn&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;derezzed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="n"&gt;derezzedSQSArn&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;$&lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="n"&gt;derezzed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;base&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;derezzedSQSArn&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;services:&lt;/code&gt; - You organize your servless projects into seperate &lt;em&gt;services&lt;/em&gt;. Each of these &lt;code&gt;services:&lt;/code&gt; will create a seperate &lt;strong&gt;CloudFormation&lt;/strong&gt; stack in AWS.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;path:&lt;/code&gt; - Relative path to the &lt;strong&gt;serverless.yml&lt;/strong&gt; file for your Serverless Framework project.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;depdendsOn:&lt;/code&gt; - Create dependencies between your Serverless projects. In this example, the &lt;strong&gt;derezzed-fastapi-lambda&lt;/strong&gt; service depends on the &lt;strong&gt;derezzed-base-infrastructure&lt;/strong&gt; service. This means the &lt;strong&gt;derezzed-base-infrastructure&lt;/strong&gt; service will be deployed first. &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;params:&lt;/code&gt; - Pass outputs from one service to another. In this example, the &lt;strong&gt;derezzed-base-infrastructure&lt;/strong&gt; service is passing the &lt;strong&gt;sqsRelateAsyncArn&lt;/strong&gt; output to the &lt;strong&gt;derezzed-fastapi-lambda&lt;/strong&gt; service.&lt;/p&gt;
+&lt;h2&gt;Deploying with Serverless Compose&lt;/h2&gt;
+&lt;p&gt;You will run the normal &lt;code&gt;sls&lt;/code&gt; commands to run serverless compose. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sls&lt;span class="w"&gt; &lt;/span&gt;deploy&lt;span class="w"&gt; &lt;/span&gt;--stage&lt;span class="w"&gt; &lt;/span&gt;dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can also deploy individual services by running the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sls&lt;span class="w"&gt; &lt;/span&gt;deploy&lt;span class="w"&gt; &lt;/span&gt;--stage&lt;span class="w"&gt; &lt;/span&gt;dev&lt;span class="w"&gt; &lt;/span&gt;--service&lt;span class="w"&gt; &lt;/span&gt;derezzed-fastapi-lambda
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Your output will look similar to this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sls&lt;span class="w"&gt; &lt;/span&gt;deploy&lt;span class="w"&gt; &lt;/span&gt;--stage&lt;span class="w"&gt; &lt;/span&gt;dev
+Running&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;serverless&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;from&lt;span class="w"&gt; &lt;/span&gt;node_modules
+
+Deploying&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;stage&lt;span class="w"&gt; &lt;/span&gt;dev
+
+&lt;span class="w"&gt;    &lt;/span&gt;✔&lt;span class="w"&gt;  &lt;/span&gt;derezzed-base-infrastructure&lt;span class="w"&gt; &lt;/span&gt;›&lt;span class="w"&gt; &lt;/span&gt;deployed&lt;span class="w"&gt; &lt;/span&gt;›&lt;span class="w"&gt; &lt;/span&gt;9s
+&lt;span class="w"&gt;    &lt;/span&gt;✔&lt;span class="w"&gt;  &lt;/span&gt;derezzed-requirements-layer&lt;span class="w"&gt; &lt;/span&gt;›&lt;span class="w"&gt; &lt;/span&gt;deployed&lt;span class="w"&gt; &lt;/span&gt;›&lt;span class="w"&gt; &lt;/span&gt;10s
+&lt;span class="w"&gt;    &lt;/span&gt;✔&lt;span class="w"&gt;  &lt;/span&gt;derezzed-fastapi-lambda&lt;span class="w"&gt; &lt;/span&gt;›&lt;span class="w"&gt; &lt;/span&gt;deployed&lt;span class="w"&gt; &lt;/span&gt;›&lt;span class="w"&gt; &lt;/span&gt;50s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Improving Serverless Application Resiliency&lt;/h2&gt;
+&lt;p&gt;Use Serverless Compose to improve the resiliency of your application. Think about splitting important resources like &lt;strong&gt;databases, queues, and layers&lt;/strong&gt; into their own Serverless projects. This allows you to preserve those key resources should you need to delete and redeploy your Lambda functions completely.&lt;/p&gt;
+&lt;p&gt;You don't want to be the person who accidentally deletes the production database because you were trying to fix a bug in your Lambda function.&lt;/p&gt;
+&lt;p&gt;Seperate your concerns and use Serverless Compose to deploy them all at once.&lt;/p&gt;</content><category term="serverless"></category><category term="serverless"></category><category term="lambda"></category><category term="aws"></category><category term="cloud"></category><category term="developer"></category><category term="django"></category><category term="python"></category><category term="serverless-framework"></category><category term="guide"></category></entry><entry><title>Serverless Framework: Creating an RDS Serverless Database Example</title><link href="https://www.devlo.io/sls-framework-guide-creating-serverless-rds-cluster.html" rel="alternate"></link><published>2023-06-10T00:00:00-07:00</published><updated>2023-06-10T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2023-06-10:/sls-framework-guide-creating-serverless-rds-cluster.html</id><summary type="html">&lt;p&gt;A guide to help you deploy serverless RDS clusters using the Serverless Framework. By the end of this guide, you will have a serverless Postgres database created by Serverless Framework to support your Lambda Functions.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS, Lambda, Serverless Framework, Python, RDS, MySQL&lt;/p&gt;
 &lt;p&gt;Read: 10 minutes&lt;/p&gt;
 &lt;h2&gt;Pre-Requisites&lt;/h2&gt;
 &lt;p&gt;To deploy the following Serverless Framework template, you will need the following:&lt;/p&gt;
@@ -10,10 +64,12 @@
 &lt;li&gt;Serverless framework installed locally via &lt;code&gt;npm -g install serverless&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Creating a Serverless RDS Cluster&lt;/h2&gt;
-&lt;p&gt;Using Serverless Framwework, the following &lt;code&gt;serverless.yml&lt;/code&gt; example creates these resources in AWS:
-- &lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html"&gt;AWS::RDS::DBCluster&lt;/a&gt;
-- &lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-secretsmanager-secret.html"&gt;AWS::SecretsManager::Secret&lt;/a&gt;
-- &lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ssm-parameter.html"&gt;AWS::SSM::Parameter&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Using Serverless Framwework, the following &lt;code&gt;serverless.yml&lt;/code&gt; example creates these resources in AWS:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html"&gt;AWS::RDS::DBCluster&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-secretsmanager-secret.html"&gt;AWS::SecretsManager::Secret&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ssm-parameter.html"&gt;AWS::SSM::Parameter&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;In addition to the Database, the template also creates a secret and SSM parameter to store the database password and host address. Your lambda can use these values to connect to the database.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;derezzed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;db&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;infrastructure&lt;/span&gt;
 

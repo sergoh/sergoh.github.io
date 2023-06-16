@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="w_Gq0a37aj_D2iAwIQodXXlrE7Aj8mF8-W5BpUsK6B4" />
+  <meta name="robots" content="index, follow" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/stylesheet/style.min.css">
+
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://www.devlo.io/theme/pygments/arduino.min.css">
+
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/theme/font-awesome/css/solid.css">
+
+  <link rel="stylesheet" type="text/css" href="https://www.devlo.io/extra/static/custom.css">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="theme/favicon.ico" type="image/x-icon">
+
+
+  <link href="https://www.devlo.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="DevLo Software Blog Atom">
+
+
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-116740360-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+ 
+
+<meta name="author" content="Miguel Lopez" />
+<meta name="description" content="A guide to help you deploy mutiple Serverless projects at once using Serverless Compose. By the end of this guide, you will have an example of how to organize and deploy multiple Serverless projects using Serverless Compose." />
+<meta name="keywords" content="serverless, lambda, aws, cloud, developer, django, python, serverless-framework, guide">
+
+
+  <meta property="og:site_name" content="DevLo Software Blog"/>
+  <meta property="og:title" content="Serverless Framework: Serverless Compose Example Project"/>
+  <meta property="og:description" content="A guide to help you deploy mutiple Serverless projects at once using Serverless Compose. By the end of this guide, you will have an example of how to organize and deploy multiple Serverless projects using Serverless Compose."/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:url" content="https://www.devlo.io/sls-framework-serverless-compose-example-project.html"/>
+  <meta property="og:type" content="article"/>
+  <meta property="article:published_time" content="2023-06-14 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2023-06-14 00:00:00-07:00"/>
+  <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
+  <meta property="article:section" content="serverless"/>
+  <meta property="article:tag" content="serverless"/>
+  <meta property="article:tag" content="lambda"/>
+  <meta property="article:tag" content="aws"/>
+  <meta property="article:tag" content="cloud"/>
+  <meta property="article:tag" content="developer"/>
+  <meta property="article:tag" content="django"/>
+  <meta property="article:tag" content="python"/>
+  <meta property="article:tag" content="serverless-framework"/>
+  <meta property="article:tag" content="guide"/>
+  <meta property="og:image" content="/images/Devlo-Logo.png">
+
+  <title>DevLo Software Blog &ndash; Serverless Framework: Serverless Compose Example Project</title>
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-2119138261035978",
+      enable_page_level_ads: true
+    });
+  </script>
+
+<script>
+  (function(w,d,s,l,i){
+    w[l]=w[l]||[];
+    w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-T32GC6Q');
+</script>
+</head>
+<body class="light-theme">
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T32GC6Q" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+
+<aside>
+  <div>
+    <a href="https://www.devlo.io/">
+      <img src="/images/Devlo-Logo.png" alt="" title="">
+    </a>
+
+    <h1>
+      <a href="https://www.devlo.io/"></a>
+    </h1>
+
+    <p>Lopez Brothers Blog</p>
+
+    <div class="authors-profiles">
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/miguel.png" alt="Miguel" title="Miguel">
+          <figcaption>Miguel</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/lopezm1/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/lopezm1"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <figure>
+          <img src="https://www.devlo.io/theme/img/sergio.png" alt="Sergio" title="Sergio">
+          <figcaption>Sergio</figcaption>
+        </figure>
+        <ul class="social">
+          <li>
+            <a class="sc-linkedin"
+               href="https://www.linkedin.com/in/sergiolopezjr/"
+               target="_blank">
+              <i class="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="sc-github"
+               href="https://github.com/sergoh"
+               target="_blank">
+              <i class="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <nav>
+      <ul class="list">
+
+
+            <li>
+              <a target="_self"
+                 href="https://www.devlo.io/pages/about.html">
+                About
+              </a>
+            </li>
+
+      </ul>
+    </nav>
+
+  </div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-aside"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="7180191250"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</aside>
+  <main>
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle ads-responsive"
+           data-ad-client="ca-pub-2119138261035978"
+           data-ad-slot="7180191250"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+
+<nav>
+  <a href="https://www.devlo.io/">Home</a>
+
+  <a href="/archives.html">Archives</a>
+  <a href="/categories.html">Categories</a>
+  <a href="/tags.html">Tags</a>
+
+  <a href="https://www.devlo.io/feeds/all.atom.xml">Atom</a>
+
+</nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="sls-framework-serverless-compose-example-project">Serverless Framework: Serverless Compose Example Project</h1>
+    <p>
+      Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Wed 14 June 2023 in <a href="https://www.devlo.io/category/serverless.html">serverless</a>
+
+    </p>
+  </header>
+
+
+  <div>
+    <p>Technical Stack: AWS, Lambda, Serverless Framework</p>
+<p>Read: 10 minutes</p>
+<h2>Pre-Requisites</h2>
+<p>To deploy the following Serverless Framework template, you will need the following:</p>
+<ul>
+<li>An AWS account.</li>
+<li>AWS CLI installed locally. </li>
+<li>API credentials for your AWS account configured in your AWS CLI locally by running <code>aws configure</code>.</li>
+<li>Serverless framework installed locally via <code>npm -g install serverless</code>.</li>
+<li>Serverless compose installed locally via <code>npm -g install serverless-compose</code></li>
+</ul>
+<h2>Serverless Compose Example Project</h2>
+<p>Serverless Compose is a plugin for the Serverless Framework that allows you to deploy multiple Serverless projects at once. Each project is deployed as a serperate <strong>CloudFormation</strong> stack in AWS with its own resources, outputs, and deployment.</p>
+<p>Check out the following <code>serverless-compose.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">services</span><span class="o">:</span>
+<span class="w">  </span><span class="n">derezzed</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">infrastructure</span><span class="o">:</span>
+<span class="w">    </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">infrastructure</span><span class="sr">/derezzed-base-infrastructure/</span>
+<span class="w">  </span><span class="n">derezzed</span><span class="o">-</span><span class="n">db</span><span class="o">-</span><span class="n">infrastructure</span><span class="o">:</span>
+<span class="w">    </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">infrastructure</span><span class="sr">/derezzed-db-infrastructure/</span>
+<span class="w">  </span><span class="n">derezzed</span><span class="o">-</span><span class="n">fastapi</span><span class="o">-</span><span class="n">lambda</span><span class="o">:</span>
+<span class="w">    </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">lambdas</span><span class="sr">/derezzed-fastapi-lambda/</span>
+<span class="w">    </span><span class="n">dependsOn</span><span class="o">:</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="n">derezzed</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">infrastructure</span>
+<span class="w">    </span><span class="n">params</span><span class="o">:</span>
+<span class="w">      </span><span class="n">derezzedSQSArn</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{</span><span class="n">derezzed</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">infrastructure</span><span class="o">.</span><span class="na">derezzedSQSArn</span><span class="o">}</span>
+</code></pre></div>
+
+<p><code>services:</code> - You organize your servless projects into seperate <em>services</em>. Each of these <code>services:</code> will create a seperate <strong>CloudFormation</strong> stack in AWS.</p>
+<p><code>path:</code> - Relative path to the <strong>serverless.yml</strong> file for your Serverless Framework project.</p>
+<p><code>depdendsOn:</code> - Create dependencies between your Serverless projects. In this example, the <strong>derezzed-fastapi-lambda</strong> service depends on the <strong>derezzed-base-infrastructure</strong> service. This means the <strong>derezzed-base-infrastructure</strong> service will be deployed first. </p>
+<p><code>params:</code> - Pass outputs from one service to another. In this example, the <strong>derezzed-base-infrastructure</strong> service is passing the <strong>sqsRelateAsyncArn</strong> output to the <strong>derezzed-fastapi-lambda</strong> service.</p>
+<h2>Deploying with Serverless Compose</h2>
+<p>You will run the normal <code>sls</code> commands to run serverless compose. </p>
+<div class="highlight"><pre><span></span><code>sls<span class="w"> </span>deploy<span class="w"> </span>--stage<span class="w"> </span>dev
+</code></pre></div>
+
+<p>You can also deploy individual services by running the following command:</p>
+<div class="highlight"><pre><span></span><code>sls<span class="w"> </span>deploy<span class="w"> </span>--stage<span class="w"> </span>dev<span class="w"> </span>--service<span class="w"> </span>derezzed-fastapi-lambda
+</code></pre></div>
+
+<p>Your output will look similar to this:</p>
+<div class="highlight"><pre><span></span><code>sls<span class="w"> </span>deploy<span class="w"> </span>--stage<span class="w"> </span>dev
+Running<span class="w"> </span><span class="s2">&quot;serverless&quot;</span><span class="w"> </span>from<span class="w"> </span>node_modules
+
+Deploying<span class="w"> </span>to<span class="w"> </span>stage<span class="w"> </span>dev
+
+<span class="w">    </span>✔<span class="w">  </span>derezzed-base-infrastructure<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>9s
+<span class="w">    </span>✔<span class="w">  </span>derezzed-requirements-layer<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>10s
+<span class="w">    </span>✔<span class="w">  </span>derezzed-fastapi-lambda<span class="w"> </span>›<span class="w"> </span>deployed<span class="w"> </span>›<span class="w"> </span>50s
+</code></pre></div>
+
+<h2>Improving Serverless Application Resiliency</h2>
+<p>Use Serverless Compose to improve the resiliency of your application. Think about splitting important resources like <strong>databases, queues, and layers</strong> into their own Serverless projects. This allows you to preserve those key resources should you need to delete and redeploy your Lambda functions completely.</p>
+<p>You don't want to be the person who accidentally deletes the production database because you were trying to fix a bug in your Lambda function.</p>
+<p>Seperate your concerns and use Serverless Compose to deploy them all at once.</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://www.devlo.io/tag/serverless.html">serverless</a>
+      <a href="https://www.devlo.io/tag/lambda.html">lambda</a>
+      <a href="https://www.devlo.io/tag/aws.html">aws</a>
+      <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/developer.html">developer</a>
+      <a href="https://www.devlo.io/tag/django.html">django</a>
+      <a href="https://www.devlo.io/tag/python.html">python</a>
+      <a href="https://www.devlo.io/tag/serverless-framework.html">serverless-framework</a>
+      <a href="https://www.devlo.io/tag/guide.html">guide</a>
+    </p>
+  </div>
+
+
+
+
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <ins class="adsbygoogle ads-responsive"
+         data-ad-client="ca-pub-2119138261035978"
+         data-ad-slot="5952522457"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+</article>
+
+<footer>
+<p>&copy;  </p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
+</p></footer>  </main>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " DevLo Software Blog ",
+  "url" : "https://www.devlo.io",
+  "image": "/images/Devlo-Logo.png",
+  "description": "DevLo - Software Blog."
+}
+</script>
+</body>
+</html>
