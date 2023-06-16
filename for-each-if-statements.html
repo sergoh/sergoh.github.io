@@ -236,8 +236,9 @@ That <code>if</code> conditional will determine if <code>resource</code> is buil
 <p>Starting in <code>Terraform 0.12.6+</code> the <code>for_each</code> loop was supported for all <code>resource</code> and <code>module</code> blocks in Terraform.</p>
 <p>This was an incredibly powerful feature that enabled us to build complex <cite>any</cite> blocks as inputs. You could define modules
 that had the same infrastructure goals but slightly different resources.</p>
+</div>
 <div class="section" id="background">
-<h3>Background</h3>
+<h2>Background</h2>
 <p>Imagine you're building a microservice with API and worker services. Each service component will require an autoscaling group.
 However, <strong>not</strong> every autoscaling group requires a load balancer.</p>
 <p>How can we build a module that does not require a load balancer for each service component being defined?</p>
@@ -262,7 +263,7 @@ However, <strong>not</strong> every autoscaling group requires a load balancer.<
 <p><a class="reference external" href="https://www.terraform.io/language/functions/yamldecode">terraform input represented as ymlencoded input</a></p>
 </div>
 <div class="section" id="building-the-for-each-loop-1">
-<h3>Building the for_each loop</h3>
+<h2>Building the for_each loop</h2>
 <div class="highlight"><pre><span></span><span class="nb">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.services</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nv">value.load_balancer_enabled</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="no">true</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 <p>In this example, the <code>if</code> statement lives inside the <code>for_each</code> loop. Notice how I use <code>{ }</code> around my loop. This tells
@@ -293,16 +294,16 @@ loop removing the <code>worker</code> object from the loop.</p>
 <span class="w">  </span><span class="na">extra_ssl_certs</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;extra_ssl_certs&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
 <span class="p">}</span>
 </pre></div>
-</div>
-</div>
 <div class="section" id="additional-example">
-<h2>Additional Example</h2>
+<h3>Additional Example</h3>
 <p>The example above consumed a <code>load_balancer</code> module in order to build the load balancer required by each service.</p>
 <p>In case you wanted to see this <code>for_each</code> loop on a <code>resource</code>, I also included that.</p>
 <p>In this example, we'll be using a complex variable called <code>extra_load_balancer</code> to define array of objects that create
 Terraform load balancers. Network load balancers will always require a VPC link in this scenario.</p>
+</div>
+</div>
 <div class="section" id="inputs">
-<h3>Inputs</h3>
+<h2>Inputs</h2>
 <div class="highlight"><pre><span></span><span class="nt">extra_load_balancers</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">balancer_1</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">load_balancer_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application</span>
@@ -319,7 +320,7 @@ Terraform load balancers. Network load balancers will always require a VPC link 
 </pre></div>
 </div>
 <div class="section" id="looping-through-a-resource">
-<h3>Looping through a Resource</h3>
+<h2>Looping through a Resource</h2>
 <div class="highlight"><pre><span></span><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_api_gateway_vpc_link&quot;</span><span class="w"> </span><span class="nv">&quot;link&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nb">for_each</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.extra_load_balancers</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="err">value</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;load_balancer_type&quot;, &quot;application&quot;) == &quot;network&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="w">  </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="s2">&quot;%s-%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">each.key</span><span class="p">)</span>
@@ -328,12 +329,11 @@ Terraform load balancers. Network load balancers will always require a VPC link 
 <span class="w">  </span><span class="na">depends_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">module.extra_load_balancer.lb_arn</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
-</div>
-</div>
 <div class="section" id="conclusion">
-<h2>Conclusion</h2>
+<h3>Conclusion</h3>
 <p>Hope this helps!</p>
 <p>-- Miguel Lopez</p>
+</div>
 </div>
 
   </div>
