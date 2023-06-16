@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/</loc>
-<lastmod>2023-06-16T02:19:28-00:00</lastmod>
+<lastmod>2023-06-16T11:31:08-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -68,7 +68,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/if-statements-terraform-dynamic-blocks.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.8</priority>
 </url>
@@ -194,7 +194,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/category/terraform.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -222,14 +222,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/tag/aws.html</loc>
-<lastmod>2023-06-14T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/cloud.html</loc>
-<lastmod>2023-06-14T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -243,14 +243,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/tag/django.html</loc>
-<lastmod>2023-06-14T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/python.html</loc>
-<lastmod>2023-06-14T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -558,7 +558,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/tag/if.html</loc>
-<lastmod>2023-02-11T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -571,112 +571,105 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://www.devlo.io/tag/local.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
 <loc>https://www.devlo.io/tag/terraform.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/terragrunt.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/amazon.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/dynamic.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/modules.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://www.devlo.io/tag/eventbridge.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://www.devlo.io/tag/sns.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://www.devlo.io/tag/s3.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/if-statements.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/logic.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/if-logic.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/conditional.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/aws_lb_listener.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/resource.html</loc>
-<lastmod>2023-01-24T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://www.devlo.io/tag/localstack.html</loc>
+<lastmod>2023-01-16T00:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/eventbridge.html</loc>
+<lastmod>2023-01-16T00:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/sns.html</loc>
+<lastmod>2023-01-16T00:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/s3.html</loc>
 <lastmod>2023-01-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -691,6 +684,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/tag/gateway.html</loc>
+<lastmod>2023-01-16T00:00:00-07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://www.devlo.io/tag/local.html</loc>
 <lastmod>2023-01-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -873,7 +873,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://www.devlo.io/author/miguel-lopez.html</loc>
-<lastmod>2023-06-14T00:00:00-07:00</lastmod>
+<lastmod>2023-06-16T00:00:00-07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
