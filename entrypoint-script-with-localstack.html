@@ -240,9 +240,9 @@
 <ul>
 <li>Docker, Docker-Compose</li>
 <li>Localstack Docker Image </li>
-<li><em>This guide has been updated for Localstack releases after March 29, 2023. <a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258">Read More Here.</a></em></li>
-<li><em>Earlier versions of Localstack Lambda reference <code>/docker-entrypoint-initaws.d/</code> for entrypoint scripts. That entrypoint path was deprecated in <a href="https://github.com/localstack/localstack/releases/tag/v1.1.0">v1.1.0</a>.</em></li>
 </ul>
+<p><em>This guide has been updated for Localstack releases after March 29, 2023. <a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258">Read More Here.</a></em></p>
+<p><em>Earlier versions of Localstack Lambda reference <code>/docker-entrypoint-initaws.d/</code> for entrypoint scripts. That entrypoint path was deprecated in <a href="https://github.com/localstack/localstack/releases/tag/v1.1.0">v1.1.0</a>.</em></p>
 <hr>
 <h2>Introduction</h2>
 <p><strong>Localstack</strong> is a cloud service emulator that runs in a single container on your laptop or in your CI environment. <a href="https://docs.localstack.cloud/getting-started/?__hstc=108988063.4c3716ab9432d996297196d8a59201a6.1673401275754.1673401275754.1673907003067.2&amp;__hssc=108988063.1.1673907003067&amp;__hsfp=1395183370">Read More Here.</a></p>
@@ -251,38 +251,38 @@
 <ul>
 <li>Run Localstack in Docker-Compose</li>
 <li>Create mocked resources in Localstack with entrypoint scripts</li>
-<li>How to access Localstack services at <code>http://localstack:4566</code> or using <code>aws-local</code></li>
+<li>How to access Localstack services at <code>http://localstack:4566</code> or using <code>awslocal</code></li>
 </ul>
 <hr>
 <h2>Entrypoint Script to Create S3 Buckets in Localstack</h2>
-<ol>
+<ul>
 <li>Create and paste the following content to <code>start-localstack.sh</code>. This will be our entrypoint scipt: </li>
-</ol>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 awslocal<span class="w"> </span>s3<span class="w"> </span>mb<span class="w"> </span>s3://hsl-local-terraform<span class="w"> </span>--region<span class="w"> </span>us-west-2
 awslocal<span class="w"> </span>s3<span class="w"> </span>mb<span class="w"> </span>s3://hsl-local-serverless<span class="w"> </span>--region<span class="w"> </span>us-west-2
 awslocal<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>--region<span class="w"> </span>us-west-2
 </code></pre></div>
 
-<ol>
+<ul>
 <li>Make the script executable by running:</li>
-</ol>
+</ul>
 <div class="highlight"><pre><span></span><code>chmod +x start-localstack.sh
 </code></pre></div>
 
-<ol>
+<ul>
 <li>
 <p>Pass the <code>start-localstack.sh</code> through the <code>volumes:</code> section to the  <code>localstack</code> container:</p>
-<ul>
+<ol>
 <li>Pass entrypoint startup scripts through <code>/etc/localstack/init/ready.d/</code></li>
 <li>Read here for a full list of <a href="https://docs.localstack.cloud/references/init-hooks/">Localstack Lifecycle Events</a></li>
 <li>Use the <code>docker-compose.yml</code> below as a reference.</li>
-</ul>
+</ol>
 </li>
 <li>
 <p>Start the containers using <code>docker-compose up</code> and observe the S3 buckets being made:</p>
 </li>
-</ol>
+</ul>
 <div class="highlight"><pre><span></span><code>relate-lambda-template-localstack-1  | make_bucket: hsl-local-serverless
 relate-lambda-template-localstack-1  | {
 relate-lambda-template-localstack-1  |     &quot;EventBusArn&quot;: &quot;arn:aws:events:us-west-2:000000000000:event-bus/platform-service-bus&quot;
@@ -325,15 +325,15 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
 </code></pre></div>
 
 <h3>Access from Localstack Container</h3>
-<ol>
+<ul>
 <li>Access the <code>localstack</code> container by running:</li>
-</ol>
+</ul>
 <div class="highlight"><pre><span></span><code>$<span class="w"> </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>localstack<span class="w"> </span>/bin/bash
 </code></pre></div>
 
-<ol>
+<ul>
 <li>Use <strong>awslocal</strong> to access the S3 buckets:</li>
-</ol>
+</ul>
 <div class="highlight"><pre><span></span><code>$<span class="w"> </span>awslocal<span class="w"> </span>s3<span class="w"> </span>ls
 
 <span class="m">2023</span>-06-22<span class="w"> </span><span class="m">04</span>:45:49<span class="w"> </span>hsl-local-serverless

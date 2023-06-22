@@ -239,9 +239,9 @@
 <ul>
 <li>Docker, Docker-Compose</li>
 <li>Localstack Docker Image </li>
-<li><em>This guide has been updated for Localstack releases after March 29, 2023. <a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258">Read More Here.</a></em></li>
-<li><em>Earlier versions of Localstack Lambda reference <code>/docker-entrypoint-initaws.d/</code> for entrypoint scripts. That entrypoint path was deprecated in <a href="https://github.com/localstack/localstack/releases/tag/v1.1.0">v1.1.0</a>.</em></li>
 </ul>
+<p><em>This guide has been updated for Localstack releases after March 29, 2023. <a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258">Read More Here.</a></em></p>
+<p><em>Earlier versions of Localstack Lambda reference <code>/docker-entrypoint-initaws.d/</code> for entrypoint scripts. That entrypoint path was deprecated in <a href="https://github.com/localstack/localstack/releases/tag/v1.1.0">v1.1.0</a>.</em></p>
 <h2>Introduction</h2>
 <p>Looking to run AWS services locally and improve the development experience? Are you hoping to make a fully isolated enviornment with no (real) shared AWS resources? Then look no further!</p>
 <p><strong>Localstack</strong> is a cloud service emulator that runs in a single container on your laptop or in your CI environment. <a href="https://docs.localstack.cloud/getting-started/?__hstc=108988063.4c3716ab9432d996297196d8a59201a6.1673401275754.1673401275754.1673907003067.2&amp;__hssc=108988063.1.1673907003067&amp;__hsfp=1395183370">Read More Here.</a></p>
@@ -249,7 +249,7 @@
 <ul>
 <li>Run Localstack in Docker-Compose</li>
 <li>Create mocked resources in Localstack with entrypoint scripts</li>
-<li>How to access Localstack services at <code>http://localstack:4566</code> or using <code>aws-local</code></li>
+<li>How to access Localstack services at <code>http://localstack:4566</code> or using <code>awslocal</code></li>
 <li>Override Boto3 Client for Localstack</li>
 </ul>
 <h2>Localstack on Docker Compose</h2>
@@ -294,7 +294,7 @@
         <span class="s s-Atom">command</span><span class="p">:</span> <span class="s s-Atom">uwsgi</span> <span class="s s-Atom">--http</span> <span class="mf">0.0.0.0</span><span class="o">:</span><span class="mi">9090</span> <span class="s s-Atom">--wsgi</span><span class="o">-</span><span class="s s-Atom">file</span> <span class="s s-Atom">messages</span><span class="o">/</span><span class="s s-Atom">wsgi</span><span class="o">/</span><span class="s s-Atom">dev</span><span class="p">.</span><span class="s s-Atom">py</span> <span class="s s-Atom">--callable</span> <span class="s s-Atom">application</span> <span class="s s-Atom">--uid</span> <span class="s s-Atom">appuser</span> <span class="s s-Atom">--gid</span> <span class="s s-Atom">appuser</span> <span class="s s-Atom">--enable</span><span class="o">-</span><span class="s s-Atom">threads</span>
 </code></pre></div>
 
-<ol>
+<ul>
 <li>
 <p>Copy and paste the following code into <code>docker-compose.yml</code>.</p>
 </li>
@@ -306,7 +306,7 @@
 <p>Run the containers: </p>
 <p><code>docker-compose -f docker-compose.yml up</code></p>
 </li>
-</ol>
+</ul>
 <p>At this point, <code>localstack</code> will start alongside the <code>api</code> container and will be ready to mock AWS services at <code>http://localstack:4566</code>. </p>
 <h2>Override Default S3 Endpoint to Localstack URL</h2>
 <p>Just because you started <code>localstack</code> doesn't mean AWS services are automatically mocked. Your applications will need to override the <code>endpoint_url</code> for <strong>every</strong> boto3 client call you wish to mock.</p>

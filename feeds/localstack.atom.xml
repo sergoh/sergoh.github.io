@@ -5,9 +5,9 @@
 &lt;ul&gt;
 &lt;li&gt;Docker, Docker-Compose&lt;/li&gt;
 &lt;li&gt;Localstack Docker Image &lt;/li&gt;
-&lt;li&gt;&lt;em&gt;This guide has been updated for Localstack releases after March 29, 2023. &lt;a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258"&gt;Read More Here.&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Earlier versions of Localstack Lambda reference &lt;code&gt;/docker-entrypoint-initaws.d/&lt;/code&gt; for entrypoint scripts. That entrypoint path was deprecated in &lt;a href="https://github.com/localstack/localstack/releases/tag/v1.1.0"&gt;v1.1.0&lt;/a&gt;.&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;This guide has been updated for Localstack releases after March 29, 2023. &lt;a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258"&gt;Read More Here.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Earlier versions of Localstack Lambda reference &lt;code&gt;/docker-entrypoint-initaws.d/&lt;/code&gt; for entrypoint scripts. That entrypoint path was deprecated in &lt;a href="https://github.com/localstack/localstack/releases/tag/v1.1.0"&gt;v1.1.0&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Localstack&lt;/strong&gt; is a cloud service emulator that runs in a single container on your laptop or in your CI environment. &lt;a href="https://docs.localstack.cloud/getting-started/?__hstc=108988063.4c3716ab9432d996297196d8a59201a6.1673401275754.1673401275754.1673907003067.2&amp;amp;__hssc=108988063.1.1673907003067&amp;amp;__hsfp=1395183370"&gt;Read More Here.&lt;/a&gt;&lt;/p&gt;
@@ -16,38 +16,38 @@
 &lt;ul&gt;
 &lt;li&gt;Run Localstack in Docker-Compose&lt;/li&gt;
 &lt;li&gt;Create mocked resources in Localstack with entrypoint scripts&lt;/li&gt;
-&lt;li&gt;How to access Localstack services at &lt;code&gt;http://localstack:4566&lt;/code&gt; or using &lt;code&gt;aws-local&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;How to access Localstack services at &lt;code&gt;http://localstack:4566&lt;/code&gt; or using &lt;code&gt;awslocal&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2&gt;Entrypoint Script to Create S3 Buckets in Localstack&lt;/h2&gt;
-&lt;ol&gt;
+&lt;ul&gt;
 &lt;li&gt;Create and paste the following content to &lt;code&gt;start-localstack.sh&lt;/code&gt;. This will be our entrypoint scipt: &lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 awslocal&lt;span class="w"&gt; &lt;/span&gt;s3&lt;span class="w"&gt; &lt;/span&gt;mb&lt;span class="w"&gt; &lt;/span&gt;s3://hsl-local-terraform&lt;span class="w"&gt; &lt;/span&gt;--region&lt;span class="w"&gt; &lt;/span&gt;us-west-2
 awslocal&lt;span class="w"&gt; &lt;/span&gt;s3&lt;span class="w"&gt; &lt;/span&gt;mb&lt;span class="w"&gt; &lt;/span&gt;s3://hsl-local-serverless&lt;span class="w"&gt; &lt;/span&gt;--region&lt;span class="w"&gt; &lt;/span&gt;us-west-2
 awslocal&lt;span class="w"&gt; &lt;/span&gt;s3&lt;span class="w"&gt; &lt;/span&gt;ls&lt;span class="w"&gt; &lt;/span&gt;--region&lt;span class="w"&gt; &lt;/span&gt;us-west-2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;ol&gt;
+&lt;ul&gt;
 &lt;li&gt;Make the script executable by running:&lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod +x start-localstack.sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;ol&gt;
+&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Pass the &lt;code&gt;start-localstack.sh&lt;/code&gt; through the &lt;code&gt;volumes:&lt;/code&gt; section to the  &lt;code&gt;localstack&lt;/code&gt; container:&lt;/p&gt;
-&lt;ul&gt;
+&lt;ol&gt;
 &lt;li&gt;Pass entrypoint startup scripts through &lt;code&gt;/etc/localstack/init/ready.d/&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Read here for a full list of &lt;a href="https://docs.localstack.cloud/references/init-hooks/"&gt;Localstack Lifecycle Events&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Use the &lt;code&gt;docker-compose.yml&lt;/code&gt; below as a reference.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;/ol&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Start the containers using &lt;code&gt;docker-compose up&lt;/code&gt; and observe the S3 buckets being made:&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;relate-lambda-template-localstack-1  | make_bucket: hsl-local-serverless
 relate-lambda-template-localstack-1  | {
 relate-lambda-template-localstack-1  |     &amp;quot;EventBusArn&amp;quot;: &amp;quot;arn:aws:events:us-west-2:000000000000:event-bus/platform-service-bus&amp;quot;
@@ -90,15 +90,15 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3&gt;Access from Localstack Container&lt;/h3&gt;
-&lt;ol&gt;
+&lt;ul&gt;
 &lt;li&gt;Access the &lt;code&gt;localstack&lt;/code&gt; container by running:&lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;docker-compose&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;exec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;localstack&lt;span class="w"&gt; &lt;/span&gt;/bin/bash
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;ol&gt;
+&lt;ul&gt;
 &lt;li&gt;Use &lt;strong&gt;awslocal&lt;/strong&gt; to access the S3 buckets:&lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$&lt;span class="w"&gt; &lt;/span&gt;awslocal&lt;span class="w"&gt; &lt;/span&gt;s3&lt;span class="w"&gt; &lt;/span&gt;ls
 
 &lt;span class="m"&gt;2023&lt;/span&gt;-06-22&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;04&lt;/span&gt;:45:49&lt;span class="w"&gt; &lt;/span&gt;hsl-local-serverless
@@ -126,9 +126,9 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
 &lt;ul&gt;
 &lt;li&gt;Docker, Docker-Compose&lt;/li&gt;
 &lt;li&gt;Localstack Docker Image &lt;/li&gt;
-&lt;li&gt;&lt;em&gt;This guide has been updated for Localstack releases after March 29, 2023. &lt;a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258"&gt;Read More Here.&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Earlier versions of Localstack Lambda reference &lt;code&gt;/docker-entrypoint-initaws.d/&lt;/code&gt; for entrypoint scripts. That entrypoint path was deprecated in &lt;a href="https://github.com/localstack/localstack/releases/tag/v1.1.0"&gt;v1.1.0&lt;/a&gt;.&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;This guide has been updated for Localstack releases after March 29, 2023. &lt;a href="https://discuss.localstack.cloud/t/new-lambda-implementation-in-localstack-2-0/258"&gt;Read More Here.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Earlier versions of Localstack Lambda reference &lt;code&gt;/docker-entrypoint-initaws.d/&lt;/code&gt; for entrypoint scripts. That entrypoint path was deprecated in &lt;a href="https://github.com/localstack/localstack/releases/tag/v1.1.0"&gt;v1.1.0&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 &lt;h2&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Looking to run AWS services locally and improve the development experience? Are you hoping to make a fully isolated enviornment with no (real) shared AWS resources? Then look no further!&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Localstack&lt;/strong&gt; is a cloud service emulator that runs in a single container on your laptop or in your CI environment. &lt;a href="https://docs.localstack.cloud/getting-started/?__hstc=108988063.4c3716ab9432d996297196d8a59201a6.1673401275754.1673401275754.1673907003067.2&amp;amp;__hssc=108988063.1.1673907003067&amp;amp;__hsfp=1395183370"&gt;Read More Here.&lt;/a&gt;&lt;/p&gt;
@@ -136,7 +136,7 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
 &lt;ul&gt;
 &lt;li&gt;Run Localstack in Docker-Compose&lt;/li&gt;
 &lt;li&gt;Create mocked resources in Localstack with entrypoint scripts&lt;/li&gt;
-&lt;li&gt;How to access Localstack services at &lt;code&gt;http://localstack:4566&lt;/code&gt; or using &lt;code&gt;aws-local&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;How to access Localstack services at &lt;code&gt;http://localstack:4566&lt;/code&gt; or using &lt;code&gt;awslocal&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Override Boto3 Client for Localstack&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Localstack on Docker Compose&lt;/h2&gt;
@@ -181,7 +181,7 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
         &lt;span class="s s-Atom"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s s-Atom"&gt;uwsgi&lt;/span&gt; &lt;span class="s s-Atom"&gt;--http&lt;/span&gt; &lt;span class="mf"&gt;0.0.0.0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;9090&lt;/span&gt; &lt;span class="s s-Atom"&gt;--wsgi&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;file&lt;/span&gt; &lt;span class="s s-Atom"&gt;messages&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;wsgi&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="s s-Atom"&gt;dev&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s s-Atom"&gt;py&lt;/span&gt; &lt;span class="s s-Atom"&gt;--callable&lt;/span&gt; &lt;span class="s s-Atom"&gt;application&lt;/span&gt; &lt;span class="s s-Atom"&gt;--uid&lt;/span&gt; &lt;span class="s s-Atom"&gt;appuser&lt;/span&gt; &lt;span class="s s-Atom"&gt;--gid&lt;/span&gt; &lt;span class="s s-Atom"&gt;appuser&lt;/span&gt; &lt;span class="s s-Atom"&gt;--enable&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s s-Atom"&gt;threads&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;ol&gt;
+&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Copy and paste the following code into &lt;code&gt;docker-compose.yml&lt;/code&gt;.&lt;/p&gt;
 &lt;/li&gt;
@@ -193,7 +193,7 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
 &lt;p&gt;Run the containers: &lt;/p&gt;
 &lt;p&gt;&lt;code&gt;docker-compose -f docker-compose.yml up&lt;/code&gt;&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ol&gt;
+&lt;/ul&gt;
 &lt;p&gt;At this point, &lt;code&gt;localstack&lt;/code&gt; will start alongside the &lt;code&gt;api&lt;/code&gt; container and will be ready to mock AWS services at &lt;code&gt;http://localstack:4566&lt;/code&gt;. &lt;/p&gt;
 &lt;h2&gt;Override Default S3 Endpoint to Localstack URL&lt;/h2&gt;
 &lt;p&gt;Just because you started &lt;code&gt;localstack&lt;/code&gt; doesn't mean AWS services are automatically mocked. Your applications will need to override the &lt;code&gt;endpoint_url&lt;/code&gt; for &lt;strong&gt;every&lt;/strong&gt; boto3 client call you wish to mock.&lt;/p&gt;
