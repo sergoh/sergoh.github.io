@@ -1,5 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo Software Blog - serverless</title><link href="https://www.devlo.io/" rel="alternate"></link><link href="https://www.devlo.io/feeds/serverless.atom.xml" rel="self"></link><id>https://www.devlo.io/</id><updated>2023-06-14T00:00:00-07:00</updated><subtitle>Lopez Brothers Blog</subtitle><entry><title>Serverless Framework: Serverless Compose Example Project</title><link href="https://www.devlo.io/sls-framework-serverless-compose-example-project.html" rel="alternate"></link><published>2023-06-14T00:00:00-07:00</published><updated>2023-06-14T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2023-06-14:/sls-framework-serverless-compose-example-project.html</id><summary type="html">&lt;p&gt;A guide to help you deploy mutiple Serverless projects at once using Serverless Compose. By the end of this guide, you will have an example of how to organize and deploy multiple Serverless projects using Serverless Compose.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS, Lambda, Serverless Framework&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>DevLo Software Blog - serverless</title><link href="https://www.devlo.io/" rel="alternate"></link><link href="https://www.devlo.io/feeds/serverless.atom.xml" rel="self"></link><id>https://www.devlo.io/</id><updated>2025-04-29T00:00:00-07:00</updated><subtitle>Lopez Brothers Blog</subtitle><entry><title>Efficiently Fetching SSM and Secrets in AWS Lambda with Pydantic Models</title><link href="https://www.devlo.io/fetch-ssm-secrets-lambda.html" rel="alternate"></link><published>2025-04-29T00:00:00-07:00</published><updated>2025-04-29T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2025-04-29:/fetch-ssm-secrets-lambda.html</id><summary type="html">&lt;p&gt;Learn why you should fetch SSM parameters and secrets only once per AWS Lambda execution, and how to use Pydantic to manage your configuration cleanly.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Fetching configuration values or secrets from AWS SSM Parameter Store or Secrets Manager is a common pattern in Lambda functions. However, fetching these values multiple times per invocation can lead to increased latency, higher costs, and hitting AWS API rate limits. In this post, we'll discuss why you should fetch secrets only once per Lambda execution and how to use Pydantic to manage your settings efficiently.&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Why Fetch SSM/Secrets Only Once?&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Performance:&lt;/strong&gt; Each call to SSM or Secrets Manager is a network request, which adds latency.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cost:&lt;/strong&gt; AWS charges per API call; unnecessary calls increase your bill.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Rate Limits:&lt;/strong&gt; Excessive calls can hit AWS API rate limits, causing throttling or failures.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Best Practice:&lt;/strong&gt; Fetch once, reuse throughout the Lambda invocation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;strong&gt;Using Pydantic for Settings Management&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Pydantic's &lt;code&gt;BaseSettings&lt;/code&gt; class makes it easy to define and validate configuration values. You can fetch secrets once at cold start and reuse them across your Lambda handler and other modules.&lt;/p&gt;
+&lt;h3&gt;Example: Centralized Settings with Pydantic&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;typing&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Union&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pydantic&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BaseSettings&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;_Settings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BaseSettings&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;SSM_RDS_HOST&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Union&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+    &lt;span class="n"&gt;ENVIRONMENT&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@property&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;ssm_rds_host&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SSM_RDS_HOST&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SSM_RDS_HOST&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="c1"&gt;# Fetch from SSM Parameter Store&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_ssm_value&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/dev/rds_host&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;get_ssm_value&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="c1"&gt;# Logic to fetch value from SSM Parameter Store&lt;/span&gt;
+        &lt;span class="o"&gt;...&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Instantiate settings at module level (cold start)&lt;/span&gt;
+&lt;span class="n"&gt;settings&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_Settings&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, you can import &lt;code&gt;settings&lt;/code&gt; in any other module or Lambda handler:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;.settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;lambda_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;db_host&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SSM_RDS_HOST&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_ssm_value&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;rds_host&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="c1"&gt;# ...rest of your logic...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Fetching SSM parameters or secrets only once per Lambda execution is a simple optimization that can improve performance and reliability. Using Pydantic for settings management keeps your code clean and maintainable. Adopt this pattern to make your AWS Lambda functions faster and more robust!&lt;/p&gt;</content><category term="serverless"></category><category term="aws"></category><category term="lambda"></category><category term="ssm"></category><category term="secrets-manager"></category><category term="python"></category><category term="pydantic"></category><category term="best-practices"></category></entry><entry><title>Loading Environment Variables into Pydantic Settings in AWS Lambda</title><link href="https://www.devlo.io/load-env-vars-pydantic-lambda.html" rel="alternate"></link><published>2025-04-29T00:00:00-07:00</published><updated>2025-04-29T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2025-04-29:/load-env-vars-pydantic-lambda.html</id><summary type="html">&lt;p&gt;Learn how to load environment variables into Pydantic settings in AWS Lambda, with a practical example using Terraform.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Environment variables are a standard way to pass configuration to AWS Lambda functions. Pydantic's &lt;code&gt;BaseSettings&lt;/code&gt; class makes it easy to load and validate these variables in your Python code. In this post, you'll learn how to use Pydantic to manage environment variables, and how to set them using Terraform.&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Why Use Environment Variables with Pydantic?&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Separation of config and code:&lt;/strong&gt; Keep secrets and settings out of your codebase.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Validation:&lt;/strong&gt; Pydantic ensures your environment variables are present and correctly typed.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Convenience:&lt;/strong&gt; Access all your config in a single, well-typed object.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;strong&gt;Example: Defining a Pydantic Settings Class&lt;/strong&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;typing&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Union&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;pydantic&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BaseSettings&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;_Settings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BaseSettings&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;SSM_RDS_HOST&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Union&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+    &lt;span class="n"&gt;ENVIRONMENT&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Instantiate settings at module level&lt;/span&gt;
+&lt;span class="n"&gt;settings&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_Settings&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With this setup, &lt;code&gt;SSM_RDS_HOST&lt;/code&gt; and &lt;code&gt;ENVIRONMENT&lt;/code&gt; will be loaded from environment variables if present.&lt;/p&gt;
+&lt;h2&gt;&lt;strong&gt;Passing Environment Variables with Terraform&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Here's how you can set environment variables for your Lambda function using Terraform:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;resource&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;&amp;quot;aws_lambda_function&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;&amp;quot;example&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="na"&gt;function_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;my_lambda&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;  # ...existing code...&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;environment&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nb"&gt;variables&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="na"&gt;ENVIRONMENT&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;production&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="na"&gt;SSM_RDS_HOST&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;my-db-host.example.com&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;&lt;strong&gt;Reading Environment Variables in Lambda Code&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Now, in your Lambda handler, you can access these variables via your Pydantic settings:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;.settings&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;lambda_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Running in environment: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ENVIRONMENT&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;RDS Host: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SSM_RDS_HOST&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="c1"&gt;# ...rest of your logic...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Using Pydantic's &lt;code&gt;BaseSettings&lt;/code&gt; with environment variables in AWS Lambda is a clean and robust way to manage configuration. Combine this with Terraform to keep your infrastructure and application settings in sync. Try this pattern to simplify your Lambda deployments and configuration management!&lt;/p&gt;</content><category term="serverless"></category><category term="aws"></category><category term="lambda"></category><category term="python"></category><category term="pydantic"></category><category term="environment-variables"></category><category term="terraform"></category></entry><entry><title>Serverless Framework: Serverless Compose Example Project</title><link href="https://www.devlo.io/sls-framework-serverless-compose-example-project.html" rel="alternate"></link><published>2023-06-14T00:00:00-07:00</published><updated>2023-06-14T00:00:00-07:00</updated><author><name>Miguel Lopez</name></author><id>tag:www.devlo.io,2023-06-14:/sls-framework-serverless-compose-example-project.html</id><summary type="html">&lt;p&gt;A guide to help you deploy mutiple Serverless projects at once using Serverless Compose. By the end of this guide, you will have an example of how to organize and deploy multiple Serverless projects using Serverless Compose.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Technical Stack: AWS, Lambda, Serverless Framework&lt;/p&gt;
 &lt;p&gt;Read: 10 minutes&lt;/p&gt;
 &lt;h2&gt;Pre-Requisites&lt;/h2&gt;
 &lt;p&gt;To deploy the following Serverless Framework template, you will need the following:&lt;/p&gt;
