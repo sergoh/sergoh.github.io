@@ -1,5 +1,5 @@
 :root {
-    --dark-blue: #0b0e16;
+    --dark-blue: #414C6B;
     --blue: #1E80C1;
     --teal: #5BAEB7;
     --blizzard-blue: #A5DEF2;
@@ -81,3 +81,7 @@ and (max-width: 768px)  {
     }
 } 
   
+aside {
+    background-color: #0b0e16;
+    text-align: center;
+}
