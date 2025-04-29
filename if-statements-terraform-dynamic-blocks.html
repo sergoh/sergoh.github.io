@@ -51,7 +51,7 @@
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="A guide to help you build if-statements inside Terraform dynamic blocks. By the end of this guide, you will understand how to create two default_action blocks for the aws_lb_listener resource (and only use one of them)." />
-<meta name="keywords" content="terraform, terragrunt, aws, amazon, dynamic, modules, django, python, cloud, if, if-statements, logic, conditional, aws_lb_listener, resource, infrastructure-as-code">
+<meta name="keywords" content="terraform, terragrunt, aws, amazon, dynamic, modules, cloud, if, if-statements, logic, conditional, aws_lb_listener, resource, infrastructure-as-code">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
@@ -61,7 +61,7 @@
   <meta property="og:url" content="https://www.devlo.io/if-statements-terraform-dynamic-blocks.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2023-01-24 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2023-06-16 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2025-04-28 00:00:00-07:00"/>
   <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
   <meta property="article:section" content="terraform"/>
   <meta property="article:tag" content="terraform"/>
@@ -70,8 +70,6 @@
   <meta property="article:tag" content="amazon"/>
   <meta property="article:tag" content="dynamic"/>
   <meta property="article:tag" content="modules"/>
-  <meta property="article:tag" content="django"/>
-  <meta property="article:tag" content="python"/>
   <meta property="article:tag" content="cloud"/>
   <meta property="article:tag" content="if"/>
   <meta property="article:tag" content="if-statements"/>
@@ -232,65 +230,56 @@
     </script>
 
   <div>
-    <p>Technical Stack: AWS, Terraform</p>
+    <p>Technical Stack: AWS, Terraform 1.6.0+</p>
 <p>Read: 5 minutes</p>
-<h2>Introduction</h2>
-<p><a href="https://www.terraform.io/docs/language/expressions/dynamic-blocks.html">Dynamic Blocks</a> are used to create if statements inside Terraform resources. Dynamic blocks can be used with any <strong>literal</strong> block inside a Terraform resource.</p>
-<p>For example, the <code>default_action</code> block inside the <code>aws_lb_listener</code> resource is a literal block.</p>
-<div class="highlight"><pre><span></span><code><span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_lb_listener&quot;</span><span class="w"> </span><span class="s2">&quot;listener&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">load_balancer_arn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aws_lb</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">arn</span>
-
-<span class="w">  </span><span class="n">dynamic</span><span class="w"> </span><span class="s2">&quot;default_action&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1"># but the &quot;default_action&quot; block is always a literal block</span>
+<h2><strong>Introduction</strong></h2>
+<p>Dynamic blocks in Terraform allow you to conditionally generate nested blocks within resources. This feature is particularly useful when you need to create optional configurations based on input variables.</p>
+<p>In this guide, we'll explore how to use dynamic blocks to implement conditional logic for the <code>default_action</code> block in the <code>aws_lb_listener</code> resource. By the end, you'll understand:</p>
+<ul>
+<li>How to include multiple <code>default_action</code> blocks for the <code>aws_lb_listener</code> resource.</li>
+<li>How to make an optional <code>default_action</code> block.</li>
+<li>How to write an if-statement for <code>default_action</code> using a dynamic block.</li>
+</ul>
+<hr>
+<h2><strong>If Statements Inside Dynamic Blocks</strong></h2>
+<p>Dynamic blocks use the <code>for_each</code> argument to iterate over a collection. By combining <code>for_each</code> with a conditional expression, you can create if-statements to control whether a block is generated.</p>
+<h3><strong>Basic Setup</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// filepath: resources.tf</span>
+<span class="err">dynamic</span><span class="w"> </span><span class="s2">&quot;default_action&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.default_action_type</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s2">&quot;authenticate-oidc&quot;</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">  </span><span class="nb">content</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">    # ...block content...</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 
-<p>After reading this, you will understand: </p>
-<ul>
-<li>How to include multiple <code>default_action</code> blocks for the Terraform <code>aws_lb_listener</code> resource.</li>
-<li>How to make an optional <code>default_action</code> block.</li>
-<li>How to write an if-statement for <code>default_action</code> using a <code>dynamic</code> block.</li>
-</ul>
-<h2>If Statements Inside Dynamic Blocks</h2>
-<p>You'll use a Terraform <a href="https://www.terraform.io/docs/language/expressions/dynamic-blocks.html">dynamic block</a> to create the if-statement.</p>
-<p>The basic setup looks like this:</p>
-<div class="highlight"><pre><span></span><code><span class="n">dynamic</span><span class="w"> </span><span class="s2">&quot;default_action&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">var</span><span class="o">.</span><span class="n">default_action_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;authenticate-oidc&quot;</span><span class="w"> </span><span class="err">?</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
-<span class="w">    </span><span class="o">...</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<p>In this example, we use the <code>for_each</code> combined with a <a href="https://www.terraform.io/docs/language/expressions/conditionals.html#ternary-operator">ternary operator</a> to create the if-statement. If this logic statement is <strong>true</strong>, then [1] will be passed back and the block will be created.</p>
-<p>Setting <code>var.default_action_type</code> to <code>null</code> or <code>forward</code> will not create the block.</p>
-<h2>Using If Statements for aws_lb_listener</h2>
-<p>In this example, we will use the <code>dynamic</code> block to create an optional <code>default_action</code> block for the <code>aws_lb_listener</code> resource.</p>
-<ol>
-<li>Start by looking at the example below</li>
-<li>Notice the <code>dynamic "default_action" {}</code> blocks in the <strong>aws_lb_listener</strong> resource. These <strong>two</strong> dynamic blocks are used as "if" statements.</li>
-<li>Set the <code>var.default_action_type</code> to select which "default_action" block to create.</li>
-<li><code>var.default_action_type == "forward"</code> will create the <strong>forward</strong> block.</li>
-<li><code>var.default_action_type == "authenticate-oidc"</code> will create the <strong>authenticate-oidc</strong> block. </li>
-</ol>
-<p><strong>resources.tf</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_lb_listener&quot;</span><span class="w"> </span><span class="nv">&quot;listener&quot;</span><span class="w"> </span><span class="p">{</span>
+<p>In this example: 
+- The <code>for_each</code> argument evaluates a conditional expression.
+- If the condition is true, the block is created with the specified content.
+- If the condition is false, the block is skipped.</p>
+<hr>
+<h2><strong>Using If Statements for aws_lb_listener</strong></h2>
+<p>Let's apply this concept to the <code>aws_lb_listener</code> resource. We'll create two optional <code>default_action</code> blocks: one for <code>forward</code> actions and another for <code>authenticate-oidc</code> actions.</p>
+<h3><strong>Example Configuration</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// filepath: resources.tf</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_lb_listener&quot;</span><span class="w"> </span><span class="nv">&quot;listener&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="na">load_balancer_arn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_lb.application.arn</span>
 
 <span class="w">  </span><span class="na">port</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nv">var.port</span>
 <span class="w">  </span><span class="na">protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.protocol</span>
 
-<span class="c1">  # Allow Forward Action</span>
+<span class="c1">  # Forward Action</span>
 <span class="w">  </span><span class="err">dynamic</span><span class="w"> </span><span class="s2">&quot;default_action&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="na">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.default_action_type</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s2">&quot;forward&quot;</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">    </span><span class="nb">content</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="na">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;forward&quot;</span>
 <span class="w">      </span><span class="nb">forward</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="na">target_group_arn</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="nv">var.target_group_arn</span>
+<span class="w">        </span><span class="na">target_group_arn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.target_group_arn</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 
-<span class="c1">  # Allow Authenticate-OIDC Action</span>
+<span class="c1">  # Authenticate-OIDC Action</span>
 <span class="w">  </span><span class="err">dynamic</span><span class="w"> </span><span class="s2">&quot;default_action&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="na">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.default_action_type</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s2">&quot;authenticate-oidc&quot;</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">    </span><span class="nb">content</span><span class="w"> </span><span class="p">{</span>
@@ -305,41 +294,69 @@
 <span class="w">        </span><span class="na">scope</span><span class="w">                               </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">var.authenticate_oidc</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;scope&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">null</span><span class="p">)</span>
 <span class="w">        </span><span class="na">session_timeout</span><span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">var.authenticate_oidc</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;session_timeout&quot;</span><span class="p">,</span><span class="w"> </span><span class="m">2628000</span><span class="p">)</span>
 <span class="w">        </span><span class="na">authentication_request_extra_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">var.authenticate_oidc</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;authentication_request_extra_params&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">null</span><span class="p">)</span>
-<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
-</code></pre></div>
-
-<p><strong>variables.tf</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">variable</span><span class="w"> </span><span class="s2">&quot;port&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">80</span>
-<span class="w">  </span><span class="n">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">number</span>
-<span class="p">}</span>
-
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;protocol&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;HTTP&quot;</span>
-<span class="w">  </span><span class="n">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">string</span>
-<span class="p">}</span>
-
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;default_action_type&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Type of Default Action&quot;</span>
-<span class="p">}</span>
-
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;authenticate_oidc&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">null</span>
-<span class="w">  </span><span class="n">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="n">any</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;target_group_arn&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb nb-Type">null</span>
-<span class="w">  </span><span class="n">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">string</span>
 <span class="p">}</span>
 </code></pre></div>
 
-<h2>Conclusion</h2>
-<p>Think about using this strategy to create optional blocks when configuring you create a Terraform module that can be used in multiple places.</p>
-<p>This load balancer module has been perfect for creating ALBs that are used by multiple types applications. Some of our applications are simple and only needed the <code>forward</code> action. While other applications were private needed the <code>authenticate-oidc</code> action.</p>
-<p>All done for now. Hopefully that helps!</p>
+<h3><strong>Input Variables</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// filepath: variables.tf</span>
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;port&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">80</span>
+<span class="w">  </span><span class="na">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="kt">number</span>
+<span class="p">}</span>
+
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;protocol&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;HTTP&quot;</span>
+<span class="w">  </span><span class="na">type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;default_action_type&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Type of Default Action&quot;</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;authenticate_oidc&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;OIDC configuration for authentication&quot;</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">object</span><span class="p">({</span>
+<span class="w">    </span><span class="na">authorization_endpoint</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="na">client_id</span><span class="w">                           </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="na">client_secret</span><span class="w">                       </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="na">issuer</span><span class="w">                              </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="na">token_endpoint</span><span class="w">                      </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="na">user_info_endpoint</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">    </span><span class="na">scope</span><span class="w">                               </span><span class="o">=</span><span class="w"> </span><span class="err">optional</span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">null</span><span class="p">)</span>
+<span class="w">    </span><span class="na">session_timeout</span><span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="err">optional</span><span class="p">(</span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="m">2628000</span><span class="p">)</span>
+<span class="w">    </span><span class="na">authentication_request_extra_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">optional</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="kt">string</span><span class="p">),</span><span class="w"> </span><span class="kt">null</span><span class="p">)</span>
+<span class="w">  </span><span class="p">})</span>
+<span class="p">}</span>
+
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;target_group_arn&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ARN of the target group for forward action&quot;</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<hr>
+<h2><strong>Explanation</strong></h2>
+<ol>
+<li><strong>Dynamic Blocks</strong>: Each <code>dynamic "default_action"</code> block is conditionally created based on the value of <code>var.default_action_type</code>.</li>
+<li><strong>Conditional Logic</strong>: The <code>for_each</code> argument evaluates whether the block should be created:</li>
+<li>If <code>var.default_action_type == "forward"</code>, the forward block is created.</li>
+<li>If <code>var.default_action_type == "authenticate-oidc"</code>, the authenticate-oidc block is created.</li>
+<li><strong>Input Variables</strong>: The <code>authenticate_oidc</code> variable is defined as an object, making it easy to pass structured data for the OIDC configuration.</li>
+</ol>
+<hr>
+<h2><strong>Best Practices for 2025</strong></h2>
+<ol>
+<li><strong>Use Optional Attributes</strong>: Leverage <code>optional</code> attributes in variable definitions to simplify input handling.</li>
+<li><strong>Validate Inputs</strong>: Use <code>validation</code> blocks in variables to ensure input values meet expected criteria.</li>
+<li><strong>Modularize Configurations</strong>: Encapsulate dynamic blocks in reusable modules for better maintainability.</li>
+</ol>
+<hr>
+<h2><strong>Conclusion</strong></h2>
+<p>Dynamic blocks in Terraform provide a powerful way to implement conditional logic within resources. By combining <code>for_each</code> with conditional expressions, you can create flexible and reusable configurations.</p>
+<p>This approach is particularly useful for creating optional blocks, such as the <code>default_action</code> blocks in the <code>aws_lb_listener</code> resource. Start using these patterns in your Terraform projects to simplify complex configurations and improve maintainability!</p>
   </div>
   <div class="tag-cloud">
     <p>
@@ -349,8 +366,6 @@
       <a href="https://www.devlo.io/tag/amazon.html">amazon</a>
       <a href="https://www.devlo.io/tag/dynamic.html">dynamic</a>
       <a href="https://www.devlo.io/tag/modules.html">modules</a>
-      <a href="https://www.devlo.io/tag/django.html">django</a>
-      <a href="https://www.devlo.io/tag/python.html">python</a>
       <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
       <a href="https://www.devlo.io/tag/if.html">if</a>
       <a href="https://www.devlo.io/tag/if-statements.html">if-statements</a>

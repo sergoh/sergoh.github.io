@@ -50,18 +50,18 @@
  
 
 <meta name="author" content="Miguel Lopez" />
-<meta name="description" content="Using if-else statements in Terraform." />
+<meta name="description" content="Using if-else statements in Terraform" />
 <meta name="keywords" content="aws, cloud, terraform, hcl, hashicorp, if-statements, conditional-logic, infrastructure-as-code, automation">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
   <meta property="og:title" content="If, If-else Statements in Terraform"/>
-  <meta property="og:description" content="Using if-else statements in Terraform."/>
+  <meta property="og:description" content="Using if-else statements in Terraform"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:url" content="https://www.devlo.io/if-else-terraform.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2018-04-10 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2018-04-10 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2025-04-28 00:00:00-07:00"/>
   <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
   <meta property="article:section" content="automation"/>
   <meta property="article:tag" content="aws"/>
@@ -225,73 +225,93 @@
     </script>
 
   <div>
-    <p><em>Terraform v0.11.5</em></p>
+    <p><em>Terraform v1.6.0</em></p>
 <h2><strong>Introduction</strong></h2>
-<p>In HCL, a boolean is one of the many ways you can create an if-statement.</p>
-<p>Booleans can be used in a Terraform tenerary operation to create an if-else statement. Ternary operations follow the syntax: </p>
-<div class="highlight"><pre><span></span><code>CONDITION ? TRUEVAL : FALSEVAL
+<p>In Terraform's HCL, conditional logic has evolved significantly, making it easier to implement <code>if</code> and <code>if-else</code> statements. The ternary operator remains a key feature, but newer syntax and features introduced in Terraform v1.6.0 enhance readability and functionality.</p>
+<p>The basic syntax for a ternary operation is:</p>
+<div class="highlight"><pre><span></span><code><span class="err">condition</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="err">true_value</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">false_value</span>
 </code></pre></div>
 
-<p>Combine this idea with a boolean conditional and you have an if statement. A boolean ternary function would look like....</p>
-<div class="highlight"><pre><span></span><code><span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">.</span><span class="n">create_eip</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="bp">true</span><span class="w"> </span><span class="err">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">}</span>
-</code></pre></div>
-
-<p>If the variable <code>create_ip</code> == <code>true</code> then return 1, else return 0. We will combine this idea with the <code>count</code> attribtue of a resource to create an if-else statement. </p>
+<p>This allows you to evaluate a condition and return one of two values based on whether the condition is true or false.</p>
 <h2><strong>If Statement</strong></h2>
-<p>Start by looking at the boolean value we are passing to <code>create_eip</code> in this module. </p>
-<div class="highlight"><pre><span></span><code><span class="nx">module</span><span class="w"> </span><span class="s">&quot;frontend&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">source</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;/modules/frontend-app&quot;</span>
-<span class="w">  </span><span class="nx">box_name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;web-01&quot;</span>
-<span class="w">  </span><span class="nx">ami</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ami-25615740&quot;</span>
-<span class="w">  </span><span class="nx">instance_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;t2.micro&quot;</span>
-<span class="w">  </span><span class="nx">create_eip</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+<p>Let's start with a simple example using the <code>count</code> parameter to conditionally create a resource. In this example, we use a boolean variable <code>create_eip</code> to determine whether to create an Elastic IP (EIP).</p>
+<div class="highlight"><pre><span></span><code><span class="kr">module</span><span class="w"> </span><span class="nv">&quot;frontend&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">source</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./modules/frontend-app&quot;</span>
+<span class="w">  </span><span class="na">box_name</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;web-01&quot;</span>
+<span class="w">  </span><span class="na">ami</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ami-25615740&quot;</span>
+<span class="w">  </span><span class="na">instance_type</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;t2.micro&quot;</span>
+<span class="w">  </span><span class="na">create_eip</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
 <span class="p">}</span>
 </code></pre></div>
 
-<p>Based on HCL semantics, setting the <code>create_eip</code> to <code>true</code> would result in the ternary operation <code>${var.create_eip == true ? 1 : 0}</code> resolving to value of 1.
-This means a value of 1 would be passed on to the <code>count</code> parameter of the <code>aws_eip</code> resource. This would create one eip resource.</p>
+<p>In the module, the <code>count</code> parameter uses the ternary operator to conditionally create the resource:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># frontend-app module</span>
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;create_eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create an EIP if set to True&quot;</span>
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;create_eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create an EIP if set to true&quot;</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">bool</span>
+<span class="w">  </span><span class="na">default</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="no">false</span>
 <span class="p">}</span>
 
-<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;web-eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_eip == true ? 1 : 0}&quot;</span>
-<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_eip&quot;</span><span class="w"> </span><span class="nv">&quot;web_eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">count</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nv">var.create_eip</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="m">0</span>
+<span class="w">  </span><span class="na">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_instance.example.id</span>
 <span class="p">}</span>
 </code></pre></div>
 
+<p>If <code>create_eip</code> is set to <code>true</code>, the <code>count</code> evaluates to <code>1</code>, creating one EIP resource. If <code>false</code>, the <code>count</code> evaluates to <code>0</code>, and no resource is created.</p>
 <h2><strong>If-Else Statement</strong></h2>
-<p>Create an if-else statement in a similar manner.</p>
-<p>Take a careful look at the following <code>if-eip</code>, <code>else-eip</code> example. We will use two tenary operations to achieve if-else.</p>
-<div class="highlight"><pre><span></span><code><span class="nx">module</span><span class="w"> </span><span class="s">&quot;frontend&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">source</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;/modules/frontend-app&quot;</span>
-<span class="w">  </span><span class="nx">box_name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;web-01&quot;</span>
-<span class="w">  </span><span class="nx">ami</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ami-25615740&quot;</span>
-<span class="w">  </span><span class="nx">instance_type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;t2.micro&quot;</span>
-<span class="w">  </span><span class="nx">create_first_eip</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+<p>To implement an <code>if-else</code> pattern, we can use multiple resources with conditional <code>count</code> values. Here's an updated example:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">module</span><span class="w"> </span><span class="nv">&quot;frontend&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">source</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./modules/frontend-app&quot;</span>
+<span class="w">  </span><span class="na">box_name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;web-01&quot;</span>
+<span class="w">  </span><span class="na">ami</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ami-25615740&quot;</span>
+<span class="w">  </span><span class="na">instance_type</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;t2.micro&quot;</span>
+<span class="w">  </span><span class="na">create_primary_eip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
 <span class="p">}</span>
 </code></pre></div>
 
+<p>In the module, we define two resources, each with a conditional <code>count</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># frontend-app module</span>
-<span class="n">variable</span><span class="w"> </span><span class="s2">&quot;create_first_eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create the first eip if set to true, otherwise create the second eip if set to false&quot;</span>
+<span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;create_primary_eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Create the primary EIP if true, otherwise create the secondary EIP&quot;</span>
+<span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">bool</span>
+<span class="w">  </span><span class="na">default</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="no">false</span>
 <span class="p">}</span>
 
-<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;if-eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_first_eip == true ? 1 : 0}&quot;</span>
-<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_eip&quot;</span><span class="w"> </span><span class="nv">&quot;primary_eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">count</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nv">var.create_primary_eip</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="m">0</span>
+<span class="w">  </span><span class="na">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_instance.example.id</span>
 <span class="p">}</span>
 
-<span class="n">resource</span><span class="w"> </span><span class="s2">&quot;aws_eip&quot;</span><span class="w"> </span><span class="s2">&quot;else-eip&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.create_first_eip == false ? 1 : 0}&quot;</span>
-<span class="w">  </span><span class="n">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${aws_instance.example.id}&quot;</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_eip&quot;</span><span class="w"> </span><span class="nv">&quot;secondary_eip&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">count</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nv">var.create_primary_eip</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="na">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_instance.example.id</span>
 <span class="p">}</span>
 </code></pre></div>
 
-<p>If the <code>create_first_eip</code> variable was set to <code>true</code> then the first <code>aws_eip</code> would be created because the <code>create_first_eip == true</code> would result in a <code>count</code> of 1.</p>
-<p>If the <code>create_first_eip</code> variable was set to <code>false</code>, then the second <code>aws_eip</code> would be created because the <code>create_first_eip == false</code> would result in a <code>count</code> of 1. The first <code>aws_eip</code> would not be created because it would fail the conditional statement. </p>
-<p>This creates an if-else pattern.</p>
+<p>If <code>create_primary_eip</code> is <code>true</code>, the <code>primary_eip</code> resource is created, and the <code>secondary_eip</code> resource is skipped. If <code>false</code>, the <code>secondary_eip</code> resource is created instead.</p>
+<h2><strong>Using Dynamic Blocks</strong></h2>
+<p>Terraform 1.6.0 introduces enhanced support for dynamic blocks, which can simplify conditional logic in complex configurations. Here's an example:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_security_group&quot;</span><span class="w"> </span><span class="nv">&quot;example&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;example-sg&quot;</span>
+<span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Example security group&quot;</span>
+
+<span class="w">  </span><span class="err">dynamic</span><span class="w"> </span><span class="s2">&quot;ingress&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">var.enable_ingress</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">    </span><span class="nb">content</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">from_port</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">80</span>
+<span class="w">      </span><span class="na">to_port</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="m">80</span>
+<span class="w">      </span><span class="na">protocol</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+<span class="w">      </span><span class="na">cidr_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>In this example, the <code>ingress</code> block is only created if <code>var.enable_ingress</code> is <code>true</code>.</p>
+<h2><strong>Conclusion</strong></h2>
+<p>Terraform's conditional logic, including the ternary operator and dynamic blocks, provides powerful tools for managing infrastructure as code. By leveraging these features, you can create flexible and maintainable configurations that adapt to your needs.</p>
+<p>With the updates in Terraform v1.6.0, writing conditional logic is more intuitive and expressive than ever. Start using these patterns in your projects today!</p>
   </div>
   <div class="tag-cloud">
     <p>

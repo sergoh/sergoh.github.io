@@ -61,7 +61,7 @@
   <meta property="og:url" content="https://www.devlo.io/for-each-if-statements.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2021-12-01 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2023-06-20 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2025-04-28 00:00:00-07:00"/>
   <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
   <meta property="article:section" content="terraform"/>
   <meta property="article:tag" content="terraform"/>
@@ -227,116 +227,108 @@
     </script>
 
   <div>
-    <p>Technical Stack: Terraform 0.12.6+, AWS</p>
+    <p>Technical Stack: Terraform 1.6.0+, AWS</p>
 <p>Read: 5 minutes</p>
-<h2>Introduction</h2>
-<p>The most basic example of a <strong>for_each</strong> loop looks like this:</p>
-<div class="highlight"><pre><span></span><code>resource &quot;s3_bucket&quot; &quot;rg&quot; {
-  for_each = {
-    a_group = &quot;bucket-1&quot;
-    b_group = &quot;bucket-2&quot;
-  }
-  name     = each.value
-  tags = {
-    Name = each.value
-    Group = each.key
-  }
-}
-</code></pre></div>
-
-<p>Starting in <strong>Terraform v0.12.6+</strong>, the <code>for_each</code> loop became available for all Terraform resources and modules.</p>
-<p>Building conditiional statements inside <strong>for_each</strong> is a powerful way to control which resources are built inside complex modules. For example, you can use a for_each loop to build an autoscaling group module that only builds a load balancer if the user specifies it. This is a great way to build dynamic and reusable modules.</p>
-<p><a href="https://www.terraform.io/docs/language/meta-arguments/for_each.html">Full For-Each Documentation</a></p>
-<h2>Building Conditional If Statements</h2>
-<p>In this example, we're building a Load Balancer module that can be used to create multiple load balancers. If the user specifies a network load balancer, we'll build a VPC link to connect the load balancer to an API Gateway.</p>
+<h2><strong>Introduction</strong></h2>
+<p>The <code>for_each</code> meta-argument in Terraform allows you to dynamically create resources or modules based on a map or set of values. Starting with <strong>Terraform v0.12.6</strong>, this feature became widely available, and by <strong>Terraform v1.6.0</strong>, additional enhancements made it even more powerful for conditional logic.</p>
+<p>This guide demonstrates how to use <code>for_each</code> with conditional logic to control resource creation dynamically. We'll explore practical examples and best practices for 2025.</p>
 <hr>
-<p>Let's imagine the <strong>resource</strong> block for the VPC link looks like this:</p>
-<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_api_gateway_vpc_link&quot;</span><span class="w"> </span><span class="nv">&quot;link&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nb">for_each</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.load_balancers</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nv">value.load_balancer_type</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s2">&quot;network&quot;</span><span class="w"> </span><span class="p">}</span>
-<span class="w">    </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nv">each.key</span>
-<span class="w">    </span><span class="na">target_arns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">aws_target_group.lb[each.key].arn</span><span class="p">]</span>
+<h2><strong>Basic for_each Example</strong></h2>
+<p>A simple <code>for_each</code> loop looks like this:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_s3_bucket&quot;</span><span class="w"> </span><span class="nv">&quot;example&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">group_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;bucket-1&quot;</span>
+<span class="w">    </span><span class="na">group_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;bucket-2&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="na">bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">each.value</span>
+<span class="w">  </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">Name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">each.value</span>
+<span class="w">    </span><span class="na">Group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">each.key</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 
+<p>Here, Terraform creates two S3 buckets, one for each key-value pair in the map. The <code>each.key</code> and <code>each.value</code> expressions allow you to reference the current iteration's key and value.</p>
 <hr>
-<p>And given this input:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">load_balancers</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">application_lb</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">load_balancer_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">application</span>
-<span class="w">    </span><span class="nt">security_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">target_groups</span><span class="p">:</span>
-<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
-<span class="w">  </span><span class="nt">network_lb</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">load_balancer_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network</span>
-<span class="w">    </span><span class="nt">security_groups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">target_groups</span><span class="p">:</span>
-<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
+<h2><strong>Building Conditional If Statements</strong></h2>
+<p>Conditional logic inside <code>for_each</code> enables you to filter which resources are created. Let's explore an updated example for 2025.</p>
+<h3><strong>Example: VPC Link for Network Load Balancers</strong></h3>
+<p>Suppose you want to create a VPC link only for network load balancers. Here's how you can achieve this:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_api_gateway_vpc_link&quot;</span><span class="w"> </span><span class="nv">&quot;vpc_link&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.load_balancers</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nv">value.type</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s2">&quot;network&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nv">each.key</span>
+<span class="w">  </span><span class="na">target_arns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">aws_lb_target_group.example[each.key].arn</span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<hr>
-<p>You can break down the <strong>for_each</strong> loop inside <strong>aws_api_gateway_vpc_link</strong> like this:</p>
-<ol>
-<li>Loop through each key/value in <code>load_balancers</code>. Treat the <code>each.value</code> value as an object.</li>
-<li>Check if the <code>each.value</code> contains <code>load_balancer_type = "network"</code>. </li>
-<li>If the <code>load_balancer_type</code> is <code>network</code>, then build the VPC link.</li>
-</ol>
-<h2>Autoscaling Group Module Example</h2>
-<p>Imagine you're building a microservice with API and worker profiles. Each service component will require an autoscaling group. However, <strong>not</strong> every autoscaling group requires a load balancer.</p>
-<p>How can we build a module that does not require a load balancer for each service component being defined?</p>
-<hr>
-<p>You could build a <strong>for_each</strong> loop something like this:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.services</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nv">value.load_balancer_enabled</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="no">true</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-
-<hr>
-<p>Let's imagine our module looks like this:</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kr">module</span><span class="w"> </span><span class="nv">&quot;load_balancer&quot;</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nb">for_each</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.services</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="err">value</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;load_balancer_enabled&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">false</span><span class="p">)</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="no">true</span><span class="w"> </span><span class="p">}</span>
-<span class="w">      </span><span class="na">source</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../load-balancer&quot;</span><span class="c1">  # custom module reference as an example</span>
-
-<span class="w">      </span><span class="na">name</span><span class="w">                       </span><span class="o">=</span><span class="w"> </span><span class="nv">each.key</span>
-<span class="w">      </span><span class="na">enable_deletion_protection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enable_deletion_protection&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p">)</span>
-
-<span class="w">      </span><span class="na">domain</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;domain&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">null</span><span class="p">)</span>
-<span class="w">      </span><span class="na">security_groups</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;security_groups&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span>
-<span class="w">      </span><span class="na">internal</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;internal&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p">)</span>
-<span class="w">      </span><span class="na">load_balancer_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;load_balancer_type&quot;, &quot;application&quot;</span><span class="p">)</span>
-
-<span class="w">      </span><span class="na">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nf">jsondecode</span><span class="p">(</span><span class="nv">var.tags</span><span class="p">),</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tags&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}),</span><span class="w"> </span><span class="nv">local.common_tags</span><span class="p">)</span>
-
-<span class="w">      </span><span class="na">target_groups</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;target_groups&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
-<span class="w">      </span><span class="na">load_balancer_listeners</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;listeners&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
-<span class="w">      </span><span class="na">extra_listener_rules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;extra_listener_rules&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
-<span class="w">      </span><span class="na">extra_ssl_certs</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.load_balancer</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;extra_ssl_certs&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span>
+<h3><strong>Input Example</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;load_balancers&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">app_lb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;application&quot;</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nb">net_lb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;network&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<hr>
-<p>And given this input:</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">services</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">api</span><span class="p p-Indicator">:</span>
-<span class="w">        </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">t4g.medium</span>
-<span class="w">        </span><span class="nt">min_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">max_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">desired_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">load_balancer_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">        </span><span class="nt">load_balancer</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">          </span><span class="l l-Scalar l-Scalar-Plain">&lt;ommitted for simplicity&gt;</span>
-<span class="w">    </span><span class="w w-Error">  </span><span class="nt">worker</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">instance_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">t4g.medium</span>
-<span class="w">        </span><span class="nt">min_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">max_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">desired_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">load_balancer_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</code></pre></div>
-
-<p>Here's how to break down this <strong>for_each</strong> loop:</p>
+<h3><strong>Explanation</strong></h3>
 <ol>
-<li>The <code>if</code> statement inside the <strong>for_each</strong> uses the <code>value.load_balancer_enabled</code> to check if the service requires a load balancer. Use <code>lookup()</code> to safely fetch the key from the object.</li>
-<li>The <code>{ }</code> wrapped around my loop tells Terraform to reduce the <code>var.services</code> object based on the <code>if</code> statement result.</li>
-<li>Build this resource/module for any object that contains <code>load_balancer_enabled = true</code>. In this example, only the <strong>api</strong> object will build a load balancer.</li>
+<li>The <code>for_each</code> expression iterates over the <code>load_balancers</code> map.</li>
+<li>The <code>if</code> condition filters only those entries where <code>type</code> equals <code>"network"</code>.</li>
+<li>Terraform creates a VPC link for each matching entry.</li>
 </ol>
+<hr>
+<h2><strong>Advanced Example: Autoscaling Group with Optional Load Balancers</strong></h2>
+<p>Imagine you're building a microservice architecture where some services require a load balancer, and others do not. Here's how you can conditionally create load balancers:</p>
+<h3><strong>Module Example</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="kr">module</span><span class="w"> </span><span class="nv">&quot;load_balancer&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">for_each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="err">key</span><span class="p">,</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">in</span><span class="w"> </span><span class="nv">var.services</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="err">&gt;</span><span class="w"> </span><span class="err">value</span><span class="w"> </span><span class="err">if</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="err">value</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enable_lb&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">false</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="na">source</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./modules/load-balancer&quot;</span>
+
+<span class="w">  </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nv">each.key</span>
+<span class="w">  </span><span class="na">internal</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.lb_config</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;internal&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p">)</span>
+<span class="w">  </span><span class="na">lb_type</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value.lb_config</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;type&quot;, &quot;application&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="na">tags</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nv">local.common_tags</span><span class="p">,</span><span class="w"> </span><span class="nf">lookup</span><span class="p">(</span><span class="nv">each.value</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tags&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{}))</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3><strong>Input Example</strong></h3>
+<div class="highlight"><pre><span></span><code><span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;services&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">api</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">enable_lb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">      </span><span class="nb">lb_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">internal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">        </span><span class="na">type</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;application&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nb">worker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">enable_lb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">false</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3><strong>Explanation</strong></h3>
+<ol>
+<li>The <code>for_each</code> expression filters services where <code>enable_lb</code> is <code>true</code>.</li>
+<li>The <code>lookup</code> function safely retrieves values from nested maps, providing defaults if keys are missing.</li>
+<li>Terraform creates a load balancer module only for services with <code>enable_lb = true</code>.</li>
+</ol>
+<hr>
+<h2><strong>Best Practices for 2025</strong></h2>
+<ol>
+<li><strong>Use <code>lookup</code> for Safe Access</strong>: Always use <code>lookup</code> to avoid errors when accessing optional keys in maps.</li>
+<li><strong>Combine <code>for_each</code> with <code>dynamic</code> Blocks</strong>: Use <code>dynamic</code> blocks for conditional nested configurations.</li>
+<li><strong>Leverage Local Variables</strong>: Simplify complex expressions by breaking them into reusable local variables.</li>
+</ol>
+<hr>
+<h2><strong>Conclusion</strong></h2>
+<p>The <code>for_each</code> meta-argument, combined with conditional logic, is a powerful tool for creating dynamic and reusable Terraform configurations. By leveraging the latest features in Terraform 1.6.0, you can build more flexible and maintainable infrastructure as code.</p>
+<p>Start using these patterns in your projects today to streamline resource management and improve scalability!</p>
   </div>
   <div class="tag-cloud">
     <p>
