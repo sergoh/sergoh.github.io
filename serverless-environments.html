@@ -51,17 +51,17 @@
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework" />
-<meta name="keywords" content="serverless, lambda, aws, java, cloud">
+<meta name="keywords" content="serverless, lambda, aws, java, cloud, devops, environments, configuration-management, infrastructure-as-code">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
-  <meta property="og:title" content="Managing Envrionments on Serverless Framework"/>
+  <meta property="og:title" content="Managing Environments on Serverless Framework"/>
   <meta property="og:description" content="Learn how to deploy Lambda functions to dev/test/stage/prod environments on Serverless Framework"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:url" content="https://www.devlo.io/serverless-environments.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2018-04-02 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2018-04-02 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2025-04-28 00:00:00-07:00"/>
   <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
   <meta property="article:section" content="tutorials"/>
   <meta property="article:tag" content="serverless"/>
@@ -69,9 +69,13 @@
   <meta property="article:tag" content="aws"/>
   <meta property="article:tag" content="java"/>
   <meta property="article:tag" content="cloud"/>
+  <meta property="article:tag" content="devops"/>
+  <meta property="article:tag" content="environments"/>
+  <meta property="article:tag" content="configuration-management"/>
+  <meta property="article:tag" content="infrastructure-as-code"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
-  <title>DevLo Software Blog &ndash; Managing Envrionments on Serverless Framework</title>
+  <title>DevLo Software Blog &ndash; Managing Environments on Serverless Framework</title>
 
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <script>
@@ -205,7 +209,7 @@
 <article class="single">
   <header>
       
-    <h1 id="serverless-environments">Managing Envrionments on Serverless Framework</h1>
+    <h1 id="serverless-environments">Managing Environments on Serverless Framework</h1>
     <p>
       Posted by <a href="https://www.devlo.io/author/miguel-lopez.html">Miguel Lopez</a> on Mon 02 April 2018 in <a href="https://www.devlo.io/category/tutorials.html">tutorials</a>
 
@@ -293,7 +297,7 @@ Read: 10 minutes </p>
 <li><code>${self:custom.configFile.vpc}</code> will load the <code>vpc</code> variable from the <code>prod.yml</code> file loaded into <code>custom.configFile</code></li>
 </ul>
 <p>Likewise, if you ran <code>sls deploy --stage test</code>, the stage variablle would be set to <code>test</code> and the <code>test.yml</code> would be loaded into <code>custom.configFile</code>. </p>
-<h2><strong>Organizing your environmentfiles</strong></h2>
+<h2><strong>Organizing your environment files</strong></h2>
 <p>I'd recommend laying out your files in the following pattern:</p>
 <div class="highlight"><pre><span></span><code>| configs 
 | - dev.yml
@@ -363,6 +367,10 @@ MEMCACHED_DEFAULT_TTL_VALUE:<span class="w"> </span>&quot;604800&quot;
       <a href="https://www.devlo.io/tag/aws.html">aws</a>
       <a href="https://www.devlo.io/tag/java.html">java</a>
       <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/devops.html">devops</a>
+      <a href="https://www.devlo.io/tag/environments.html">environments</a>
+      <a href="https://www.devlo.io/tag/configuration-management.html">configuration-management</a>
+      <a href="https://www.devlo.io/tag/infrastructure-as-code.html">infrastructure-as-code</a>
     </p>
   </div>
 

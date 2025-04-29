@@ -51,7 +51,7 @@
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Use scripts to automatically register new EC2 minions with Salt-Master" />
-<meta name="keywords" content="saltstack, aws, cloud, EC2, automation">
+<meta name="keywords" content="saltstack, aws, cloud, ec2, automation, configuration-management, codedeploy, infrastructure-as-code">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
@@ -67,8 +67,11 @@
   <meta property="article:tag" content="saltstack"/>
   <meta property="article:tag" content="aws"/>
   <meta property="article:tag" content="cloud"/>
-  <meta property="article:tag" content="EC2"/>
+  <meta property="article:tag" content="ec2"/>
   <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="configuration-management"/>
+  <meta property="article:tag" content="codedeploy"/>
+  <meta property="article:tag" content="infrastructure-as-code"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Automate Salt-Minion Registrations on EC2</title>
@@ -224,25 +227,25 @@
     <p>Automate Salt-Minion Registrations on EC2</p>
 <h6></h6>
 <h2>Intro</h2>
-<p>These scripts can be used to register your salt minion to Salt-Master upon successfully launching. </p>
-<p>Whether you're launching single instances or launching instances as a part of an autoscaling group, I'd highly recommend using cloud-init scripts. They're easy to use and help you install all of your packages.</p>
-<p>My scripts also include CodeDeploy. If you haven't heard of CodeDeploy, I'd take a moment to read up on it here. <a href="https://aws.amazon.com/codedeploy/">AWS CodeDeploy</a></p>
-<p>CodeDeploy can help you with:</p>
+<p>These scripts can be used to register your Salt minion to a Salt-Master upon successful launch. </p>
+<p>Whether you're launching single instances or instances as part of an auto-scaling group, I highly recommend using cloud-init scripts. They're easy to use and help you install all necessary packages.</p>
+<p>My scripts also include CodeDeploy. If you haven't heard of CodeDeploy, take a moment to read about it here: <a href="https://aws.amazon.com/codedeploy/">AWS CodeDeploy</a>.</p>
+<p>CodeDeploy can help with:</p>
 <ul>
-<li>repeatable deployments </li>
-<li>automatic code deployments to scaled instances</li>
-<li>stops and rollbacks</li>
-<li>deployment history</li>
+<li>Repeatable deployments </li>
+<li>Automatic code deployments to scaled instances</li>
+<li>Stops and rollbacks</li>
+<li>Deployment history</li>
 </ul>
 <h2>Cloud Init Script</h2>
-<p>Technical Stack: SaltStack, EC2(CentOS)</p>
-<p>Use this as the cloud-init data for an EC2 instance. Works fanstastically with auto-scaling-groups. Recommend placing this script in a cloudformation or terraform script so that all instances are automatically launched with it. </p>
-<p>Installs codedeploy and automatically registers salt-minion to a salt-master.</p>
+<p>Technical Stack: SaltStack, EC2 (CentOS)</p>
+<p>Use this as the cloud-init data for an EC2 instance. It works perfectly with auto-scaling groups. You should be able to pass this as the user data script for your EC2 instance.</p>
+<p>This script installs CodeDeploy and automatically registers the Salt minion to a Salt-Master.</p>
 <ul>
-<li>dynamic by region</li>
-<li>installs codedeploy-agent</li>
-<li>registers salt-minion to master</li>
-<li>auto-deploy your latest revision from a CodeDeploy deployment group to this instance </li>
+<li>Dynamic by region</li>
+<li>Installs the CodeDeploy agent</li>
+<li>Registers the Salt minion to the master</li>
+<li>Auto-deploys your latest revision from a CodeDeploy deployment group to this instance </li>
 </ul>
 <div class="highlight"><pre><span></span><code>#cloud-config
 #<span class="w"> </span>Set<span class="w"> </span>hostname<span class="w"> </span>to<span class="w"> </span>match<span class="w"> </span>the<span class="w"> </span>instance<span class="w"> </span>ID,<span class="w"> </span>rather<span class="w"> </span>than<span class="w"> </span>the
@@ -277,26 +280,26 @@ preserve_hostname:<span class="w"> </span>true
 manage_etc_hosts:<span class="w"> </span>false
 </code></pre></div>
 
-<p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>
-<p><em>Replace $SALT_MASTER_IP with the IP of your salt-master. Don't forget to tag your EC2 instance with a "Name" tag. Naming is important when it comes to defining salt environments.</em></p>
+<p><em>You'll notice some curls to http://169.254.169.254. This is an internal API used by EC2 instances to fetch metadata about your instance.</em> </p>
+<p><em>Replace <code>$SALT_MASTER_IP</code> with the IP of your Salt-Master. Don't forget to tag your EC2 instance with a "Name" tag. Naming is important when defining Salt environments.</em></p>
 <p>For example:
 - <em>stage-api</em>
 - <em>stage-www</em>
 - <em>test-api</em>
 - <em>test-www</em></p>
-<p>These are all great examples of "Name" tags for instances because it allows you to apply salt states by '<em>www', '</em>api', 'stage<em>' or 'test</em>' or some other combination. </p>
-<p>This can be extremely useful for defining how you run salt commands. This naming convention would allow you to run salt commands in the following way: </p>
+<p>These are all great examples of "Name" tags for instances because they allow you to apply Salt states by patterns like <code>*www</code>, <code>*api</code>, <code>stage*</code>, or <code>test*</code>. </p>
+<p>This can be extremely useful for defining how you run Salt commands. For example, the following command:</p>
 <div class="highlight"><pre><span></span><code>salt<span class="w"> </span><span class="s1">&#39;stage*&#39;</span><span class="w"> </span>state.show_top
 </code></pre></div>
 
-<p>This command would only apply salt states to environments tagged with <em>stage</em> in their name. In this example, that would mean the stage-api and stage-www server. </p>
+<p>would only apply Salt states to environments tagged with <em>stage</em> in their name. In this example, that would include the stage-api and stage-www servers. </p>
 <h2>Shell Script Equivalent</h2>
-<p>Technical Stack: SaltStack, EC2(CentOS)</p>
-<p>Installs codedeploy and automatically registers salt-minion to a salt-master. Use this script if only if you'd like your packages to be installed post-creation. </p>
+<p>Technical Stack: SaltStack, EC2 (CentOS)</p>
+<p>This script installs CodeDeploy and automatically registers the Salt minion to a Salt-Master. Use this script only if you'd like your packages to be installed post-creation. </p>
 <ul>
-<li>dynamic by region</li>
-<li>installs codedeploy-agent</li>
-<li>registers salt-minion to master</li>
+<li>Dynamic by region</li>
+<li>Installs the CodeDeploy agent</li>
+<li>Registers the Salt Minion to the master</li>
 </ul>
 <p>Run this as a bootstrapping script on an EC2 instance. </p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Dynamically fetch region for EC2 in aws</span>
@@ -330,16 +333,19 @@ sudo<span class="w"> </span>sh<span class="w"> </span>/tmp/bootstrap-salt.sh<spa
 sudo<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>/tmp/bootstrap-salt.sh<span class="p">;</span>
 </code></pre></div>
 
-<p><em>You'll notice some curls to http://169.254.169.254, this is an internal API used by EC2 instances to fetch metadata about your instance</em> </p>
-<p>Replace $SALT_MASTER_IP with your own variables.</p>
+<p><em>You'll notice some curls to http://169.254.169.254. This is an internal API used by EC2 instances to fetch metadata about your instance.</em> </p>
+<p>Replace <code>$SALT_MASTER_IP</code> with your own variables.</p>
   </div>
   <div class="tag-cloud">
     <p>
       <a href="https://www.devlo.io/tag/saltstack.html">saltstack</a>
       <a href="https://www.devlo.io/tag/aws.html">aws</a>
       <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
-      <a href="https://www.devlo.io/tag/ec2.html">EC2</a>
+      <a href="https://www.devlo.io/tag/ec2.html">ec2</a>
       <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/configuration-management.html">configuration-management</a>
+      <a href="https://www.devlo.io/tag/codedeploy.html">codedeploy</a>
+      <a href="https://www.devlo.io/tag/infrastructure-as-code.html">infrastructure-as-code</a>
     </p>
   </div>
 

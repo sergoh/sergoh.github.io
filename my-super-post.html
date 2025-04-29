@@ -51,7 +51,7 @@
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="SaltStack 101, Set up your first Salt-Master and Salt-Minion" />
-<meta name="keywords" content="saltstack, aws, cloud">
+<meta name="keywords" content="saltstack, configuration-management, aws, cloud, devops, infrastructure-as-code, automation, ec2, centos">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
@@ -65,8 +65,14 @@
   <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
   <meta property="article:section" content="automation"/>
   <meta property="article:tag" content="saltstack"/>
+  <meta property="article:tag" content="configuration-management"/>
   <meta property="article:tag" content="aws"/>
   <meta property="article:tag" content="cloud"/>
+  <meta property="article:tag" content="devops"/>
+  <meta property="article:tag" content="infrastructure-as-code"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="ec2"/>
+  <meta property="article:tag" content="centos"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Introduction to SaltStack</title>
@@ -257,7 +263,7 @@
 <ol>
 <li>Verify Salt-Master exists</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master ~</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="c1">--version</span>
 <span class="n">salt</span><span class="o">-</span><span class="n">master</span><span class="w"> </span><span class="mf">2018.3.0</span><span class="w"> </span><span class="p">(</span><span class="n">Oxygen</span><span class="p">)</span>
 </code></pre></div>
 
@@ -287,7 +293,7 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <p>Verify the Salt-Minion exists</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">ec2-user@ip-10-0-1-31 ~</span><span class="o">]</span><span class="err">$</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="w"> </span><span class="o">--</span><span class="n">version</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">ec2-user@ip-10-0-1-31 ~</span><span class="o">]</span><span class="err">$</span><span class="w"> </span><span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="w"> </span><span class="c1">--version</span>
 <span class="n">salt</span><span class="o">-</span><span class="n">minion</span><span class="w"> </span><span class="mf">2018.3.0</span><span class="w"> </span><span class="p">(</span><span class="n">Oxygen</span><span class="p">)</span>
 </code></pre></div>
 
@@ -448,7 +454,7 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <p>Paste the following text inside. </p>
 <div class="highlight"><pre><span></span><code>base:
   &#39;*&#39;:
-    - touch-file
+    <span class="k">-</span> touch-file
 </code></pre></div>
 
 <p>The <code>top.sls</code> file will apply the <code>touch-file</code> state we just created to all salt-minions under our control. </p>
@@ -459,7 +465,7 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 </ol>
 <div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="w"> </span><span class="k">state</span><span class="p">.</span><span class="n">show_top</span>
 <span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="err">:</span>
-<span class="w">    </span><span class="o">----------</span>
+<span class="w">    </span><span class="c1">----------</span>
 <span class="w">    </span><span class="nl">base</span><span class="p">:</span>
 <span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">touch</span><span class="o">-</span><span class="k">file</span>
 </code></pre></div>
@@ -470,7 +476,7 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 </ol>
 <div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">root@salt-master base</span><span class="o">]</span><span class="err">#</span><span class="w"> </span><span class="n">salt</span><span class="w"> </span><span class="s1">&#39;*&#39;</span><span class="w"> </span><span class="k">state</span><span class="p">.</span><span class="n">apply</span>
 <span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span><span class="err">:</span>
-<span class="o">----------</span>
+<span class="c1">----------</span>
 <span class="w">          </span><span class="nl">ID</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">hello</span><span class="o">-</span><span class="n">world</span><span class="p">.</span><span class="n">txt</span>
 <span class="w">    </span><span class="k">Function</span><span class="err">:</span><span class="w"> </span><span class="k">file</span><span class="p">.</span><span class="n">managed</span>
 <span class="w">      </span><span class="k">Result</span><span class="err">:</span><span class="w"> </span><span class="k">True</span>
@@ -478,17 +484,17 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 <span class="w">     </span><span class="nl">Started</span><span class="p">:</span><span class="w"> </span><span class="mi">06</span><span class="err">:</span><span class="mi">17</span><span class="err">:</span><span class="mf">46.887924</span>
 <span class="w">    </span><span class="nl">Duration</span><span class="p">:</span><span class="w"> </span><span class="mf">70.182</span><span class="w"> </span><span class="n">ms</span>
 <span class="w">     </span><span class="nl">Changes</span><span class="p">:</span>
-<span class="w">              </span><span class="o">----------</span>
+<span class="w">              </span><span class="c1">----------</span>
 <span class="w">              </span><span class="nl">diff</span><span class="p">:</span>
 <span class="w">                  </span><span class="k">New</span><span class="w"> </span><span class="k">file</span>
 <span class="w">              </span><span class="nl">mode</span><span class="p">:</span>
 <span class="w">                  </span><span class="mi">0644</span>
 
 <span class="n">Summary</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">dev</span><span class="o">-</span><span class="n">minion</span><span class="o">-</span><span class="mi">01</span>
-<span class="o">------------</span>
+<span class="c1">------------</span>
 <span class="nl">Succeeded</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="n">changed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="nl">Failed</span><span class="p">:</span><span class="w">    </span><span class="mi">0</span>
-<span class="o">------------</span>
+<span class="c1">------------</span>
 <span class="n">Total</span><span class="w"> </span><span class="n">states</span><span class="w"> </span><span class="nl">run</span><span class="p">:</span><span class="w">     </span><span class="mi">1</span>
 <span class="n">Total</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="nc">time</span><span class="err">:</span><span class="w">  </span><span class="mf">70.182</span><span class="w"> </span><span class="n">ms</span>
 </code></pre></div>
@@ -515,13 +521,19 @@ echo &quot;dev-minion-01&quot; &gt; /etc/salt/minion_id;
 </ul>
 <p>By this point, I hope you can understand how awesome Salt really is. SaltStack has been fantastic for our company and I hope it can do the same for you.</p>
 <p>In case you are evaluating other tools, I recommend you check out <a href="https://www.chef.io/chef/">Chef</a>, <a href="https://www.ansible.com/">Ansible</a> and <a href="https://puppet.com/">Puppet</a> as they all have very similar functionality. </p>
-<p>It takes time and patience to fully adopt a configuration manager but the payoff is totally worth it. </p>
+<p>It takes time and patience to fully adopt a configuration manager but the payoff is totally worth it.</p>
   </div>
   <div class="tag-cloud">
     <p>
       <a href="https://www.devlo.io/tag/saltstack.html">saltstack</a>
+      <a href="https://www.devlo.io/tag/configuration-management.html">configuration-management</a>
       <a href="https://www.devlo.io/tag/aws.html">aws</a>
       <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
+      <a href="https://www.devlo.io/tag/devops.html">devops</a>
+      <a href="https://www.devlo.io/tag/infrastructure-as-code.html">infrastructure-as-code</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/ec2.html">ec2</a>
+      <a href="https://www.devlo.io/tag/centos.html">centos</a>
     </p>
   </div>
 

@@ -259,9 +259,9 @@ running <strong>Terraform</strong>, <strong>Terragrunt</strong> and <strong>git<
 </code></pre></div>
 
 <p>The lambda handle at <code>run_git.lambda_handler</code> ran the following python code:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">git</span> <span class="kn">import</span> <span class="n">Repo</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">git</span><span class="w"> </span><span class="kn">import</span> <span class="n">Repo</span>
 
-<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
 
     <span class="n">project_name</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;github_project&#39;</span><span class="p">]</span>
     <span class="n">org</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;github_org&#39;</span><span class="p">]</span>
@@ -272,7 +272,7 @@ running <strong>Terraform</strong>, <strong>Terragrunt</strong> and <strong>git<
 
 <p>The code was simple, it would download a github project and store it in the <code>/tmp/</code>.</p>
 <p>Should have been easy until I ran into this error:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Unable</span> <span class="n">to</span> <span class="kn">import</span> <span class="nn">module</span> <span class="s1">&#39;src/handler/run_git&#39;</span><span class="p">:</span> <span class="n">Failed</span> <span class="n">to</span> <span class="n">initialize</span><span class="p">:</span> <span class="n">Bad</span> <span class="n">git</span> <span class="n">executable</span><span class="o">.</span>
+<div class="highlight"><pre><span></span><code><span class="n">Unable</span> <span class="n">to</span> <span class="kn">import</span><span class="w"> </span><span class="nn">module</span> <span class="s1">&#39;src/handler/run_git&#39;</span><span class="p">:</span> <span class="n">Failed</span> <span class="n">to</span> <span class="n">initialize</span><span class="p">:</span> <span class="n">Bad</span> <span class="n">git</span> <span class="n">executable</span><span class="o">.</span>
 <span class="n">The</span> <span class="n">git</span> <span class="n">executable</span> <span class="n">must</span> <span class="n">be</span> <span class="n">specified</span> <span class="ow">in</span> <span class="n">one</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">ways</span><span class="p">:</span>
     <span class="o">-</span> <span class="n">be</span> <span class="n">included</span> <span class="ow">in</span> <span class="n">your</span> <span class="err">$</span><span class="n">PATH</span>
     <span class="o">-</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">via</span> <span class="err">$</span><span class="n">GIT_PYTHON_GIT_EXECUTABLE</span>

@@ -51,17 +51,17 @@
 
 <meta name="author" content="Sergio Lopez" />
 <meta name="description" content="The step-by-step instructions to get this blog up and running." />
-<meta name="keywords" content="pelican, mac, python, blog, setup, travis-ci, github pages">
+<meta name="keywords" content="pelican, mac, python, blog, setup, travis-ci, github-pages, static-site, automation, web-development">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
   <meta property="og:title" content="Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra"/>
   <meta property="og:description" content="The step-by-step instructions to get this blog up and running."/>
   <meta property="og:locale" content="en_US"/>
-  <meta property="og:url" content="https://www.devlo.io/setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra.html"/>
+  <meta property="og:url" content="https://www.devlo.io/pelican-blog-setup.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2018-03-22 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2018-04-04 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2025-04-28 00:00:00-07:00"/>
   <meta property="article:author" content="https://www.devlo.io/author/sergio-lopez.html">
   <meta property="article:section" content="tutorials"/>
   <meta property="article:tag" content="pelican"/>
@@ -70,7 +70,10 @@
   <meta property="article:tag" content="blog"/>
   <meta property="article:tag" content="setup"/>
   <meta property="article:tag" content="travis-ci"/>
-  <meta property="article:tag" content="github pages"/>
+  <meta property="article:tag" content="github-pages"/>
+  <meta property="article:tag" content="static-site"/>
+  <meta property="article:tag" content="automation"/>
+  <meta property="article:tag" content="web-development"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</title>
@@ -207,7 +210,7 @@
 <article class="single">
   <header>
       
-    <h1 id="setting-up-a-pelican-blog-on-github-pages-with-travis-ci-using-macos-high-sierra">Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</h1>
+    <h1 id="pelican-blog-setup">Setting up a Pelican Blog on Github Pages with Travis-CI using MacOS High Sierra</h1>
     <p>
       Posted by <a href="https://www.devlo.io/author/sergio-lopez.html">Sergio Lopez</a> on Thu 22 March 2018 in <a href="https://www.devlo.io/category/tutorials.html">tutorials</a>
 
@@ -300,7 +303,7 @@ require-virtualenv<span class="w"> </span><span class="o">=</span><span class="w
 require-virtualenv<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
 </code></pre></div>
 
-<h2>**Create Pelican Virtual Environment **</h2>
+<h2><strong>Create Pelican Virtual Environment </strong></h2>
 <p>With our MacOS configured we can now install pelican. First we create the virtual environment:</p>
 <div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/Virtualenvs
 $<span class="w"> </span>virtualenv<span class="w"> </span>pelican
@@ -410,77 +413,72 @@ Then use the STATIC_PATHS setting to tell Pelican to copy this file to your outp
 <span class="w"> </span>example.com.<span class="w">   </span><span class="m">73</span><span class="w">  </span>IN<span class="w">  </span>A<span class="w"> </span><span class="m">192</span>.30.252.154
 </code></pre></div>
 
-<h2><strong>Setting up Travis CI</strong></h2>
-<p>Now we're going to setup Travis CI, which will allow us to deploy a new version of the blog everytime there is a commit to master.</p>
-<p>First, create a <code>requirements.txt</code> in the blog project folder:</p>
+<h2><strong>Setting up GitHub Actions</strong></h2>
+<p>Instead of using Travis CI, we recommend using GitHub Actions for CI/CD. GitHub Actions integrates seamlessly with your GitHub repository and allows you to automate the deployment of your Pelican blog.</p>
+<h3>Create a GitHub Actions Workflow</h3>
+<ol>
+<li>Create a <code>.github/workflows</code> directory in your repository if it doesn't already exist.</li>
+<li>Inside this directory, create a file named <code>deploy.yml</code> with the following content:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy Pelican Blog</span>
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check out repository</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v3</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.9&#39;</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build the site</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make html</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pushes to another repository</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cpina/github-action-push-to-another-repository@main</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">SSH_DEPLOY_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.SSH_DEPLOY_KEY }}</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">source-directory</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;output&#39;</span>
+<span class="w">          </span><span class="nt">destination-github-username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${ secrets.GITHUB_USERNAME }</span>
+<span class="w">          </span><span class="nt">destination-repository-name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${ secrets.GITHUB_REPO }</span>
+<span class="w">          </span><span class="nt">user-email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${ secrets.GITHUB_EMAIL }</span>
+<span class="w">          </span><span class="nt">target-branch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+</code></pre></div>
+
+<h3>Explanation of the Workflow</h3>
+<ul>
+<li><strong>Trigger</strong>: The workflow runs whenever there is a push to the <code>master</code> branch.</li>
+<li><strong>Steps</strong>:</li>
+<li><strong>Check out repository</strong>: Clones the repository to the runner.</li>
+<li><strong>Set up Python</strong>: Installs Python 3.9 on the runner.</li>
+<li><strong>Install dependencies</strong>: Installs the required Python packages listed in <code>requirements.txt</code>.</li>
+<li><strong>Build the site</strong>: Runs the <code>make html</code> command to generate the static site files.</li>
+<li><strong>Deploy to GitHub Pages</strong>: Uses the <code>peaceiris/actions-gh-pages</code> action to deploy the generated files in the <code>output</code> directory to the <code>gh-pages</code> branch.</li>
+</ul>
+<h3>Update Your <code>requirements.txt</code></h3>
+<p>Ensure your <code>requirements.txt</code> includes the necessary dependencies:</p>
 <div class="highlight"><pre><span></span><code>pelican
 Markdown
 typogrify
 fabric
 </code></pre></div>
 
-<p>Then create a <code>.travis.yml</code> file in the same folder:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">branches</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">only</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
-<span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python</span>
-<span class="nt">python</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.7</span>
-<span class="nt">install</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
-<span class="nt">script</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">make html</span>
-<span class="nt">notifications</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">email</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">on_success</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
-<span class="w">    </span><span class="nt">on_failure</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
-<span class="nt">env</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">global</span><span class="p">:</span>
-<span class="nt">before_install</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">git submodule update --init --recursive</span>
-<span class="nt">after_success</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bash deploy.sh</span>
-</code></pre></div>
-
-<p>Then add also the <code>deploy.sh</code> script and update the global variable with yours:</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
-<span class="nv">BRANCH</span><span class="o">=</span>master
-<span class="nv">TARGET_REPO</span><span class="o">=</span>yourusername/yourusername.github.io.git
-<span class="nv">PELICAN_OUTPUT_FOLDER</span><span class="o">=</span>output
-
-<span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;Testing travis-encrypt&quot;</span>
-<span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$VARNAME</span><span class="s2">&quot;</span>
-
-<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TRAVIS_PULL_REQUEST</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;Starting to deploy to Github Pages\n&quot;</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TRAVIS</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span><span class="s2">&quot;travis@travis-ci.org&quot;</span>
-<span class="w">        </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;Travis&quot;</span>
-<span class="w">    </span><span class="k">fi</span>
-<span class="w">    </span><span class="c1">#using token clone gh-pages branch</span>
-<span class="w">    </span>git<span class="w"> </span>clone<span class="w"> </span>--quiet<span class="w"> </span>--branch<span class="o">=</span><span class="nv">$BRANCH</span><span class="w"> </span>https://<span class="si">${</span><span class="nv">GH_TOKEN</span><span class="si">}</span>@github.com/<span class="nv">$TARGET_REPO</span><span class="w"> </span>built_website<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
-<span class="w">    </span><span class="c1">#go into directory and copy data we&#39;re interested in to that directory</span>
-<span class="w">    </span><span class="nb">cd</span><span class="w"> </span>built_website
-<span class="w">    </span>rsync<span class="w"> </span>-rv<span class="w"> </span>--exclude<span class="o">=</span>.git<span class="w">  </span>../<span class="nv">$PELICAN_OUTPUT_FOLDER</span>/*<span class="w"> </span>.
-<span class="w">    </span><span class="c1">#add, commit and push files</span>
-<span class="w">    </span>git<span class="w"> </span>add<span class="w"> </span>-f<span class="w"> </span>.
-<span class="w">    </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Travis build </span><span class="nv">$TRAVIS_BUILD_NUMBER</span><span class="s2"> pushed to Github Pages&quot;</span>
-<span class="w">    </span>git<span class="w"> </span>push<span class="w"> </span>-fq<span class="w"> </span>origin<span class="w"> </span><span class="nv">$BRANCH</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/null
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;Deploy completed\n&quot;</span>
-<span class="k">fi</span>
-</code></pre></div>
-
-<p>Now we need to create the encrypted token under env global in order to let Travis CI intract withtthe repository.
-Login to the Github web interface to get an <a href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">Authentication Token</a>, and then install the travis command line tool with:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>ruby1.9.1-dev
-$<span class="w"> </span>sudo<span class="w"> </span>gem<span class="w"> </span>install<span class="w"> </span>travis
-</code></pre></div>
-
-<p>and run from inside the repository:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>travis<span class="w"> </span>encrypt<span class="w"> </span><span class="nv">GH_TOKEN</span><span class="o">=</span>AUTHENTICATIONTOKENFROMGITHUB<span class="w"> </span>--add<span class="w"> </span>env.global
-</code></pre></div>
-
-<p>From now on, every time you commit a change to master, it should kick off a build in travis ci and push the code to your <em>yourusername.github.io</em></p>
-<p>Now go grab a drink, its well deserved! Cheers!</p>
+<h3>Remove Travis CI Configuration</h3>
+<p>If you were previously using Travis CI, remove the <code>.travis.yml</code> file and any related scripts (e.g., <code>deploy.sh</code>) from your repository.</p>
+<hr>
+<p>With GitHub Actions, your blog will automatically deploy to GitHub Pages whenever you push changes to the <code>master</code> branch. This setup is simpler and more integrated than using Travis CI.</p>
 <h5>References</h5>
 <p>Below are a list of links or other guides that have helped me get to this point.</p>
 <p><em>https://hackercodex.com/guide/mac-development-configuration/</em></p>
@@ -503,7 +501,10 @@ $<span class="w"> </span>sudo<span class="w"> </span>gem<span class="w"> </span>
       <a href="https://www.devlo.io/tag/blog.html">blog</a>
       <a href="https://www.devlo.io/tag/setup.html">setup</a>
       <a href="https://www.devlo.io/tag/travis-ci.html">travis-ci</a>
-      <a href="https://www.devlo.io/tag/github-pages.html">github pages</a>
+      <a href="https://www.devlo.io/tag/github-pages.html">github-pages</a>
+      <a href="https://www.devlo.io/tag/static-site.html">static-site</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
+      <a href="https://www.devlo.io/tag/web-development.html">web-development</a>
     </p>
   </div>
 

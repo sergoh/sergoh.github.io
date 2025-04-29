@@ -50,13 +50,13 @@
  
 
 <meta name="author" content="Miguel Lopez" />
-<meta name="description" content="Using if-else statements in terraforms" />
-<meta name="keywords" content="aws, cloud, terraform, hcl, hashicorp">
+<meta name="description" content="Using if-else statements in Terraform." />
+<meta name="keywords" content="aws, cloud, terraform, hcl, hashicorp, if-statements, conditional-logic, infrastructure-as-code, automation">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
   <meta property="og:title" content="If, If-else Statements in Terraform"/>
-  <meta property="og:description" content="Using if-else statements in terraforms"/>
+  <meta property="og:description" content="Using if-else statements in Terraform."/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:url" content="https://www.devlo.io/if-else-terraform.html"/>
   <meta property="og:type" content="article"/>
@@ -69,6 +69,10 @@
   <meta property="article:tag" content="terraform"/>
   <meta property="article:tag" content="hcl"/>
   <meta property="article:tag" content="hashicorp"/>
+  <meta property="article:tag" content="if-statements"/>
+  <meta property="article:tag" content="conditional-logic"/>
+  <meta property="article:tag" content="infrastructure-as-code"/>
+  <meta property="article:tag" content="automation"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; If, If-else Statements in Terraform</title>
@@ -287,7 +291,7 @@ This means a value of 1 would be passed on to the <code>count</code> parameter o
 
 <p>If the <code>create_first_eip</code> variable was set to <code>true</code> then the first <code>aws_eip</code> would be created because the <code>create_first_eip == true</code> would result in a <code>count</code> of 1.</p>
 <p>If the <code>create_first_eip</code> variable was set to <code>false</code>, then the second <code>aws_eip</code> would be created because the <code>create_first_eip == false</code> would result in a <code>count</code> of 1. The first <code>aws_eip</code> would not be created because it would fail the conditional statement. </p>
-<p>This creates an if-else pattern. </p>
+<p>This creates an if-else pattern.</p>
   </div>
   <div class="tag-cloud">
     <p>
@@ -296,6 +300,10 @@ This means a value of 1 would be passed on to the <code>count</code> parameter o
       <a href="https://www.devlo.io/tag/terraform.html">terraform</a>
       <a href="https://www.devlo.io/tag/hcl.html">hcl</a>
       <a href="https://www.devlo.io/tag/hashicorp.html">hashicorp</a>
+      <a href="https://www.devlo.io/tag/if-statements.html">if-statements</a>
+      <a href="https://www.devlo.io/tag/conditional-logic.html">conditional-logic</a>
+      <a href="https://www.devlo.io/tag/infrastructure-as-code.html">infrastructure-as-code</a>
+      <a href="https://www.devlo.io/tag/automation.html">automation</a>
     </p>
   </div>
 

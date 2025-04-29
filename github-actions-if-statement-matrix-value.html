@@ -51,7 +51,7 @@
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="Github Actions: Use an if statement to conditionally run a block given a specific matrix value. (Matrix Strategy Jobs)" />
-<meta name="keywords" content="github, actions, github-actions, devops, automation, matrix, job, if, if-statement">
+<meta name="keywords" content="github, actions, github-actions, devops, automation, matrix, job, if, if-statement, ci-cd, workflows, yaml">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
@@ -73,6 +73,9 @@
   <meta property="article:tag" content="job"/>
   <meta property="article:tag" content="if"/>
   <meta property="article:tag" content="if-statement"/>
+  <meta property="article:tag" content="ci-cd"/>
+  <meta property="article:tag" content="workflows"/>
+  <meta property="article:tag" content="yaml"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Github Actions: If Statement for Matrix Value</title>
@@ -271,7 +274,7 @@ at <code>matrix.platforms.os</code> or <code>matrix.platforms.os_version</code>.
 <p><a href="https://docs.github.com/en/actions/learn-github-actions/expressions#operators">Full List of Github Action Operators</a></p>
 <h2>If Statement - Matrix Value String / Number Comparison</h2>
 <p>For string values, be sure to enclose your value in single quotes <code>' '</code>. Enclosing them in double quotes <code>"</code> will throw an error. </p>
-<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">&#39;</span><span class="m m-Double">16.0</span><span class="mi">4</span><span class="err">&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">&#39;</span><span class="m m-Double">16.04</span><span class="err">&#39;</span>
 <span class="w">  </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">Ubuntu</span><span class="w"> </span><span class="nx">Packages</span><span class="w"> </span><span class="p">(</span><span class="nx">legacy</span><span class="p">)</span>
 <span class="w">  </span><span class="nx">run</span><span class="p">:</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
 <span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">npm_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">16</span>
@@ -297,7 +300,7 @@ at <code>matrix.platforms.os</code> or <code>matrix.platforms.os_version</code>.
 <span class="w">          </span><span class="p">{</span><span class="nx">os</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ubuntu&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">os_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;20.04&quot;</span><span class="p">}</span>
 <span class="w">        </span><span class="p">]</span>
 <span class="w">    </span><span class="nx">steps</span><span class="p">:</span>
-<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">&#39;</span><span class="m m-Double">16.0</span><span class="mi">4</span><span class="err">&#39;</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="p">:</span><span class="w"> </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">platforms</span><span class="p">.</span><span class="nx">os_version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">&#39;</span><span class="m m-Double">16.04</span><span class="err">&#39;</span>
 <span class="w">        </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">Ubuntu</span><span class="w"> </span><span class="nx">Packages</span><span class="w"> </span><span class="p">(</span><span class="nx">legacy</span><span class="p">)</span>
 <span class="w">        </span><span class="nx">run</span><span class="p">:</span><span class="w"> </span><span class="nx">echo</span><span class="w"> </span><span class="s">&quot;Install Ubuntu 16.04 specific packages.&quot;</span>
 <span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">Ubuntu</span><span class="w"> </span><span class="nx">Packages</span>
@@ -322,7 +325,7 @@ at <code>matrix.platforms.os</code> or <code>matrix.platforms.os_version</code>.
 <p>Github Actions has support to skip an entire matrix value using <code>include</code> or <code>exclude</code>. The following configuraiton
 would skip the <code>{ "os": "ubuntu", "os_version": "16.04" }</code> job. </p>
 <div class="highlight"><pre><span></span><code>exclude:
-    - os_version: &#39;16.04&#39;
+    <span class="k">-</span> os_version: &#39;16.04&#39;
 </code></pre></div>
 
 <p>Using <code>exclude</code> or <code>include</code> skips the entire workflow. <em>For this reason, it's sometimes better to use <code>if</code> statements in order to accomplish your workflow.</em></p>
@@ -338,6 +341,9 @@ would skip the <code>{ "os": "ubuntu", "os_version": "16.04" }</code> job. </p>
       <a href="https://www.devlo.io/tag/job.html">job</a>
       <a href="https://www.devlo.io/tag/if.html">if</a>
       <a href="https://www.devlo.io/tag/if-statement.html">if-statement</a>
+      <a href="https://www.devlo.io/tag/ci-cd.html">ci-cd</a>
+      <a href="https://www.devlo.io/tag/workflows.html">workflows</a>
+      <a href="https://www.devlo.io/tag/yaml.html">yaml</a>
     </p>
   </div>
 

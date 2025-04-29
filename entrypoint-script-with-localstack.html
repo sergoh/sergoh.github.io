@@ -51,7 +51,7 @@
 
 <meta name="author" content="Miguel Lopez" />
 <meta name="description" content="This guide will use entrypoint scripts to create AWS Resources in Localstack. By the end of this guide, you will have an example of to create an s3 bucket in Localstack and access it from aws-cli." />
-<meta name="keywords" content="docker, docker-compose, localstack, serverless, lambda, aws, python, cloud, eventbridge, sns, s3, sqs, api, gateway, local, developer, django, entrypoint">
+<meta name="keywords" content="docker, docker-compose, localstack, aws, python, cloud, serverless, lambda, s3, sns, sqs, api-gateway, eventbridge, developer-tools, boto3, entrypoint-scripts">
 
 
   <meta property="og:site_name" content="DevLo Software Blog"/>
@@ -61,27 +61,25 @@
   <meta property="og:url" content="https://www.devlo.io/entrypoint-script-with-localstack.html"/>
   <meta property="og:type" content="article"/>
   <meta property="article:published_time" content="2023-01-16 00:00:00-07:00"/>
-  <meta property="article:modified_time" content="2023-06-21 00:00:00-07:00"/>
+  <meta property="article:modified_time" content="2025-04-28 00:00:00-07:00"/>
   <meta property="article:author" content="https://www.devlo.io/author/miguel-lopez.html">
   <meta property="article:section" content="localstack"/>
   <meta property="article:tag" content="docker"/>
   <meta property="article:tag" content="docker-compose"/>
   <meta property="article:tag" content="localstack"/>
-  <meta property="article:tag" content="serverless"/>
-  <meta property="article:tag" content="lambda"/>
   <meta property="article:tag" content="aws"/>
   <meta property="article:tag" content="python"/>
   <meta property="article:tag" content="cloud"/>
-  <meta property="article:tag" content="eventbridge"/>
-  <meta property="article:tag" content="sns"/>
+  <meta property="article:tag" content="serverless"/>
+  <meta property="article:tag" content="lambda"/>
   <meta property="article:tag" content="s3"/>
+  <meta property="article:tag" content="sns"/>
   <meta property="article:tag" content="sqs"/>
-  <meta property="article:tag" content="api"/>
-  <meta property="article:tag" content="gateway"/>
-  <meta property="article:tag" content="local"/>
-  <meta property="article:tag" content="developer"/>
-  <meta property="article:tag" content="django"/>
-  <meta property="article:tag" content="entrypoint"/>
+  <meta property="article:tag" content="api-gateway"/>
+  <meta property="article:tag" content="eventbridge"/>
+  <meta property="article:tag" content="developer-tools"/>
+  <meta property="article:tag" content="boto3"/>
+  <meta property="article:tag" content="entrypoint-scripts"/>
   <meta property="og:image" content="/images/Devlo-Logo.png">
 
   <title>DevLo Software Blog &ndash; Entrypoint Script with Localstack and Docker-Compose</title>
@@ -343,7 +341,7 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
 <ol>
 <li>Override Boto3 Client Endpoint URL. This will point to the Localstack container:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">boto3</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
 
 <span class="n">sns_client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;sns&#39;</span><span class="p">,</span> <span class="n">endpoint_url</span><span class="o">=</span><span class="s1">&#39;http://localstack:4566&#39;</span><span class="p">)</span>
 </code></pre></div>
@@ -362,21 +360,19 @@ relate-lambda-template-localstack-1  | 2023-06-22 04:45:49 hsl-local-serverless
       <a href="https://www.devlo.io/tag/docker.html">docker</a>
       <a href="https://www.devlo.io/tag/docker-compose.html">docker-compose</a>
       <a href="https://www.devlo.io/tag/localstack.html">localstack</a>
-      <a href="https://www.devlo.io/tag/serverless.html">serverless</a>
-      <a href="https://www.devlo.io/tag/lambda.html">lambda</a>
       <a href="https://www.devlo.io/tag/aws.html">aws</a>
       <a href="https://www.devlo.io/tag/python.html">python</a>
       <a href="https://www.devlo.io/tag/cloud.html">cloud</a>
-      <a href="https://www.devlo.io/tag/eventbridge.html">eventbridge</a>
-      <a href="https://www.devlo.io/tag/sns.html">sns</a>
+      <a href="https://www.devlo.io/tag/serverless.html">serverless</a>
+      <a href="https://www.devlo.io/tag/lambda.html">lambda</a>
       <a href="https://www.devlo.io/tag/s3.html">s3</a>
+      <a href="https://www.devlo.io/tag/sns.html">sns</a>
       <a href="https://www.devlo.io/tag/sqs.html">sqs</a>
-      <a href="https://www.devlo.io/tag/api.html">api</a>
-      <a href="https://www.devlo.io/tag/gateway.html">gateway</a>
-      <a href="https://www.devlo.io/tag/local.html">local</a>
-      <a href="https://www.devlo.io/tag/developer.html">developer</a>
-      <a href="https://www.devlo.io/tag/django.html">django</a>
-      <a href="https://www.devlo.io/tag/entrypoint.html">entrypoint</a>
+      <a href="https://www.devlo.io/tag/api-gateway.html">api-gateway</a>
+      <a href="https://www.devlo.io/tag/eventbridge.html">eventbridge</a>
+      <a href="https://www.devlo.io/tag/developer-tools.html">developer-tools</a>
+      <a href="https://www.devlo.io/tag/boto3.html">boto3</a>
+      <a href="https://www.devlo.io/tag/entrypoint-scripts.html">entrypoint-scripts</a>
     </p>
   </div>
 

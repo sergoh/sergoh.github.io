@@ -225,21 +225,21 @@
     <p>Technical Stack: AWS EC2 (AWS AMI CentOS), SaltStack (2018.7.X), CodeDeploy<br>
 Read: 10 minutes </p>
 <h2><strong>Introduction</strong></h2>
-<p>There are 4 key components when it comes to creating stateless servers for an autoscaling groups (ASGs). </p>
+<p>There are four key components to creating stateless servers for auto-scaling groups (ASGs): </p>
 <ul>
 <li>Automatic Configuration Management (SaltStack, Chef, Puppet, AWS OpsWorks) </li>
-<li>Automatic Code Deployment to New VMs that Spawn (CodeDeploy) </li>
-<li>Bootstrapping Minions as they Spawn</li>
-<li>CI/CD Pipelines (Jenkins, VSTS, Code Pipelines, etc) </li>
+<li>Automatic Code Deployment to new VMs that spawn (CodeDeploy) </li>
+<li>Bootstrapping Minions as they spawn</li>
+<li>CI/CD Pipelines (Jenkins, VSTS, Code Pipelines, etc.) </li>
 </ul>
-<p>Having these 4 components will help you achieve an automated and repeatable way of creating VMs from the ground up. This will allow you to create and register new nodes with a load balancer should the demand go up. </p>
-<p>There’s no perfect formula when it comes to selecting the right set of tools for the job. The main thing that matters is that you select a set of tools that’ll help your organization successfully manage an autoscaling group. </p>
+<p>Having these four components will help you achieve an automated and repeatable way of creating VMs from the ground up. This will allow you to create and register new nodes with a load balancer as demand increases. </p>
+<p>There’s no perfect formula for selecting the right set of tools for the job. The most important factor is choosing tools that will help your organization successfully manage an auto-scaling group. </p>
 <h2><strong>Configuration Management</strong></h2>
-<p>These tools allow you to manage differences across different applications and environments in your infrastructure. You can manage different configuration files, symlinks, create/delete different users, web hosts files, etc. It allows you to remove “hard coding” from VMs so that you can easily produce a “production API server” or a “DEV www server”.</p>
-<p>Choosing the right configuration management tool typically boils down to choosing a tool that makes sense for your organization. I’ve been a huge fan of SaltStack because it’s declarative, meaning that order in which states are executed doesn't matter. </p>
+<p>These tools allow you to manage differences across various applications and environments in your infrastructure. You can manage configuration files, symlinks, create or delete users, web host files, and more. This enables you to remove “hard coding” from VMs, making it easier to produce a “production API server” or a “DEV www server.”</p>
+<p>Choosing the right configuration management tool typically depends on what makes sense for your organization. I’ve been a huge fan of SaltStack because it’s declarative, meaning the order in which states are executed doesn't matter. </p>
 <h2><strong>Automatic Code Deployment</strong></h2>
-<p>This is important because if your ASG group ever needs to scale up another node, you need to find a way to deploy code to it without having to manually trigger a build. </p>
-<p>I’ve had great success accomplishing this with CodeDeploy. CodeDeploy is an AWS service that uses .yml based instructions in order to install an application on a VM. Here’s an example:</p>
+<p>This is crucial because if your ASG group ever needs to scale up another node, you need a way to deploy code to it without manually triggering a build. </p>
+<p>I’ve had great success with CodeDeploy. CodeDeploy is an AWS service that uses YAML-based instructions to install applications on VMs. Here’s an example:</p>
 <div class="highlight"><pre><span></span><code><span class="n">version</span><span class="o">:</span><span class="w"> </span><span class="mf">0.0</span>
 <span class="n">os</span><span class="o">:</span><span class="w"> </span><span class="n">linux</span>
 <span class="n">files</span><span class="o">:</span>
@@ -267,13 +267,13 @@ Read: 10 minutes </p>
 <span class="w">      </span><span class="n">runas</span><span class="o">:</span><span class="w"> </span><span class="n">root</span>
 </code></pre></div>
 
-<p>It comes complete with life cycle events, the power to run shell scripts and even allows you to install code in multiple locations. </p>
-<p>It should always be your goal to minimize downtime during deployments (Zero downtime if possible). CodeDeploy supports this with A/B deployments or One-At-A-Time deployments.</p>
+<p>It includes lifecycle events, the ability to run shell scripts, and even allows you to install code in multiple locations. </p>
+<p>It should always be your goal to minimize downtime during deployments (zero downtime if possible). CodeDeploy supports this with A/B deployments or one-at-a-time deployments.</p>
 <h2><strong>Bootstrapping Minions</strong></h2>
 <p>Find a way to hook and tie a VM to the rest of your infrastructure. This is where you typically notify your configuration management tool and code deployment tool that your freshly created VM is alive and well. </p>
-<p>I've shared how to do this in another post <a href="http://www.devlo.io/bootstrap-salt.html#bootstrap-salt">Automate Salt-Minion Registrations on EC2</a></p>
+<p>I've shared how to do this in another post: <a href="http://www.devlo.io/bootstrap-salt.html#bootstrap-salt">Automate Salt-Minion Registrations on EC2</a>.</p>
 <h2><strong>CI/CD</strong></h2>
-<p>It’s best to find a tool that’ll push changes to your deployment group (fleet of VMs) while also registering that a new build has been released. It’s important for your automation toolset register that a new build has been released. This will guarantee that your ASG will always install the latest version of your application.\</p>
+<p>It’s best to find a tool that will push changes to your deployment group (fleet of VMs) while also registering that a new build has been released. It’s important for your automation toolset to register that a new build has been released. This will guarantee that your ASG will always install the latest version of your application.</p>
 <h2><strong>Personal Experience</strong></h2>
 <p>I’ve personally had great success with the following tech stack:</p>
 <ul>
@@ -282,8 +282,8 @@ Read: 10 minutes </p>
 <li>CodeDeploy</li>
 <li>SaltStack</li>
 </ul>
-<p>EC2 instances allow you to define a cloud-init script. Cloud-init scripts are scripts that are automatically ran once when the VM is created. This allows me to register each VM that comes online with SaltStack and CodeDeploy. </p>
-<p>Jenkins Is a great CI/CD tool to kick off builds from. Its allows me to pull down my code from GitHub, trigger a build process, run automation tests, push to static code analysis and finally deploy the build to a deployment group via CodeDeploy. </p>
+<p>EC2 instances allow you to define a cloud-init script. Cloud-init scripts are scripts that are automatically run once when the VM is created. This allows me to register each VM that comes online with SaltStack and CodeDeploy. </p>
+<p>Jenkins is a great CI/CD tool to kick off builds from. It allows me to pull down my code from GitHub, trigger a build process, run automation tests, push to static code analysis, and finally deploy the build to a deployment group via CodeDeploy. </p>
 <p>From this point, CodeDeploy will begin installing the build on the requested deployment group. This can either be a single VM or an ASG. CodeDeploy is such a powerful installation Daemon because automatically registers your latest build pushed to it by a CI/CD tool. This ensures that my ASG will always receive the latest build without me having to worry about it. </p>
 <p>SaltStack has been crucial when it comes to influencing how my team designs code. We’ve done our best to start removing any/all hard coded values out of our code. Imagine if a customer needed you to change an integration URL for their prod server. With Salt, we are able to just change the config file and push out the newest state. This is so much easier than changing our code base, scheduling a time for a release, and pushing out the new build. Not to mention safer too. </p>
 <h2><strong>Conclusion</strong></h2>

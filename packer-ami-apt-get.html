@@ -271,8 +271,8 @@ Read: 10 minutes </p>
 <h2><strong>My Solution</strong></h2>
 <p>I wanted to be a solution that would listen to the processes and would not continue until the process using <code>apt</code> finishes. Whatever was using <code>apt</code> is probably doing it in a meaninful way so it's best to let it finish before moving on. </p>
 <p>My solution was simple. By using <code>ps aux</code> and some pipeing, we could listen to processes and only continue whenever apt was not being used by any other process.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">wait_apt</span><span class="o">=</span>$<span class="ss">(</span><span class="nv">ps</span><span class="w"> </span><span class="nv">aux</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nv">grep</span><span class="w"> </span><span class="nv">apt</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nv">wc</span><span class="w"> </span><span class="o">-</span><span class="nv">l</span><span class="ss">)</span>
-<span class="k">while</span><span class="w"> </span>[<span class="w"> </span><span class="s2">&quot;$wait_apt&quot;</span><span class="w"> </span><span class="o">-</span><span class="nv">gt</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"> </span>]<span class="c1">; do echo &quot;waiting for apt-update....&quot;; wait_apt=$(ps aux | grep apt | wc -l); sleep 5; done</span>
+<div class="highlight"><pre><span></span><code>wait_apt=$(ps aux | grep apt | wc -l)
+while [ &quot;$wait_apt&quot; -gt &quot;1&quot; ]; do echo &quot;waiting for apt-update....&quot;; wait_apt=$(ps aux | grep apt | wc -l); sleep 5; done
 </code></pre></div>
 
 <p>To break this down... <code>ps aux</code> shows you a list of active processes, <code>grep apt</code> filters all processes to only include <code>apt</code> related ones and <code>wc -l</code> gives you a line count on your results. So effectively, this little command will show you a <code>2</code> or more whenever a process is using apt and a <code>1</code> if apt is unused. </p>
